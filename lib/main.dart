@@ -14,12 +14,12 @@ import 'setup9.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // 저장된 한영 선택 → 없으면 기기(브라우저) 언어로 시작 언어를 정한다.
+  // 读取已保存的韩英选择 → 如果没有，则按设备（浏览器）语言决定起始语言。
   await loadAppLang();
   runApp(const CarnegieApp());
 }
 
-/// 모든 스크롤에 바운스(iOS 스타일) 물리 적용.
+/// 对所有滚动应用弹性（iOS 风格）物理效果。
 class _BouncyScrollBehavior extends MaterialScrollBehavior {
   const _BouncyScrollBehavior();
 
@@ -41,7 +41,7 @@ class CarnegieApp extends StatelessWidget {
 
   Widget _app() {
     return MaterialApp(
-      title: tr('Carnegie 부서 타일 셀렉터', 'Carnegie Department Tile Selector'),
+      title: tr('Carnegie 部门瓦片选择器', 'Carnegie Department Tile Selector'),
       debugShowCheckedModeBanner: false,
       scrollBehavior: const _BouncyScrollBehavior(),
       theme: ThemeData(
@@ -70,21 +70,20 @@ class CarnegieApp extends StatelessWidget {
   }
 }
 
-/// 규칙서 15쪽 지역 배너 색상.
+/// 规则书第 15 页地区横幅颜色。
 const regionColors = <String, Color>{
-  '서부': Color(0xFFC2B49B),
-  '중서부': Color(0xFFC0503C),
-  '남부': Color(0xFF65A76B),
-  '동부': Color(0xFF885F88),
+  '西部': Color(0xFFC2B49B),
+  '中西部': Color(0xFFC0503C),
+  '南部': Color(0xFF65A76B),
+  '东部': Color(0xFF885F88),
 };
 
-/// 1인 게임 준비는 2인과 동일하므로 하나의 선택지로 합친다.
+/// 单人游戏准备与双人相同，因此合并为一个选项。
 String playerLabel(int p) =>
-    p == 2 ? tr('1-2인', '1-2 Players') : tr('$p인', '$p Players');
+    p == 2 ? tr('1-2人', '1-2 Players') : tr('$p人', '$p Players');
 
-/// Per-department exclusion state, in physical-setup terms.
-/// [boxedKind]: 확장 모드에서 유형별 4종 선택에 들지 못해 통째로 상자에
-/// 되돌아가는 종류.
+/// 按部门排除状态，以实体设置术语表示。
+/// [boxedKind]：在扩展模式中未能进入按类型 4 选的选择，从而整类放回盒中的种类。
 enum TileState { removeBoth, removeOne, keepBoth, boxedKind }
 
 extension on DrawResult {
@@ -111,29 +110,28 @@ class SetupScreen extends StatefulWidget {
   State<SetupScreen> createState() => _SetupScreenState();
 }
 
-/// 첫 화면 오버라인 줄(한영 스위치 포함)의 화면 위 끝 기준 위치.
-/// 상단 아이콘 글리프 하단(위 8 + 버튼 여백 11 + 글리프 22 ≈ 39)에서
-/// 15px 아래 (사용자 확정: 아이콘과 스위치 간격 15).
+/// 首页上划线行（含韩英切换）的屏幕顶部基准位置。
+/// 顶部图标字形底部（顶部 8 + 按钮边距 11 + 字形 22 ≈ 39）再向下 15px
+/// （用户确认：图标与切换间距 15）。
 const _homeHeaderTop = 54.0;
 
-/// 한영 스위치 높이 (dense 24 + 5, 사용자 확정). 오버라인 줄 높이도 같다.
+/// 韩英切换高度（dense 24 + 5，用户确认）。上划线行高度也相同。
 const _langSwitchHeight = 29.0;
 
-/// 한영 스위치 칸 폭과 전체 폭(두 칸 + 테두리 1px×2) — 기존 69px과
-/// 1.5배 104px의 중간 86px (사용자 확정).
+/// 韩英切换单元格宽度和总宽度（两格 + 边框 1px×2）—— 原 69px 与
+/// 1.5 倍 104px 的中间值 86px（用户确认）。
 const _langSegmentWidth = 42.0;
 const _langSwitchWidth = _langSegmentWidth * 2 + 2;
 
-/// 본문 오른쪽 끝에서 스위치 오른쪽 끝까지 — 아이콘 참조표 아이콘 글리프
-/// 끝선(44px 버튼 안 22px 글리프 → 버튼 끝에서 13px)에 맞춘다.
+/// 从正文右端到切换右端 —— 对齐图标参考表图标字形
+/// 末端（44px 按钮内 22px 字形 → 按钮末端内 13px）。
 const _langSwitchInset = 13.0;
 
 class _SetupScreenState extends State<SetupScreen> {
-  /// 확장 #1 "새로운 부서" 포함 여부 (세션 한정, 기본 꺼짐).
+  /// 是否包含扩展 #1“新部门”（仅本会话，默认关闭）。
   bool _expansion = false;
 
-  // 기기 로캘이 늦게 전달되는 경우 등 스위치 밖에서 언어가 바뀌어도
-  // 첫 화면을 다시 그린다.
+  // 设备区域设置延迟传入等情况导致语言在切换外变化时，也重绘首页。
   void _onLang() => setState(() {});
 
   @override
@@ -160,22 +158,21 @@ class _SetupScreenState extends State<SetupScreen> {
                 Column(
                   children: [
                     Expanded(
-                      // 인원 카드 3장이 남는 세로 공간을 균등하게 나눠 화면을
-                      // 채운다. 공간이 부족하면 스크롤 목록으로 전환된다.
+                      // 三张人数卡平均分配剩余纵向空间，填满屏幕。
+                      // 空间不足时切换为滚动列表。
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           final header = <Widget>[
-                            // 본문 패딩(16)을 빼고 _homeHeaderTop에서 오버라인 시작.
+                            // 去掉正文内边距(16)，从上划线在 _homeHeaderTop 开始。
                             const SizedBox(
                               height: _homeHeaderTop - CarbonSpacing.s5,
                             ),
-                            // 앱 정체(카네기 셋업 도우미)를 첫 화면에서 드러내는
-                            // 오버라인 (시안 A, docs/mockups/home-title.html).
-                            // 오버라인 줄 높이는 한영 스위치(_langSwitchHeight)에 맞춘다.
-                            // 스위치 자체는 아이콘과 끝선을 맞추려고 아래
-                            // Stack에서 화면 기준으로 배치한다.
-                            // 오른쪽은 스위치 자리(+ 간격 8)를 비워 두고, 좁은
-                            // 폭에서 글자가 스위치에 닿을 때만 축소한다.
+                            // 在首页展示应用定位（卡内基设置助手）的上划线
+                            // （方案 A，docs/mockups/home-title.html）。
+                            // 上划线行高与韩英切换(_langSwitchHeight)一致。
+                            // 切换本身在下方 Stack 中按屏幕基准定位，以对齐图标末端。
+                            // 右侧留出切换位置（+ 间距 8），狭窄
+                            // 宽度下文字碰到切换时才缩小。
                             SizedBox(
                               height: _langSwitchHeight,
                               child: Padding(
@@ -189,7 +186,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       tr(
-                                        'CARNEGIE · 카네기 셋업 도우미',
+                                        'CARNEGIE · 卡内基设置助手',
                                         'CARNEGIE · SETUP HELPER',
                                       ),
                                       maxLines: 1,
@@ -201,18 +198,18 @@ class _SetupScreenState extends State<SetupScreen> {
                             ),
                             const SizedBox(height: CarbonSpacing.s3),
                             Text(
-                              tr('게임 준비', 'Game Setup'),
+                              tr('游戏准备', 'Game Setup'),
                               style: CarbonText.heading05,
                             ),
                             const SizedBox(height: CarbonSpacing.s4),
-                            // 한 줄 고정: 좁은 폭에서 줄바꿈되면 헤더가 길어져
-                            // 인원 카드가 넘치므로, 넘칠 때만 폭에 맞게 축소한다.
+                            // 固定一行：狭窄宽度下换行会让头部变长，
+                            // 人数卡溢出，因此仅在溢出时按宽度缩小。
                             FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 tr(
-                                  '부서 타일 제외 · 중립 디스크 배치 한 번에',
+                                  '部门瓦片排除 · 中立圆盘放置一次完成',
                                   'Remove Department tiles · place neutral disks',
                                 ),
                                 maxLines: 1,
@@ -222,36 +219,36 @@ class _SetupScreenState extends State<SetupScreen> {
                               ),
                             ),
                             const SizedBox(height: CarbonSpacing.s5),
-                            // 기본판/확장 스위치는 서브 타이틀 아래에 둔다
-                            // (사용자 확정).
-                            // 좁은 폭·큰 글자에서 넘치면 폭에 맞게 축소한다.
+                            // 基础版/扩展切换放在副标题下方
+                            // （用户确认）。
+                            // 狭窄宽度、大字体下溢出时按宽度缩小。
                             FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
                               child: CarbonContentSwitcher(
                                 labels: [
-                                  tr('기본판', 'Base Game'),
-                                  tr('확장 포함', 'With Expansion'),
+                                  tr('基础版', 'Base Game'),
+                                  tr('含扩展', 'With Expansion'),
                                 ],
                                 selected: _expansion ? 1 : 0,
                                 onChanged: (i) =>
                                     setState(() => _expansion = i == 1),
                               ),
                             ),
-                            // 모드 설명은 스위치와 인원 카드 사이 중간에,
-                            // 고정 높이로 자리를 잡아 두고 문구만 바꿔서
-                            // 전환 시 아래 레이아웃이 흔들리지 않게 한다.
+                            // 模式说明放在切换与人数卡中间，
+                            // 用固定高度占位，只换文案，
+                            // 切换时下方布局不抖动。
                             const SizedBox(height: CarbonSpacing.s4),
                             SizedBox(
                               height: 16,
                               child: Text(
                                 _expansion
                                     ? tr(
-                                        '유형별 8종 중 4종을 추려 16종으로 플레이합니다',
+                                        '从每类 8 种中选 4 种，以 16 种进行游戏',
                                         'Draw 4 of the 8 Departments of each type — 16 in play',
                                       )
                                     : tr(
-                                        '기본판 부서 16종을 그대로 사용합니다',
+                                        '直接使用基础版 16 种部门',
                                         'Uses the 16 base-game Departments as they are',
                                       ),
                                 maxLines: 1,
@@ -274,8 +271,8 @@ class _SetupScreenState extends State<SetupScreen> {
                               ),
                             ),
                           );
-                          // 700 미만이면 카드 최소 높이(약 128px)가 안 나와
-                          // 넘치므로 스크롤 목록으로 전환한다.
+                          // 低于 700 时卡片最小高度（约 128px）不够，
+                          // 会溢出，因此切换为滚动列表。
                           if (constraints.maxHeight < 700) {
                             return SingleChildScrollView(
                               padding: const EdgeInsets.all(CarbonSpacing.s5),
@@ -292,8 +289,8 @@ class _SetupScreenState extends State<SetupScreen> {
                               ),
                             );
                           }
-                          // 카드:간격 = 170:15 — 간격을 이전(85:15)의 절반
-                          // 비율로 줄이고, 남는 공간은 카드가 가져간다.
+                          // 卡片:间距 = 170:15 —— 间距减为此前(85:15)的一半
+                          // 比例，剩余空间由卡片占据。
                           return Padding(
                             padding: const EdgeInsets.all(CarbonSpacing.s5),
                             child: Column(
@@ -312,18 +309,18 @@ class _SetupScreenState extends State<SetupScreen> {
                     ),
                   ],
                 ),
-                // 상단 아이콘: 세부 페이지와 같은 TopBar(본문 열 안, 좌우 16 ·
-                // 위 8)를 본문 위에 겹쳐 둔다 — 본문 위치는 그대로 (사용자 확정).
+                // 顶部图标：与详细页面相同的 TopBar（正文列内，左右 16、
+                // 顶部 8）叠加在正文上方 —— 正文位置不变（用户确认）。
                 Positioned(
                   top: 0,
                   left: CarbonSpacing.s5,
                   right: CarbonSpacing.s5,
                   child: TopBar(
                     actions: [
-                      // 새로운 시작 계산기를 맨 왼쪽에 (사용자 확정).
+                      // 把新开始计算器放在最左侧（用户确认）。
                       TopIconButton(
                         icon: Icons.calculate_outlined,
-                        tooltip: tr('새로운 시작 계산기', 'A New Beginning Calculator'),
+                        tooltip: tr('新开始计算器', 'A New Beginning Calculator'),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const NewBeginningScreen(),
@@ -332,7 +329,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       ),
                       TopIconButton(
                         icon: Icons.article_outlined,
-                        tooltip: tr('게임 룰 요약', 'Rules Summary'),
+                        tooltip: tr('游戏规则摘要', 'Rules Summary'),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const RulesSummaryScreen(),
@@ -341,7 +338,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       ),
                       TopIconButton(
                         icon: Icons.menu_book_outlined,
-                        tooltip: tr('부서 도감', 'Department Guide'),
+                        tooltip: tr('部门图鉴', 'Department Guide'),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const DeptCatalogScreen(),
@@ -350,7 +347,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       ),
                       TopIconButton(
                         icon: Icons.info_outline,
-                        tooltip: tr('아이콘 참조표', 'Icon Reference'),
+                        tooltip: tr('图标参考表', 'Icon Reference'),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const IconReferenceScreen(),
@@ -360,10 +357,10 @@ class _SetupScreenState extends State<SetupScreen> {
                     ],
                   ),
                 ),
-                // 한영 스위치: 오버라인 줄 높이(_homeHeaderTop)에 두고, 오른쪽
-                // 끝선은 아이콘 참조표 아이콘 글리프(44px 버튼 안 22px →
-                // 버튼 끝에서 13px)에 맞춘다 (사용자 확정). 아이콘 줄보다
-                // 뒤에 둬서 터치가 스위치로 간다.
+                // 韩英切换：放在上划线行高(_homeHeaderTop)，右端
+                // 对齐图标参考表图标字形（44px 按钮内 22px →
+                // 按钮末端内 13px）（用户确认）。放在图标行后面，
+                // 以便触摸事件进入切换。
                 Positioned(
                   top: _homeHeaderTop,
                   right: CarbonSpacing.s5 + _langSwitchInset,
@@ -374,7 +371,7 @@ class _SetupScreenState extends State<SetupScreen> {
                     labels: const ['KO', 'EN'],
                     selected: isEn ? 1 : 0,
                     onChanged: (i) {
-                      // 언어는 즉시 바뀌고, 저장은 뒤에서 비동기로 끝난다.
+                      // 语言立即改变，保存在后台异步完成。
                       setAppLang(i == 1 ? AppLang.en : AppLang.ko);
                       setState(() {});
                     },
@@ -398,16 +395,16 @@ class _PlayerTile extends StatelessWidget {
 
   final int players;
 
-  /// 카드를 누르면 바로 뽑기 결과 화면으로 이동한다 (별도 확정 버튼 없음).
+  /// 点击卡片直接进入抽取结果页面（没有单独的确认按钮）。
   final VoidCallback onTap;
 
-  /// 확장 모드일 때 인원수 옆에 확장 표식 아이콘을 보여준다.
+  /// 扩展模式下在人数旁显示扩展标记图标。
   final bool expansion;
 
   @override
   Widget build(BuildContext context) {
     final removed = removalByPlayerCount[players]!;
-    // 기본판·확장 모두 16종×2장 = 32장으로 시작한다.
+    // 基础版、扩展都以 16 种×2 张 = 32 张开始。
     final kept = departments.length * copiesPerDepartment - removed;
     return Material(
       color: CarbonColors.background,
@@ -420,7 +417,7 @@ class _PlayerTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(CarbonSpacing.s5),
           child: Column(
-            // 카드가 세로로 늘어났을 때 내용을 세로 중앙에 둔다.
+            // 卡片纵向拉伸时内容纵向居中。
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -461,22 +458,22 @@ class _PlayerTile extends StatelessWidget {
               ),
               const SizedBox(height: CarbonSpacing.s5),
               Text(
-                tr('타일 $removed개 제외', 'Remove $removed tiles'),
+                tr('移除 $removed 张瓦片', 'Remove $removed tiles'),
                 style: CarbonText.body01.copyWith(
                   color: CarbonColors.supportError,
                 ),
               ),
               Text(
-                tr('$kept개 사용', '$kept tiles in play'),
+                tr('使用 $kept 张', '$kept tiles in play'),
                 style: CarbonText.helperText01,
               ),
               Text(
                 disksByPlayerCount[players]! > 0
                     ? tr(
-                        '중립 디스크 ${disksByPlayerCount[players]}개',
+                        '中立圆盘 ${disksByPlayerCount[players]} 个',
                         '${disksByPlayerCount[players]} neutral disks',
                       )
-                    : tr('중립 디스크 없음', 'No neutral disks'),
+                    : tr('无中立圆盘', 'No neutral disks'),
                 style: CarbonText.helperText01,
               ),
             ],
@@ -530,30 +527,30 @@ class _ResultScreenState extends State<ResultScreen> {
                       bottom: BorderSide(color: CarbonColors.borderSubtle),
                     ),
                   ),
-                  // 줄(하단 보더)은 전체 폭을 유지하고 탭은 왼쪽 정렬.
+                  // 线条（下边框）保持全宽，标签左对齐。
                   alignment: Alignment.centerLeft,
-                  // 탭 3개가 폰 폭보다 넓으면(360px 1-2인 등) 줄 전체를 폭에
-                  // 맞게 축소한다. 들어가면 그대로.
+                  // 三个标签比手机宽度更宽时（360px 1-2 人等）整行
+                  // 按宽度缩小。放得下时保持原样。
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.centerLeft,
                     child: Row(
                       children: [
                         _TabButton(
-                          label: tr('부서 타일', 'Departments'),
+                          label: tr('部门瓦片', 'Departments'),
                           icon: Icons.grid_view,
                           selected: _tab == 0,
                           onTap: () => setState(() => _tab = 0),
                         ),
                         _TabButton(
-                          label: tr('중립 디스크', 'Disks'),
+                          label: tr('中立圆盘', 'Disks'),
                           icon: Icons.circle,
                           selected: _tab == 1,
                           onTap: () => setState(() => _tab = 1),
                         ),
                         if (_result.playerCount == 2)
                           _TabButton(
-                            label: tr('1인 도우미', 'Solo'),
+                            label: tr('单人助手', 'Solo'),
                             icon: Icons.person_outline,
                             selected: _tab == 2,
                             onTap: () => setState(() => _tab = 2),
@@ -577,8 +574,8 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 
-  /// 결과 화면 공통 헤더: 제목 줄 + 요약 바.
-  /// 다시 뽑기는 각 모드의 첫 섹션 헤더 우측 아이콘, 인원 변경은 뒤로가기.
+  /// 结果页面通用头部：标题行 + 摘要栏。
+  /// 重新抽取为各模式第一个区块标题右侧图标，人数变更为返回。
   List<Widget> _deptHeaderChildren() {
     return [
       Row(
@@ -592,14 +589,14 @@ class _ResultScreenState extends State<ResultScreen> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       tr(
-                        '${playerLabel(_result.playerCount)} 게임',
+                        '${playerLabel(_result.playerCount)} 游戏',
                         playerLabel(_result.playerCount),
                       ),
                       style: CarbonText.heading05,
                     ),
                   ),
                 ),
-                // 인원 카드와 같은 비율(글자 크기 대비)의 확장 표식.
+                // 与人数卡相同比例（相对字号）的扩展标记。
                 if (_result.isExpansion) ...[
                   const SizedBox(width: 6),
                   const Icon(
@@ -612,7 +609,7 @@ class _ResultScreenState extends State<ResultScreen> {
             ),
           ),
           CarbonContentSwitcher(
-            labels: [tr('요약', 'Summary'), tr('상세', 'Details')],
+            labels: [tr('摘要', 'Summary'), tr('详细', 'Details')],
             selected: _detail ? 1 : 0,
             onChanged: (i) => setState(() => _detail = i == 1),
           ),
@@ -624,10 +621,10 @@ class _ResultScreenState extends State<ResultScreen> {
     ];
   }
 
-  /// 확장 모드 종류 고르기 헤더 (요약·상세 공통).
-  String get _chooseKindsTitle => tr('종류 고르기', 'Choose Departments');
+  /// 扩展模式种类选择标题（摘要、详细通用）。
+  String get _chooseKindsTitle => tr('选择种类', 'Choose Departments');
   String get _chooseKindsSubtitle => tr(
-    '아래 번호만 2장씩 꺼내기 — 나머지는 상자로',
+    '只取出以下编号各 2 张 —— 其余放回盒中',
     'Take both copies of these numbers only — return the rest to the box',
   );
 
@@ -637,8 +634,8 @@ class _ResultScreenState extends State<ResultScreen> {
         : draw(_result.playerCount),
   );
 
-  /// 다시 뽑기: 사각 테두리 아이콘 버튼 (섹션 헤더 우측용).
-  /// [onTap]을 주지 않으면 부서 타일 다시 뽑기([_reroll])를 실행한다.
+  /// 重新抽取：方形边框图标按钮（用于区块标题右侧）。
+  /// 不传 [onTap] 时执行部门瓦片重新抽取([_reroll])。
   Widget _rerollIconButton([VoidCallback? onTap]) {
     return Material(
       color: Colors.transparent,
@@ -657,8 +654,8 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 
-  /// 확장 요약: 종류 고르기(헤더 우측 다시 뽑기 아이콘) → 타일 제외를
-  /// 세로로 배치 (사용자 확정 레이아웃).
+  /// 扩展摘要：选择种类（标题右侧重新抽取图标）→ 瓦片排除
+  /// 纵向排列（用户确认布局）。
   Widget _expansionSummaryTab(List<Department> shown) {
     return CustomScrollView(
       slivers: [
@@ -677,9 +674,9 @@ class _ResultScreenState extends State<ResultScreen> {
               _KindCleanupCard(result: _result, onTapDept: _showDetail),
               const SizedBox(height: CarbonSpacing.s6),
               _diskSectionHeader(
-                tr('타일 제외', 'Remove Tiles'),
+                tr('瓦片排除', 'Remove Tiles'),
                 tr(
-                  '꺼내 온 32장에서 아래 타일을 표시된 장수만큼 빼세요',
+                  '从取出的 32 张中，按标示数量移除以下瓦片',
                   'From those 32 tiles, remove the tiles below in the quantities shown',
                 ),
                 Icons.archive_outlined,
@@ -694,9 +691,9 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   Widget _deptTab() {
-    // 요약(기본판): 제외 타일만 번호순 · 요약(확장): 슬라이딩 탭 2단계 —
-    // 종류 고르기(번호 칩) → 타일 제외(그리드) (사용자 확정 B안).
-    // 상세: 전체 종류 번호순(사용/제외 표시).
+    // 摘要（基础版）：只按编号顺序显示排除瓦片 · 摘要（扩展）：滑动标签两阶段 ——
+    // 选择种类（编号芯片）→ 瓦片排除（网格）（用户确认方案 B）。
+    // 详细：全部种类按编号顺序（显示使用/排除）。
     final all = _result.isExpansion ? allDepartments : departments;
     final shown = _detail
         ? ([...all]..sort((a, b) => a.number.compareTo(b.number)))
@@ -707,7 +704,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     _result.stateOf(d) == TileState.removeOne,
               )
               .toList()
-            // 유형 순서(인사→경영→건설→연구개발), 같은 유형 안에서는 번호순.
+            // 类型顺序（人事→经营→建设→研发），同类型内按编号顺序。
             ..sort((a, b) {
               final byType = a.type.index.compareTo(b.type.index);
               return byType != 0 ? byType : a.number.compareTo(b.number);
@@ -716,8 +713,8 @@ class _ResultScreenState extends State<ResultScreen> {
     return CustomScrollView(
       slivers: [
         SliverPadding(
-          // 모든 모드에서 헤더 다음에 바로 섹션 헤더가 오므로 하단 여백은
-          // 두지 않는다 (요약↔상세 전환 시 위치가 흔들리지 않게 동일 유지).
+          // 所有模式中头部后直接是区块标题，因此不留底部边距
+          // （摘要↔详细切换时位置不抖动，保持一致）。
           padding: const EdgeInsets.fromLTRB(
             CarbonSpacing.s5,
             CarbonSpacing.s5,
@@ -727,14 +724,14 @@ class _ResultScreenState extends State<ResultScreen> {
           sliver: SliverList.list(children: _deptHeaderChildren()),
         ),
         if (!_detail) ...[
-          // 기본판 요약: 확장과 같은 문법 — 섹션 헤더 우측에 다시 뽑기 아이콘.
+          // 基础版摘要：与扩展相同的语法 —— 区块标题右侧重新抽取图标。
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: CarbonSpacing.s5),
             sliver: SliverToBoxAdapter(
               child: _diskSectionHeader(
-                tr('타일 제외', 'Remove Tiles'),
+                tr('瓦片排除', 'Remove Tiles'),
                 tr(
-                  '아래 타일을 표시된 장수만큼 상자에 되돌리세요',
+                  '将以下瓦片按标示数量放回游戏盒',
                   'Return the tiles below to the game box in the quantities shown',
                 ),
                 Icons.archive_outlined,
@@ -760,9 +757,9 @@ class _ResultScreenState extends State<ResultScreen> {
                     ]
                   : [
                       _diskSectionHeader(
-                        tr('전체 부서', 'All Departments'),
+                        tr('全部部门', 'All Departments'),
                         tr(
-                          '16종 전체 — 사용·제외 상태 표시',
+                          '16 种全部 —— 显示使用/排除状态',
                           'All 16 Departments — in play / removed',
                         ),
                         Icons.grid_view,
@@ -785,11 +782,11 @@ class _ResultScreenState extends State<ResultScreen> {
                     horizontal: CarbonSpacing.s4,
                     vertical: CarbonSpacing.s3,
                   ),
-                  // 흰색 카드 헤더 — 사용자 확정.
+                  // 白色卡片标题 —— 用户确认。
                   decoration: BoxDecoration(
                     color: CarbonColors.background,
                     border: Border(
-                      // 타일 넘버 플레이트와 같은 유형 컬러.
+                      // 与瓦片编号牌相同的类型颜色。
                       left: BorderSide(color: deptTypeColorOf(type), width: 4),
                       top: const BorderSide(color: Color(0xFFE4E6E7)),
                       right: const BorderSide(color: Color(0xFFE4E6E7)),
@@ -798,7 +795,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   ),
                   child: Row(
                     children: [
-                      // 도감과 같은 공식 유형 아이콘 (참조표 i01~i04).
+                      // 与图鉴相同的官方类型图标（参考表 i01~i04）。
                       Image.asset(
                         'assets/reficons/i0${DeptType.values.indexOf(type) + 1}.webp',
                         width: 24,
@@ -832,7 +829,7 @@ class _ResultScreenState extends State<ResultScreen> {
       ),
       sliver: SliverLayoutBuilder(
         builder: (context, constraints) {
-          // 셀 = 타일 자체. 타일이 곧 카드다.
+          // 单元格 = 瓦片本身。瓦片就是卡片。
           final width = constraints.crossAxisExtent;
           final cols = (width / 240).ceil().clamp(1, 6);
           final colWidth = (width - (cols - 1) * CarbonSpacing.s4) / cols;
@@ -871,13 +868,13 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               const SizedBox(height: CarbonSpacing.s6),
               Text(
-                tr('중립 디스크 없음', 'No Neutral Disks'),
+                tr('无中立圆盘', 'No Neutral Disks'),
                 style: CarbonText.heading03,
               ),
               const SizedBox(height: CarbonSpacing.s3),
               Text(
                 tr(
-                  '1인 게임에서는 게임판에 미리 놓는 디스크가 없습니다',
+                  '单人游戏中没有预先放在游戏板上的圆盘',
                   'In a solo game, no disks are placed on the board in advance',
                 ),
                 textAlign: TextAlign.center,
@@ -904,13 +901,13 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               const SizedBox(height: CarbonSpacing.s6),
               Text(
-                tr('중립 디스크를 사용하지 않습니다', 'No Neutral Disks Used'),
+                tr('不使用中立圆盘', 'No Neutral Disks Used'),
                 style: CarbonText.heading03,
               ),
               const SizedBox(height: CarbonSpacing.s3),
               Text(
                 tr(
-                  '4인 게임에서는 이 과정을 생략합니다',
+                  '四人游戏中跳过此步骤',
                   'For a 4-player game, skip this step.',
                 ),
                 textAlign: TextAlign.center,
@@ -928,7 +925,7 @@ class _ResultScreenState extends State<ResultScreen> {
       children: [
         Text(
           tr(
-            '중립 디스크 ${_disks.totalDisks}개',
+            '中立圆盘 ${_disks.totalDisks} 个',
             '${_disks.totalDisks} Neutral Disks',
           ),
           style: CarbonText.heading05,
@@ -936,17 +933,17 @@ class _ResultScreenState extends State<ResultScreen> {
         const SizedBox(height: CarbonSpacing.s3),
         Text(
           tr(
-            '게임에 참여하지 않는 색상의 디스크를 아래대로 게임판에 놓으세요.',
+            '将不参与游戏颜色的圆盘按以下所示放在游戏板上。',
             'Place disks from an unused player color on the game board as shown below.',
           ),
           style: CarbonText.body01.copyWith(color: CarbonColors.textSecondary),
         ),
         const SizedBox(height: CarbonSpacing.s6),
-        // 다시 뽑기는 부서 타일과 같은 형식 — 첫 섹션 헤더 우측 아이콘.
+        // 重新抽取与部门瓦片格式相同 —— 第一个区块标题右侧图标。
         _diskSectionHeader(
-          tr('기부 차트', 'Donation Chart'),
+          tr('捐赠图表', 'Donation Chart'),
           tr(
-            '${_disks.donations.length}개 · 표시된 칸에 디스크 1개씩',
+            '${_disks.donations.length} 个 · 在标示格中各放 1 个圆盘',
             '${_disks.donations.length} · 1 disk on each space shown',
           ),
           Icons.volunteer_activism_outlined,
@@ -961,7 +958,7 @@ class _ResultScreenState extends State<ResultScreen> {
               (
                 code,
                 tr(
-                  '${donationRowName(code[0])} · ${code.substring(1)}번 칸',
+                  '${donationRowName(code[0])} · ${code.substring(1)} 号格',
                   '${donationRowName(code[0])} · space ${code.substring(1)}',
                 ),
                 1,
@@ -971,9 +968,9 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('도시 건설 부지', 'City Construction Spaces'),
+          tr('城市建设用地', 'City Construction Spaces'),
           tr(
-            '${_disks.cityTotal}개 · 각 도시의 가장 왼쪽 빈 건설 부지부터',
+            '${_disks.cityTotal} 个 · 从每座城市最左侧空建设用地开始',
             '${_disks.cityTotal} · leftmost unoccupied construction space of each city first',
           ),
           Icons.location_city,
@@ -1001,19 +998,19 @@ class _ResultScreenState extends State<ResultScreen> {
     return ListView(
       padding: const EdgeInsets.all(CarbonSpacing.s5),
       children: [
-        Text(tr('1인 도우미', 'Solo Aid'), style: CarbonText.heading05),
+        Text(tr('单人助手', 'Solo Aid'), style: CarbonText.heading05),
         const SizedBox(height: CarbonSpacing.s3),
         Text(
           tr(
-            '앤드류 카네기를 상대하는 라운드 진행 요약입니다.',
+            '与安德鲁·卡内基对战的回合流程摘要。',
             'A round-by-round summary for playing against Andrew Carnegie.',
           ),
           style: CarbonText.body01.copyWith(color: CarbonColors.textSecondary),
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('라운드 진행', 'Round Sequence'),
-          tr('5단계', '5 steps'),
+          tr('回合流程', 'Round Sequence'),
+          tr('5 个阶段', '5 steps'),
           Icons.loop,
         ),
         const SizedBox(height: CarbonSpacing.s4),
@@ -1023,7 +1020,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '1',
               tr(
-                '새 행동 카드 — 앤드류의 맨 위 카드를 보지 않고 0점 카드 아래 뒷면으로 놓기',
+                '新行动卡 —— 不看安德鲁最上面一张，面朝下放在 0 分卡下方',
                 "New Action Card — draw Andrew's top action card and, without looking at it, place it face-down below the 0 VP card",
               ),
               0,
@@ -1031,7 +1028,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '2',
               tr(
-                '행동 선택 — 기관차 왼쪽: 플레이어가 선택 · 오른쪽: 카드를 공개해 앤드류가 선택',
+                '选择行动 —— 机车左侧：玩家选择 · 右侧：公开卡牌后安德鲁选择',
                 'Choice of Action — locomotive to the left: you choose · to the right: flip the action card face-up; Andrew chooses',
               ),
               0,
@@ -1039,7 +1036,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '3',
               tr(
-                '앤드류의 차례 — 이벤트 처리 후 카드의 행동 해결',
+                '安德鲁的回合 —— 处理事件后结算卡牌行动',
                 "Andrew's Turn — resolve the event, then resolve Andrew's action on the card",
               ),
               0,
@@ -1047,7 +1044,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '4',
               tr(
-                '플레이어의 차례 — 이벤트(수입/기부) 해결 후 해당 종류 부서 사용',
+                '玩家的回合 —— 结算事件（收入/捐赠）后使用该类型部门',
                 "Player's Turn — resolve events (Take Income / Make a Donation), then use your Departments of that type",
               ),
               0,
@@ -1055,7 +1052,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '5',
               tr(
-                '라운드 종료 — 직원 활성화 → 행동 마커 1칸 전진 → 카드를 도달한 승점 카드 아래 뒷면으로 → 기관차를 반대편으로',
+                '回合结束 —— 激活员工 → 行动标记前进 1 格 → 将卡牌面朝下放在到达的胜利点卡下方 → 将机车移到另一侧',
                 "End of Round — activate employees → move the action marker 1 space right → place Andrew's card face-down under the VP card it has reached → move the locomotive to the other side",
               ),
               0,
@@ -1064,9 +1061,9 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('앤드류 행동 해결', "Resolve Andrew's Action"),
+          tr('结算安德鲁行动', "Resolve Andrew's Action"),
           tr(
-            '불가 1건당 카드 1칸 오른쪽 이동',
+            '每有 1 项无法执行，卡牌向右移动 1 格',
             'Slide the card 1 space right for each one that cannot be done',
           ),
           Icons.smart_toy_outlined,
@@ -1078,7 +1075,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '인사 — 카드에 표시된 칸 수만큼 카드를 오른쪽으로 이동',
+                '人事 —— 按卡牌标示格数向右移动卡牌',
                 'Human Resources — slide the action card to the right by the number of spaces indicated',
               ),
               0,
@@ -1086,7 +1083,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '경영 — 표시된 종류의 부서 타일 1~3개 획득 (항상 가장 낮은 번호부터)',
+                '经营 —— 获得标示类型部门瓦片 1~3 个（总是从最低编号开始）',
                 'Management — take 1-3 Department tiles of the type shown (always the lowest number available)',
               ),
               0,
@@ -1094,7 +1091,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '건설 — 표시된 각 도시의 가장 왼쪽 건설 부지에 디스크 1개씩',
+                '建设 —— 在标示的每座城市最左侧建设用地各放 1 个圆盘',
                 'Construction — place a disk on the leftmost space of each city named on the card',
               ),
               0,
@@ -1102,7 +1099,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                'R&D — 표시된 지역의 운송 디스크를 1~3칸 오른쪽으로 이동',
+                'R&D —— 将标示地区的运输圆盘向右移动 1~3 格',
                 'R&D — move the transport disk in the region shown 1-3 spaces to the right',
               ),
               0,
@@ -1111,7 +1108,7 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('이벤트 (앤드류)', 'Events (Andrew)'),
+          tr('事件（安德鲁）', 'Events (Andrew)'),
           '',
           Icons.event_note_outlined,
         ),
@@ -1122,7 +1119,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '파견 칸 — 앤드류에게는 아무 일도 일어나지 않음',
+                '派遣格 —— 安德鲁不发生任何事',
                 'Mission area space — nothing happens for Andrew',
               ),
               0,
@@ -1130,7 +1127,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '기부 칸 — 카드 상단의 기부 칸에 디스크 1개 (칸이 차 있으면 생략) 후 카드를 오른쪽으로 1칸',
+                '捐赠格 —— 在卡牌顶部捐赠格放 1 个圆盘（若格已占用则跳过），然后将卡牌向右 1 格',
                 'Donation symbol — place a disk on the donation space shown at the top of the card; if it is occupied (or Andrew is out of disks), place none and slide the card 1 space right',
               ),
               0,
@@ -1139,8 +1136,8 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('앤드류 점수 계산', "Andrew's Scoring"),
-          tr('게임 종료 시', 'At the end of the game'),
+          tr('安德鲁计分', "Andrew's Scoring"),
+          tr('游戏结束时', 'At the end of the game'),
           Icons.emoji_events_outlined,
         ),
         const SizedBox(height: CarbonSpacing.s4),
@@ -1150,16 +1147,16 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '행동 카드 — 놓인 승점 카드의 점수만큼',
+                '行动卡 —— 按所放胜利点卡的分数',
                 'Action cards — the VP of the VP card each one is under',
               ),
               0,
             ),
-            (null, tr('부서 타일 1개당 2점', '2 VP per Department tile'), 0),
+            (null, tr('每 1 个部门瓦片 2 分', '2 VP per Department tile'), 0),
             (
               null,
               tr(
-                '운송 트랙 마지막 칸 도달 디스크 1개당 6점',
+                '到达运输轨最后一格的每个圆盘 6 分',
                 '6 VP per transport disk that reached the last box of a transportation track',
               ),
               0,
@@ -1167,7 +1164,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '건설 디스크 — 도시에 표시된 0~3점',
+                '建设圆盘 —— 城市标示的 0~3 分',
                 'Construction disks — 0-3 VP each, as shown for each city',
               ),
               0,
@@ -1175,7 +1172,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '기부 디스크 — 플레이어의 진행 기준으로 계산',
+                '捐赠圆盘 —— 按玩家进度计算',
                 'Donation disks — scored according to what you built',
               ),
               0,
@@ -1198,7 +1195,7 @@ class _ResultScreenState extends State<ResultScreen> {
         horizontal: CarbonSpacing.s4,
         vertical: CarbonSpacing.s3,
       ),
-      // 흰색 카드 헤더(컬러 바 + 옅은 보더) — 사용자 확정.
+      // 白色卡片标题（颜色条 + 浅色边框）—— 用户确认。
       decoration: const BoxDecoration(
         color: CarbonColors.background,
         border: Border(
@@ -1265,7 +1262,7 @@ class _SummaryBar extends StatelessWidget {
       return Expanded(
         child: Container(
           padding: const EdgeInsets.all(CarbonSpacing.s5),
-          // 흰색 카드로 밝게 — 상단 컬러 바만 유지 (사용자 요청: 어두움 해소).
+          // 用白色卡片提亮 —— 只保留顶部颜色条（用户要求：消除暗淡）。
           decoration: BoxDecoration(
             color: CarbonColors.background,
             border: Border(
@@ -1301,19 +1298,19 @@ class _SummaryBar extends StatelessWidget {
       );
     }
 
-    // 확장(B안): 요약 2단계와 같은 순서 — ① 사용할 종류 ② 제외할 타일.
+    // 扩展（方案 B）：与摘要两阶段顺序相同 —— ① 使用的种类 ② 排除的瓦片。
     if (result.isExpansion) {
       return Row(
         children: [
           stat(
-            tr('사용할 종류', 'Departments Used'),
+            tr('使用的种类', 'Departments Used'),
             result.selectedKinds!.length,
             CarbonColors.supportSuccess,
             Icons.grid_view,
           ),
           const SizedBox(width: CarbonSpacing.s3),
           stat(
-            tr('제외할 타일', 'Tiles to Remove'),
+            tr('排除的瓦片', 'Tiles to Remove'),
             result.totalRemoved,
             CarbonColors.supportError,
             Icons.archive_outlined,
@@ -1324,14 +1321,14 @@ class _SummaryBar extends StatelessWidget {
     return Row(
       children: [
         stat(
-          tr('상자에 되돌릴 타일', 'Return to Box'),
+          tr('放回盒中的瓦片', 'Return to Box'),
           result.totalRemoved,
           CarbonColors.supportError,
           Icons.archive_outlined,
         ),
         const SizedBox(width: CarbonSpacing.s3),
         stat(
-          tr('테이블에 놓을 타일', 'Place on Table'),
+          tr('放在桌上的瓦片', 'Place on Table'),
           result.totalKept,
           CarbonColors.supportSuccess,
           Icons.table_bar_outlined,
@@ -1341,7 +1338,7 @@ class _SummaryBar extends StatelessWidget {
   }
 }
 
-/// 확장 요약 1단계: 유형별로 이번 게임에 사용할 종류를 번호 칩으로 나열.
+/// 扩展摘要第 1 阶段：按类型列出本局使用的种类，用编号芯片表示。
 class _KindCleanupCard extends StatelessWidget {
   const _KindCleanupCard({required this.result, required this.onTapDept});
 
@@ -1442,7 +1439,7 @@ class _DeptCard extends StatelessWidget {
         const Color(0x9924A148),
         CarbonColors.textOnColor,
       ),
-      // 확장 모드: 유형별 선택에 들지 못해 통째로 상자로 가는 종류.
+      // 扩展模式：未进入按类型选择，整类放回盒中的种类。
       TileState.boxedKind => (
         Icons.inventory_2_outlined,
         null,
@@ -1451,7 +1448,7 @@ class _DeptCard extends StatelessWidget {
       ),
     };
 
-    // 타일 자체가 그리드 셀이다. 상태 배지만 엠블럼 영역 우하단에 오버레이.
+    // 瓦片本身就是网格单元格。状态徽章仅叠加在徽章区域右下角。
     return LayoutBuilder(
       builder: (context, constraints) => Stack(
         children: [
@@ -1462,7 +1459,7 @@ class _DeptCard extends StatelessWidget {
               child: InkWell(onTap: onTap, hoverColor: const Color(0x14353B3C)),
             ),
           ),
-          // 효과 바 높이(기준 72px × 그리드 확대 1.3)에 비례해 그 위에 놓는다.
+          // 按效果栏高度（基准 72px × 网格放大 1.3）比例放在其上方。
           Positioned(
             bottom: constraints.maxWidth * 72 * 1.3 / 400 + CarbonSpacing.s3,
             right: CarbonSpacing.s3,
@@ -1523,7 +1520,7 @@ class _DeptDetailSheet extends StatelessWidget {
   final Department dept;
   final int removedCount;
 
-  /// 확장 모드에서 유형별 선택에 들지 못해 이번 게임에 쓰이지 않는 종류.
+  /// 扩展模式中未进入按类型选择、本局不使用的种类。
   final bool boxed;
 
   @override
@@ -1578,38 +1575,38 @@ class _DeptDetailSheet extends StatelessWidget {
                 _TypeTag(type: dept.type),
                 if (dept.expansion)
                   CarbonTag(
-                    text: tr('확장', 'Expansion'),
+                    text: tr('扩展', 'Expansion'),
                     bg: CarbonColors.tagGrayBg,
                     fg: CarbonColors.tagGrayText,
                   ),
                 if (dept.ongoing)
                   CarbonTag(
-                    text: tr('지속 효과', 'Ongoing'),
+                    text: tr('持续效果', 'Ongoing'),
                     bg: CarbonColors.tagAccentBg,
                     fg: CarbonColors.tagAccentText,
                   ),
                 if (dept.endgame)
                   CarbonTag(
-                    text: tr('게임 종료', 'Final Scoring'),
+                    text: tr('游戏结束', 'Final Scoring'),
                     bg: CarbonColors.tagAccentBg,
                     fg: CarbonColors.tagAccentText,
                   ),
                 if (boxed)
                   CarbonTag(
-                    text: tr('이번 게임 미사용', 'Not in this game'),
+                    text: tr('本局未使用', 'Not in this game'),
                     bg: CarbonColors.tagGrayBg,
                     fg: CarbonColors.tagGrayText,
                   )
                 else ...[
                   if (removedCount > 0)
                     CarbonTag(
-                      text: tr('$removedCount장 제외', 'Remove $removedCount'),
+                      text: tr('移除 $removedCount 张', 'Remove $removedCount'),
                       bg: CarbonColors.tagRedBg,
                       fg: CarbonColors.tagRedText,
                     ),
                   if (kept > 0)
                     CarbonTag(
-                      text: tr('$kept장 사용', '$kept in play'),
+                      text: tr('使用 $kept 张', '$kept in play'),
                       bg: CarbonColors.tagGreenBg,
                       fg: CarbonColors.tagGreenText,
                     ),
@@ -1617,7 +1614,7 @@ class _DeptDetailSheet extends StatelessWidget {
               ],
             ),
             const SizedBox(height: CarbonSpacing.s5),
-            Text(tr('규칙', 'Rules'), style: CarbonText.label01),
+            Text(tr('规则', 'Rules'), style: CarbonText.label01),
             const SizedBox(height: CarbonSpacing.s2),
             Text(dept.ruleText, style: CarbonText.body02),
           ],
@@ -1773,7 +1770,7 @@ class _DiskListCard extends StatelessWidget {
                   if (showCount)
                     CarbonTag(
                       text: tr(
-                        '${row.$3}개',
+                        '${row.$3} 个',
                         row.$3 == 1 ? '1 disk' : '${row.$3} disks',
                       ),
                       bg: CarbonColors.tagGrayBg,

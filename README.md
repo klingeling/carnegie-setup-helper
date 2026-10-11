@@ -1,94 +1,95 @@
-# 카네기 셀렉터 (Carnegie Setup Helper)
+# 卡内基选择器 (Carnegie Setup Helper)
 
-보드게임 **카네기(Carnegie)** 의 게임 준비를 한 번에 끝내주는 도우미 앱입니다.
-인원수만 고르면 제외할 부서 타일과 중립 디스크 배치를 무작위로 뽑아 주고,
-1인 게임 진행·룰 요약·부서 도감·아이콘 참조표까지 한 앱에 담았습니다.
+桌游 **卡内基(Carnegie)** 的游戏准备一次性完成的助手应用。
+只需选择人数，就会随机抽取需要排除的部门瓦片和中立圆盘摆放，
+并把单人游戏流程、规则摘要、部门图鉴、图标参考表都整合在一个应用里。
 
-Flutter로 만들어 **Android / iOS / 웹**을 지원합니다.
+使用 Flutter 开发，支持 **Android / iOS / 网页**。
 
-🌐 **웹 버전:** https://carnegie-setup-helper.krindale.workers.dev
+🌐 **网页版：** https://carnegie-setup-helper.krindale.workers.dev
 
-## 스크린샷
+## 截图
 
 <table>
   <tr>
-    <td align="center"><img src="docs/screenshots/01_setup.jpg" width="200"><br><sub>게임 준비</sub></td>
-    <td align="center"><img src="docs/screenshots/02_dept_tiles.jpg" width="200"><br><sub>부서 타일 제외</sub></td>
-    <td align="center"><img src="docs/screenshots/03_neutral_disks.jpg" width="200"><br><sub>중립 디스크 배치</sub></td>
-    <td align="center"><img src="docs/screenshots/04_solo_helper.jpg" width="200"><br><sub>1인 도우미</sub></td>
+    <td align="center"><img src="docs/screenshots/01_setup.jpg" width="200"><br><sub>游戏准备</sub></td>
+    <td align="center"><img src="docs/screenshots/02_dept_tiles.jpg" width="200"><br><sub>部门瓦片排除</sub></td>
+    <td align="center"><img src="docs/screenshots/03_neutral_disks.jpg" width="200"><br><sub>中立圆盘摆放</sub></td>
+    <td align="center"><img src="docs/screenshots/04_solo_helper.jpg" width="200"><br><sub>单人助手</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="docs/screenshots/05_rules_summary.jpg" width="200"><br><sub>게임 룰 요약</sub></td>
-    <td align="center"><img src="docs/screenshots/06_setup_checklist.jpg" width="200"><br><sub>초기 세팅 체크리스트</sub></td>
-    <td align="center"><img src="docs/screenshots/07_dept_catalog.jpg" width="200"><br><sub>부서 도감</sub></td>
-    <td align="center"><img src="docs/screenshots/08_icon_reference.jpg" width="200"><br><sub>아이콘 참조표</sub></td>
+    <td align="center"><img src="docs/screenshots/05_rules_summary.jpg" width="200"><br><sub>游戏规则摘要</sub></td>
+    <td align="center"><img src="docs/screenshots/06_setup_checklist.jpg" width="200"><br><sub>初始设置检查清单</sub></td>
+    <td align="center"><img src="docs/screenshots/07_dept_catalog.jpg" width="200"><br><sub>部门图鉴</sub></td>
+    <td align="center"><img src="docs/screenshots/08_icon_reference.jpg" width="200"><br><sub>图标参考表</sub></td>
   </tr>
 </table>
 
-## 기능
+## 功能
 
-| 화면 | 설명 |
+| 画面 | 说明 |
 |---|---|
-| **게임 준비** | 1~2인 / 3인 / 4인 카드를 고르면 셋업이 한 번에 준비됩니다. 기본판 / 확장 포함 스위치. |
-| **부서 타일** | 32장(16종 × 2) 중 인원별 16 / 8 / 4장을 무작위 제외. 요약(제외 타일만) · 상세(16종 전체, 유형별 섹션) 전환, 다시 뽑기. 타일은 유형 컬러 플레이트 · 한/영 이름 · 원본 타일 이미지 · 효과 요약 바로 구성되고 🗑×2 / 🗑×1 / ✓ 배지가 붙습니다. |
-| **중립 디스크** | 2인 18개 / 3인 9개 세팅을 시뮬레이션. 기부 차트와 도시 건설 부지(서부·중서부·남부·동부)를 지역 색 배너로 표시. 1인·4인은 배치 없음 안내. |
-| **1인 도우미** | 앤드류 카네기를 상대하는 라운드 진행 5단계, 앤드류 행동 해결, 이벤트, 점수 계산 요약. |
-| **게임 룰 요약** | 라운드 진행 4단계 · 이벤트 · 부서 사용 등 핵심 규칙 요약과 초기 세팅 10단계 체크리스트 시트. |
-| **부서 도감** | 기본판 / 확장 탭으로 32종 부서를 타일 컴포넌트 + 규칙 설명으로 열람. |
-| **아이콘 참조표** | 규칙서 아이콘 47개를 투명 배경으로 추출해 설명과 함께 표시. |
-| **확장 #1 지원** | 새로운 부서(17~32): 유형별 8종 중 4종을 뽑아 32장을 구성한 뒤 기본 제외 규칙 적용 — "종류 고르기 → 타일 제외" 2단계 안내. 새로운 시작: 입찰 시트($50 한도) 계산기. |
+| **游戏准备** | 选择 1~2 人 / 3 人 / 4 人卡片即可一次性完成设置。基础版 / 含扩展切换。 |
+| **部门瓦片** | 从 32 张（16 种 × 2）中按人数随机排除 16 / 8 / 4 张。摘要（仅排除瓦片）· 详细（16 种全部，按类型分区）切换，重新抽取。瓦片由类型颜色牌 · 韩/英名称 · 原始瓦片图像 · 效果摘要栏组成，并附带 🗑×2 / 🗑×1 / ✓ 徽章。 |
+| **中立圆盘** | 模拟 2 人 18 个 / 3 人 9 个的设置。捐赠图表和城市建设用地（西部·中西部·南部·东部）用地区颜色横幅显示。1 人、4 人显示无摆放提示。 |
+| **单人助手** | 与安德鲁·卡内基对战的回合流程 5 阶段、安德鲁行动结算、事件、计分摘要。 |
+| **游戏规则摘要** | 回合流程 4 阶段 · 事件 · 部门使用等核心规则摘要，以及初始设置 10 步检查清单表。 |
+| **部门图鉴** | 通过基础版 / 扩展标签，以瓦片组件 + 规则说明查看 32 种部门。 |
+| **图标参考表** | 从规则书中提取 47 个图标（透明背景），并附说明显示。 |
+| **扩展 #1 支持** | 新部门(17~32)：从每类 8 种中抽取 4 种构成 32 张，然后应用基础排除规则 —— “选择种类 → 瓦片排除”两阶段引导。新开始：竞标表($50 上限)计算器。 |
 
-## 디자인
+## 设计
 
-- Carbon Design System 구조 + 커스텀 팔레트
-  `#EEF0F2` 배경 · `#DADCDB` 레이어 · `#C6C7C4` 보더 · `#A2999E` 헬퍼 · `#846A6A` 인터랙티브 · `#353B3C` 텍스트
-- 부서 유형 4색: 인사 `#846A6A` · 경영 `#8A7A4F` · 건설 `#6D7D62` · 연구개발 `#7D6880`
-- 서체: SUIT (Light · Regular · Bold · ExtraBold)
-- 세로 화면 고정, 바운스 스크롤, 상단 바 없이 모서리 고정 아이콘
+- Carbon Design System 结构 + 自定义调色板
+  `#EEF0F2` 背景 · `#DADCDB` 图层 · `#C6C7C4` 边框 · `#A2999E` 辅助 · `#846A6A` 交互 · `#353B3C` 文字
+- 部门类型 4 色：人事 `#846A6A` · 经营 `#8A7A4F` · 建设 `#6D7D62` · 研发 `#7D6880`
+- 字体：SUIT (Light · Regular · Bold · ExtraBold)
+- 竖屏固定、弹性滚动、无顶栏，采用边角固定图标
 
-## 데이터 출처
+## 数据来源
 
-- 부서 타일 제외 규칙: 규칙서 4쪽 (세팅 4)
-- 중립 디스크 배치: 규칙서 4쪽 (세팅 9) + `CARNEGIE_SETUP_RANDOMIZER__V1.xlsx`
-- 1인 게임 규칙: 규칙서 18–19쪽
-- 확장 #1 (새로운 부서 · 새로운 시작): 확장 룰북 1–3쪽
+- 部门瓦片排除规则：规则书第 4 页（设置 4）
+- 中立圆盘摆放：规则书第 4 页（设置 9） + `CARNEGIE_SETUP_RANDOMIZER__V1.xlsx`
+- 单人游戏规则：规则书第 18–19 页
+- 扩展 #1（新部门 · 新开始）：扩展规则书第 1–3 页
 
-## 프로젝트 구조
+## 项目结构
+
 
 ```
 lib/
-  main.dart          # 앱/테마, 게임 준비, 결과(부서 타일·중립 디스크·1인 도우미 탭)
-  carbon.dart        # 디자인 토큰 + 공용 위젯
-  dept_tile.dart     # 부서 타일 컴포넌트 (넘버 플레이트·괘선·엠블럼·효과 바)
-  departments.dart   # 부서 32종 데이터, 기본/확장 뽑기 로직
-  new_beginning.dart # 확장 "새로운 시작" 입찰 시트 계산기
-  setup9.dart        # 중립 디스크(세팅 9) 카드 데이터·배치 로직
-  reference.dart     # 부서 도감, 아이콘 참조표
-  rules.dart         # 게임 룰 요약
+  main.dart # 应用/主题，游戏准备，结果（部门瓦片·中立圆盘·单人助手标签）
+  carbon.dart # 设计令牌 + 通用组件
+  dept_tile.dart # 部门瓦片组件（编号牌·双线·徽章·效果栏）
+  departments.dart # 部门 32 种数据，基础/扩展抽取逻辑
+  new_beginning.dart # 扩展“新开始”竞标表计算器
+  setup9.dart # 中立圆盘（设置 9）卡片数据·摆放逻辑
+  reference.dart # 部门图鉴，图标参考表
+  rules.dart # 游戏规则摘要
 assets/
-  departments/       # 부서 타일 이미지 32종 (WebP, 투명 배경)
-  reficons/          # 아이콘 참조표 47개 (WebP)
-  pcount/            # 인원 아이콘 (WebP)
-  fonts/             # SUIT 서체
-web/_headers         # COOP/COEP — wasm 멀티스레드 렌더링용
-wrangler.jsonc       # Cloudflare Workers 정적 에셋 배포 설정
+  departments/ # 部门瓦片图像 32 种（WebP，透明背景）
+  reficons/ # 图标参考表 47 个（WebP）
+  pcount/ # 人数图标（WebP）
+  fonts/ # SUIT 字体
+web/_headers # COOP/COEP —— 用于 wasm 多线程渲染
+wrangler.jsonc # Cloudflare Workers 静态资源部署配置
 ```
 
-빌드 주의사항, 에셋 파이프라인, 디자인 규칙 등 개발 상세는 [CLAUDE.md](CLAUDE.md)를 참고하세요.
+关于构建注意事项、资源管线、设计规则等开发细节，请参考 [CLAUDE.md](CLAUDE.md)。
 
-## 실행 / 빌드
+## 运行 / 构建
 
 ```sh
 flutter pub get
-flutter run -d chrome          # 웹
-flutter run                    # 연결된 Android/iOS 기기
+flutter run -d chrome          # 网页
+flutter run                    # 连接的 Android/iOS 设备
 flutter build apk --release    # Android
 ```
 
-### 웹 배포 (Cloudflare Workers)
+### 网页部署（Cloudflare Workers）
 
-`main` 브랜치에 푸시하면 GitHub Actions가 자동으로 빌드·배포합니다
-(`.github/workflows/deploy-web.yml`). 수동 배포는:
+推送到 `main` 分支后，GitHub Actions 会自动构建并部署
+(`.github/workflows/deploy-web.yml`)。手动部署:
 
 ```sh
 flutter build web --wasm --release --base-href /

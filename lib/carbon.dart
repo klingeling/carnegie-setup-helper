@@ -285,7 +285,7 @@ class TopBar extends StatelessWidget {
           if (onBack != null)
             TopIconButton(
               icon: Icons.arrow_back,
-              tooltip: tr('뒤로', 'Back'),
+              tooltip: tr('返回', 'Back'),
               onTap: onBack!,
             ),
           const Spacer(),

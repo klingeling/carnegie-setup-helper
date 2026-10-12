@@ -150,15 +150,15 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
                     padding: const EdgeInsets.all(CarbonSpacing.s5),
                     children: [
                       Text(
-                        tr('새로운 시작', 'A New Beginning'),
+                        tr('新开始', 'A New Beginning'),
                         style: CarbonText.heading05,
                       ),
                       const SizedBox(height: CarbonSpacing.s3),
                       Text(
                         tr(
-                          '시작 자원을 \$$_budget 한도 안에서 선택하세요. 모든 줄에서 '
-                              '하나씩 고른 뒤, 각자 비밀리에 정해 동시에 공개합니다. '
-                              '가장 많이 입찰한 사람이 선 플레이어가 됩니다.',
+                          '在总花费不超过\$$_budget的情况下选择自己的初始资源。'
+                              '每位玩家秘密地记下出价纸的每项选择的花费，然后同时展示。'
+                              '起始玩家出价最高的成为起始玩家。',
                           'Choose your starting resources within a \$$_budget '
                               'limit. Each player secretly chooses one option for '
                               'each line, then all reveal simultaneously. The high '
@@ -170,9 +170,9 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
                       ),
                       const SizedBox(height: CarbonSpacing.s6),
                       _sectionHeader(
-                        tr('선 플레이어 입찰', '1st Player Auction'),
+                        tr('起始玩家出价', '1st Player Auction'),
                         tr(
-                          '선 플레이어가 된 사람만 입찰액을 지불합니다',
+                          '仅起始玩家支付出价金额',
                           'Only the first player pays their bid',
                         ),
                         Icons.gavel_outlined,
@@ -320,19 +320,19 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
     final vp = _optionLabel(_lines[2].options[_selected[2]]);
     final moves = _optionLabel(_lines[3].options[_selected[3]]);
     final rows = <(String, String)>[
-      (tr('상품 큐브', 'Goods cubes'), goods),
+      (tr('货物方块', 'Goods cubes'), goods),
       (
-        tr('직원', 'Employees'),
-        tr('활성 5명 + 로비 $workers', '5 active + $workers in Lobby'),
+        tr('员工', 'Employees'),
+        tr('5名激活 + $workers名大厅中的', '5 active + $workers in Lobby'),
       ),
-      (tr('시작 승점', 'Starting VP'), vp),
-      (tr('준비 이동', 'Setup moves'), moves),
+      (tr('初始分数', 'Starting VP'), vp),
+      (tr('员工移动步数', 'Setup moves'), moves),
       (
-        tr('시작 자금 (선이 아닐 때)', 'Starting money (not first player)'),
+        tr('初始资金（非起始玩家）)', 'Starting money (not first player)'),
         '\$${_budget - _spent}',
       ),
       (
-        tr('시작 자금 (선일 때)', 'Starting money (first player)'),
+        tr('初始资金（起始玩家）', 'Starting money (first player)'),
         '\$${_budget - _spent - _bid}',
       ),
     ];
@@ -351,7 +351,7 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
             ),
             color: CarbonColors.layer01,
             child: Text(
-              tr('시작 상태 요약', 'Starting Summary'),
+              tr('初始摘要', 'Starting Summary'),
               style: CarbonText.heading01.copyWith(fontWeight: FontWeight.w800),
             ),
           ),
@@ -408,7 +408,7 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
               ),
               child: Text(
                 tr(
-                  '한도 초과 — 입찰을 포함한 총액이 \$$_budget를 넘을 수 없습니다',
+                  '超过限额 — 总花费，包括你的出价在内，不得超过\$$_budget',
                   'Over the limit — the total cost, including your bid, may '
                       'not exceed \$$_budget',
                 ),
@@ -424,7 +424,7 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
               Expanded(
                 child: Text(
                   tr(
-                    '지출 \$$_spent · 입찰 \$$_bid',
+                    '花费\$$_spent · 出价\$$_bid',
                     'Spent \$$_spent · Bid \$$_bid',
                   ),
                   style: CarbonText.body01.copyWith(
@@ -433,7 +433,7 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
                 ),
               ),
               Text(
-                tr('남는 예산 \$$remain', 'Remaining \$$remain'),
+                tr('剩余\$$remain', 'Remaining \$$remain'),
                 style: CarbonText.heading02.copyWith(
                   color: _overBudget
                       ? CarbonColors.supportError
@@ -465,7 +465,7 @@ class _OptionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final costLabel = switch (cost) {
-      0 => tr('무료', 'Free'),
+      0 => tr('免费', 'Free'),
       < 0 => '+\$${-cost}',
       _ => '\$$cost',
     };

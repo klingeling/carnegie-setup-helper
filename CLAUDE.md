@@ -1,38 +1,38 @@
 # CLAUDE.md
 
-카네기(Carnegie) 보드게임 셋업 도우미 Flutter 앱. Android / iOS / 웹 지원.
+卡内基（Carnegie）桌游设置助手 Flutter 应用。支持 Android / iOS / 网页。
 
-## 기본 방침 (모든 작업에 최우선 적용)
+## 基本方针（适用于所有工作的最高优先级）
 
-0. **커밋·푸시는 명시적 지시가 있을 때만 한다.** 특히 main 푸시는
-   Cloudflare 공개 배포(`.github/workflows/deploy-web.yml`)를 자동
-   트리거하므로 절대 임의로 하지 않는다. 사용자 확인용은 로컬 웹 서빙
-   (`build/web`, 고정 포트 7777)으로 보여준다.
-0-1. **앱 UI에 "규칙서"라는 표현이나 쪽수 인용을 노출하지 않는다.** 근거
-   인용(규칙서 n쪽)은 이 문서와 코드 주석에만 남긴다.
-0-2. **브랜치를 임의로 삭제하지 않는다.** PR 머지 후에도 브랜치는 로컬·원격
-   모두 남겨 둔다 (`gh pr merge --delete-branch`, `git branch -d`,
-   `git push origin --delete` 금지). 삭제는 명시적 지시가 있을 때만.
+0. **只有在明确指示时才进行提交·推送。** 尤其是推送到 main 会自动触发
+   Cloudflare 公开部署（`.github/workflows/deploy-web.yml`），因此绝对
+   不可擅自执行。供用户确认时使用本地网页服务
+   （`build/web`，固定端口 7777）展示。
+0-1. **应用 UI 中不得出现"规则书"这一表述或页码引用。** 依据引用（规则书第 n 页）
+   只保留在本文档和代码注释中。
+0-2. **不得擅自删除分支。** 即使 PR 合并后，分支也要在本地和远程都保留
+   （禁止 `gh pr merge --delete-branch`、`git branch -d`、
+   `git push origin --delete`）。只有在明确指示时才删除。
 
-1. **규칙·사실은 단정하지 않는다.** 게임 규칙 등 사실을 말할 때는 반드시
-   규칙서 원문을 인용해 근거와 함께 제시한다. 오독 사례: 1인 게임도 세팅 9의
-   중립 디스크 18개를 배치한다 — 앤드류가 건너뛰는 것은 세팅 10뿐이다.
-2. **명시적으로 지시받은 것만 수정한다.** "확인해봐"는 확인·보고까지다.
-   명백히 옳아 보이는 수정이라도 먼저 보고하고 승인을 기다린다.
-   지시받지 않은 레이아웃 재구성·요소 추가 금지.
-3. **검수 없이 내보내지 않는다.** 설치·배포 전에 결과물(화면, 이미지, 동작)을
-   직접 확인하고, 통과한 것만 내보낸다.
+1. **不得对规则·事实擅自下断言。** 陈述游戏规则等事实时，必须引用规则书
+   原文并附上依据。误读案例：单人游戏也要布置设置 9 的 18 个中立圆片
+   ——安德鲁跳过的只是设置 10。
+2. **只修改明确指示的内容。** "确认一下"仅止于确认·报告。
+   即使是看起来明显正确的修改，也要先报告并等待批准。
+   禁止修改未指示的布局重构·元素添加。
+3. **未经检查不得发布。** 在安装·部署前，直接确认结果物（画面、图像、动作），
+   只发布通过检查的内容。
 
-## 빌드 (중요: Windows 한글 경로 문제)
+## 构建（重要：Windows 韩文路径问题）
 
-프로젝트가 한글 경로(`바탕 화면`) 아래에 있으면 Flutter 셰이더 컴파일러
-(impellerc)가 크래시한다. **반드시 ASCII 매핑 드라이브에서 빌드할 것:**
+如果项目位于韩文路径（`바탕 화면`）下，Flutter 着色器编译器
+（impellerc）会崩溃。**必须在 ASCII 映射驱动器上构建：**
 
 ```bat
 subst X: "C:\Users\wow32\OneDrive\바탕 화면\canegie-department"
 ```
 
-표준 검증·배포 루틴 (bash, `X:` = `/x`):
+标准验证·部署流程（bash，`X:` = `/x`）：
 
 ```sh
 cd /x/carnegie_departments
@@ -41,133 +41,133 @@ flutter build web && flutter build apk --release
 "C:\Users\wow32\AppData\Local\Android\Sdk\platform-tools\adb.exe" install -r build/app/outputs/flutter-apk/app-release.apk
 ```
 
-- 사용자 확인용 설치는 항상 **릴리즈 APK** (디버그는 스크롤이 버벅임).
-- **Mac 빌드**: Android Studio 번들 JDK(Java 25)는 Gradle 8.14와 비호환 —
-  빌드할 때만 JDK 17을 지정한다 (전역 설정 변경 금지):
+- 供用户确认的安装始终使用 **发布版 APK**（调试版滚动会卡顿）。
+- **Mac 构建**：Android Studio 捆绑的 JDK（Java 25）与 Gradle 8.14 不兼容——
+  仅在构建时指定 JDK 17（禁止更改全局设置）：
   `J=/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home;
-  JAVA_HOME=$J GRADLE_OPTS="-Dorg.gradle.java.home=$J" flutter build apk --release`.
-  PC마다 디버그 서명 키가 달라 Windows↔Mac 빌드를 바꿔 설치하면
-  `INSTALL_FAILED_UPDATE_INCOMPATIBLE` — 기존 앱 삭제 후 설치 (사용자 확인).
-- 웹 확인: **`flutter build web --pwa-strategy=none`으로 빌드**(서비스 워커
-  제거)하고 `build/web`을 **고정 포트 7777** 하나로만 서빙할 것
-  (`python -m http.server 7777`). 이미 서버가 떠 있으면 재사용한다 —
-  포트를 매번 바꾸지 말 것 (사용자 지시, 2026-09-06). 과거의 "매번 새 포트"
-  규칙은 서비스 워커 캐시 때문이었고, pwa-strategy=none으로 원인이 제거됨.
-  서빙 전 남은 서버 정리는 PowerShell로 python http.server 리스너를 종료.
-- UI 시안(HTML 목업)도 **고정 포트 7778** 하나로만 서빙한다 (사용자 지시).
-  시안 파일은 한 폴더에 모아 두고 같은 서버를 재사용하며, 확인용 탭은
-  사용자가 볼 수 있게 열어 둔다.
-- 타일 디자인 변경 시 골든 재생성:
-  `flutter test --update-goldens test/dept_tile_golden_test.dart`.
-  위젯 테스트에서 폰트 로드는 setUpAll에서 해야 한다 (testWidgets 본문은
-  FakeAsync 존이라 실제 파일 I/O가 완료되지 않아 데드락). 같은 이유로
-  골든에는 에셋 이미지가 비어 보인다 (레이아웃 검증용).
+  JAVA_HOME=$J GRADLE_OPTS="-Dorg.gradle.java.home=$J" flutter build apk --release`。
+  每台 PC 的调试签名密钥不同，Windows↔Mac 构建交替安装会出现
+  `INSTALL_FAILED_UPDATE_INCOMPATIBLE`——删除现有应用后再安装（用户确认）。
+- 网页确认：**用 `flutter build web --pwa-strategy=none` 构建**（移除 Service
+  Worker），并将 `build/web` **只用固定端口 7777** 提供服务
+  （`python -m http.server 7777`）。如果服务器已启动则复用——
+  不要每次都更换端口（用户指示，2026-09-06）。过去的"每次换新端口"
+  规则是因为 Service Worker 缓存，pwa-strategy=none 已消除该原因。
+  服务前用 PowerShell 终止残留的 python http.server 监听器进行清理。
+- UI 方案稿（HTML 原型）也**只用固定端口 7778** 提供服务（用户指示）。
+  方案文件集中在一个文件夹中并复用同一服务器，确认用标签页要
+  保持打开以便用户查看。
+- 更改板块设计时重新生成黄金测试：
+  `flutter test --update-goldens test/dept_tile_golden_test.dart`。
+  在 widget 测试中字体加载必须在 setUpAll 中进行（testWidgets 正文是
+  FakeAsync 区，实际文件 I/O 无法完成会导致死锁）。同理，
+  黄金测试中资源图像会显示为空（用于布局验证）。
 
-## 코드 구조
+## 代码结构
 
-- `lib/main.dart` — 앱/테마, 게임 준비 화면, 결과 화면(탭: 부서 타일 / 중립
-  디스크 / 1인 도우미), 요약 바, 상세 시트, 디스크 목록 카드. 결과 그리드는
-  타일 자체가 셀이다 (카드 껍데기 없음, 상태 배지만 오버레이)
-- `lib/dept_tile.dart` — 부서 타일 컴포넌트. 재사용 부품:
-  `DeptNumberPlate`(유형 컬러 플레이트) · `DeptDoubleRule`(이중 괘선) ·
-  `DeptEmblem`(중앙 이미지/엠블럼) · `DeptEffectBar`(효과 요약 바) ·
-  `deptTypeColor/Of`, `deptTypeIcon`. `DeptTile`은 이 부품들을 기준 폭 400px
-  시안 대비 **비례값**으로 조립 (FittedBox 축소 금지 — 사용자 확정).
-  상세 시트·도감도 같은 부품을 화면 폭에 맞게 직접 배치한다 (미니 타일 금지).
-  유형 4색: 인사 #846A6A / 경영 #8A7A4F / 건설 #6D7D62 / 연구개발 #7D6880 —
-  섹션 헤더 좌측 바도 이 색을 따른다.
-  현재 `DeptEmblem`은 원본 타일 이미지를 표시(하이브리드) — 아이콘 메달
-  조합 코드는 바로 아래 dead_code로 보존, 스토어용 전환 시 복원.
-- `lib/carbon.dart` — 디자인 토큰(CarbonColors/Text/Spacing)과 공용 위젯
-  (CarbonButton, CarbonTag, CarbonContentSwitcher, TopBar, TopIconButton)
-- `lib/departments.dart` — 부서 32종 데이터(기본 1~16 + 확장 17~32,
-  `expansion`/`endgame` 필드), 인원별 제외 수
-  (`removalByPlayerCount`: 1인=16, 2인=16, 3인=8, 4인=4), `draw()`,
-  `drawExpansion()`(유형별 8종 중 4종 → 페어 32장 → 기본 제외 규칙,
-  확장 룰북 2쪽)
-- `lib/new_beginning.dart` — 확장 "새로운 시작" 입찰 시트 계산기
-  (시트 수치는 확장 룰북 1쪽에서 검증: 큐브 2~6=$6/9/12/15/18,
-  로비 직원 3무료~7=$32, 승점 -6=+$12~+6=$12, 이동 4~10=$5/8/10/15/20,
-  총합≤$50)
-- `lib/setup9.dart` — 세팅 9(중립 디스크) 카드 20장 데이터, 지역별 도시
-  (`cityRegions`), `drawDisks()` (1인/4인 = 0개)
-- `lib/reference.dart` — 부서 도감, 아이콘 참조표 화면
-- `lib/l10n.dart` — 한/영 표시 언어. `tr(ko, en)`으로 문구를 고르고, 데이터는
-  `ko`/`en` 쌍(`Department.ruleEn`, `cityNamesEn` 등)을 둔다. 시작 언어 =
-  저장된 스위치 값(`shared_preferences`, 웹은 localStorage) → 없으면 기기·
-  브라우저 언어(한국어면 KO, 그 외 EN). 안드로이드는 로캘이 main() 뒤에 늦게
-  오므로 저장값이 없으면 스위치를 누를 때까지 기기 언어를 따라간다.
-  영문 문구는 `rulebook/`의 영문 규칙서(기본·확장, git 미포함) 용어를 따른다.
+- `lib/main.dart` — 应用/主题、游戏准备画面、结果画面（标签：部门板块 / 中立
+  圆片 / 单人助手）、摘要栏、详情表、圆片列表卡。结果网格中
+  板块本身就是单元格（无卡片外壳，仅叠加状态徽章）
+- `lib/dept_tile.dart` — 部门板块组件。可复用部件：
+  `DeptNumberPlate`（类型色彩板）· `DeptDoubleRule`（双规线）·
+  `DeptEmblem`（中央图像/徽章）· `DeptEffectBar`（效果摘要栏）·
+  `deptTypeColor/Of`、`deptTypeIcon`。`DeptTile` 将这些部件按基准宽度 400px
+  方案稿的**比例值**组装（禁止 FittedBox 缩放——用户已确认）。
+  详情表·图鉴也用相同部件按画面宽度直接布置（禁止迷你板块）。
+  类型四色：人事 #846A6A / 经营 #8A7A4F / 建设 #6D7D62 / 研发 #7D6880——
+  区块标题左侧竖条也遵循这些颜色。
+  当前 `DeptEmblem` 显示原始板块图像（混合方式）——图标奖章
+  组合代码保留为紧接其下的 dead_code，转为商店用时可恢复。
+- `lib/carbon.dart` — 设计令牌（CarbonColors/Text/Spacing）和公共组件
+  （CarbonButton、CarbonTag、CarbonContentSwitcher、TopBar、TopIconButton）
+- `lib/departments.dart` — 部门 32 种数据（基础 1~16 + 扩展 17~32，
+  `expansion`/`endgame` 字段）、按人数的排除数
+  （`removalByPlayerCount`：1人=16，2人=16，3人=8，4人=4）、`draw()`、
+  `drawExpansion()`（每类型 8 种中取 4 种 → 配对 32 张 → 基础排除规则，
+  扩展规则书第 2 页）
+- `lib/new_beginning.dart` — 扩展"新的开始"竞标表计算器
+  （表格数值已按扩展规则书第 1 页验证：立方体 2~6=$6/9/12/15/18，
+  大厅员工 3免费~7=$32，胜利点 -6=+$12~+6=$12，移动 4~10=$5/8/10/15/20，
+  总和≤$50）
+- `lib/setup9.dart` — 设置 9（中立圆片）卡片 20 张数据、按地区的城市
+  （`cityRegions`）、`drawDisks()`（1人/4人 = 0 个）
+- `lib/reference.dart` — 部门图鉴、图标参考表画面
+- `lib/l10n.dart` — 韩/英显示语言。用 `tr(ko, en)` 选择文案，数据用
+  `ko`/`en` 对（`Department.ruleEn`、`cityNamesEn` 等）。起始语言 =
+  保存的开关值（`shared_preferences`，网页为 localStorage）→ 若无则按设备·
+  浏览器语言（韩语则 KO，其他 EN）。Android 的 locale 在 main() 之后
+  延迟到达，因此若无保存值则跟随设备语言直到按下开关。
+  英文文案遵循 `rulebook/` 中的英文规则书（基础·扩展，git 未包含）术语。
 
-## 디자인 규칙 (사용자 확정 사항 — 지킬 것)
+## 设计规则（用户已确认事项——须遵守）
 
-- 팔레트: `#EEF0F2`(배경) `#DADCDB`(레이어) `#C6C7C4`(보더) `#A2999E`(헬퍼)
-  `#846A6A`(인터랙티브) `#353B3C`(텍스트). **파란색 버튼 절대 금지.**
-- 색 톤 다운은 **색상 변경이 아니라 알파값**으로 (예: `0x99DA1E28`).
-- 화면 전환: `CupertinoPageTransitionsBuilder` (커스텀 애니메이션 금지).
-- 스크롤: `BouncingScrollPhysics` 전역 적용. 세로 화면 고정.
-- 상단 바 없음 — 뒤로가기/액션 아이콘은 화면 모서리에 고정(TopBar).
-- 텍스트는 좌측 정렬, **타일 이미지만 가운데 정렬**.
-- 지시받은 요소만 수정할 것. 임의로 레이아웃을 재구성하면 안 됨.
+- 调色板：`#EEF0F2`（背景）`#DADCDB`（层）`#C6C7C4`（边框）`#A2999E`（助手）
+  `#846A6A`（交互）`#353B3C`（文本）。**绝对禁止蓝色按钮。**
+- 色调降低用 **alpha 值而非更改颜色**（例如 `0x99DA1E28`）。
+- 画面切换：`CupertinoPageTransitionsBuilder`（禁止自定义动画）。
+- 滚动：全局应用 `BouncingScrollPhysics`。竖屏固定。
+- 无顶部栏——返回/操作图标固定在画面角落（TopBar）。
+- 文本左对齐，**仅板块图像居中对齐**。
+- 只修改指示的元素。不得擅自重构布局。
 
-## 에셋 파이프라인
+## 资源管线
 
-에셋은 상위 폴더의 PDF에서 PyMuPDF로 추출했다 (`../카네기_규칙서.pdf`).
+资源是从上层文件夹的 PDF 中用 PyMuPDF 提取的（`../카네기_규칙서.pdf`）。
 
-- `assets/departments/dept_01~16.webp` — 규칙서 16–17쪽을 300dpi 클립 렌더링
-  후 보더 플러드필로 배경 투명화. (임베디드 래스터는 탭이 잘려 있어 금지)
-  현재 `DeptTile`의 중앙 엠블럼 슬롯에 표시된다 (그리드에서는 20% 확대 +
-  위아래 여백). 저작권상 스토어 배포 불가 — 스토어행이면 아이콘 엠블럼으로
-  전환하고 이 폴더를 번들에서 제외할 것.
-- `assets/departments/dept_17~32.webp` — 확장 룰북 2–3쪽. **임베디드 래스터
-  금지(직사각형 원판)** — 페이지가 다이컷 테두리를 벡터로 덧그리므로 반드시
-  300dpi 클립 렌더링 + 플러드필 투명화 (`../extract_expansion_tiles.py`).
-- `assets/reficons/i01~47.webp` — 규칙서 20쪽 아이콘 참조표. **원본 상대 크기
-  유지**(공통 스케일), 캔버스 가로 180px 고정·세로는 실제 높이(행 높이 절약),
-  180px 초과분만 축소. 순서: i09=활성 직원, i10=비활성 (스왑 이력 있음 주의).
-- `assets/pcount/p1~4.webp` — 규칙서 20쪽 게임 준비 참조표의 인원 아이콘
-  (p1은 p2에서 앞사람만 크롭).
-- `assets/icon/` — 앱 아이콘(규칙서 9쪽 인사 육각 아이콘).
-  `dart run flutter_launcher_icons`로 재생성.
-- 지역 색(규칙서 15쪽 배너): 서부 `#C2B49B` 중서부 `#C0503C` 남부 `#65A76B`
-  동부 `#885F88` (`regionColors` in main.dart).
+- `assets/departments/dept_01~16.webp` — 规则书第 16–17 页按 300dpi 剪辑渲染
+  后用边框泛洪填充将背景透明化。（禁止使用内嵌栅格，因其标签被裁切）
+  当前显示在 `DeptTile` 的中央徽章槽位（网格中放大 20% +
+  上下留白）。因版权原因不可用于商店发布——若上架商店则转为图标徽章
+  并将此文件夹从打包中排除。
+- `assets/departments/dept_17~32.webp` — 扩展规则书第 2–3 页。**禁止内嵌栅格
+  （矩形圆片）**——页面会用矢量重绘模切边框，因此必须
+  300dpi 剪辑渲染 + 泛洪填充透明化（`../extract_expansion_tiles.py`）。
+- `assets/reficons/i01~47.webp` — 规则书第 20 页图标参考表。**保持原始相对
+  大小**（通用缩放），画布宽度固定 180px·高度为实际高度（节省行高），
+  仅超出 180px 的部分缩放。顺序：i09=活跃员工，i10=非活跃（有交换历史，注意）。
+- `assets/pcount/p1~4.webp` — 规则书第 20 页游戏准备参考表的人数图标
+  （p1 从 p2 中只裁剪出前面的人）。
+- `assets/icon/` — 应用图标（规则书第 9 页人事六边形图标）。
+  用 `dart run flutter_launcher_icons` 重新生成。
+- 地区颜色（规则书第 15 页横幅）：西部 `#C2B49B` 中西部 `#C0503C` 南部 `#65A76B`
+  东部 `#885F88`（main.dart 中的 `regionColors`）。
 
-## UI 패턴 (사용자 확정)
+## UI 模式（用户已确认）
 
-- 섹션 헤더: **흰색 카드**(배경 #FFFFFF + 옅은 보더 #E4E6E7 + 좌측 컬러 바
-  4px). 결과 화면·룰 요약·도감·계산기 공통. 요약 바 통계 카드도 흰색.
-- **다시 뽑기 = 첫 섹션 헤더 우측의 사각 테두리 셔플 아이콘**(36px,
-  `_rerollIconButton`). 부서 타일·중립 디스크 공통. 별도 버튼 줄 없음,
-  인원 변경은 뒤로가기로 대체.
-- 확장 요약 = "종류 고르기(유형별 사용 번호 칩, `_KindCleanupCard`) →
-  타일 제외(유형→번호순 정렬 그리드)" 세로 2단계. 상세에도 종류 고르기 카드.
-- 첫 화면: 상단 아이콘은 세부 페이지와 같은 `TopBar`(본문 열 안, 좌우 16 ·
-  위 8). **한영 스위치**(`KO | EN`, `CarbonContentSwitcher(dense: true)`)는
-  **86×29px**(칸 42px 고정, `_langSegmentWidth`·`_langSwitchHeight` — 69px과
-  104px 비교 후 중간으로 확정). 오버라인 줄 높이에 두고, 오른쪽 끝선을
-  아이콘 참조표 아이콘 글리프에 맞춘다. 아이콘과 스위치 간격 15px
-  (`_homeHeaderTop`). 좁은 폭(약 310px 미만)에서만 오버라인 글자를 축소해
-  스위치와 8px 간격 유지.
-- 영어 모드는 "영문 제목 + 한글 부제"로 한글판 배치를 뒤집어 보여준다.
-- 부서 도감 기본판/확장 설명은 `IndexedStack`으로 높이 고정 (전환 시 흔들림 금지).
-- 부서 도감 제목 줄은 항상 한 줄: 영문은 `Departments` + `Base | Expansion`,
-  원래 크기로 안 들어가면 제목을 `Depts.`로 바꾼다 (사용자 확정).
-- 영문 모드 레이아웃 원칙: 단어 중간 줄바꿈 금지. 좁은 칸의 긴 영문 단어는
-  `WordSafeText`(carbon.dart)로 그 단어가 들어갈 만큼만 축소하고, 넘칠 수 있는
-  한 줄 요소(결과 탭 줄, 첫 화면 기본판/확장 스위치)는 넘칠 때만 `FittedBox`로
-  축소한다. `test/layout_scan_test.dart`가 폰 폭 320·360·390 × 글자 1·1.3배 ×
-  한/영 전 화면에서 가로 넘침과 영문 단어 중간 줄바꿈을 검사한다.
-- 요약↔상세 전환 시 공통 요소(제목·요약 바·첫 헤더)의 위치가 흔들리면 안 됨
-  (하단 여백을 모드 간 동일하게 유지).
+- 区块标题：**白色卡片**（背景 #FFFFFF + 淡边框 #E4E6E7 + 左侧彩色竖条
+  4px）。结果画面·规则摘要·图鉴·计算器通用。摘要栏统计卡片也用白色。
+- **重新抽取 = 第一个区块标题右侧的方形边框洗牌图标**（36px，
+  `_rerollIconButton`）。部门板块·中立圆片通用。无单独按钮行，
+  人数变更用返回代替。
+- 扩展摘要 = "选择种类（按类型的可用编号芯片，`_KindCleanupCard`）→
+  板块排除（类型→编号排序网格）"纵向两阶段。详情中也有种类选择卡片。
+- 第一画面：顶部图标与详细页面相同的 `TopBar`（正文列内，左右 16 ·
+  上 8）。**韩英开关**（`KO | EN`，`CarbonContentSwitcher(dense: true)`）
+  为 **86×29px**（格子固定 42px，`_langSegmentWidth`·`_langSwitchHeight`——
+  与 69px 和 104px 比较后取中间值确定）。放在上标线行高上，右端线
+  对齐图标参考表图标字形。图标与开关间距 15px
+  （`_homeHeaderTop`）。仅在窄宽度（约 310px 以下）时缩小上标线文字以
+  与开关保持 8px 间距。
+- 英文模式下以"英文标题 + 韩文副标题"反转韩文版布局显示。
+- 部门图鉴基础版/扩展说明用 `IndexedStack` 固定高度（切换时禁止抖动）。
+- 部门图鉴标题行始终一行：英文为 `Departments` + `Base | Expansion`，
+  若原尺寸放不下则将标题改为 `Depts.`（用户已确认）。
+- 英文模式布局原则：禁止单词中间换行。窄格中的长英文单词用
+  `WordSafeText`（carbon.dart）仅缩小到该单词能放入的程度，可能溢出的
+  单行元素（结果标签行、第一画面基础版/扩展开关）仅在溢出时用 `FittedBox`
+  缩小。`test/layout_scan_test.dart` 在手机宽度 320·360·390 × 字体 1·1.3 倍 ×
+  韩/英全画面下检查横向溢出和英文单词中间换行。
+- 摘要↔详情切换时共同元素（标题·摘要栏·第一个标题）的位置不得抖动
+  （模式间保持底部留白相同）。
 
-## 게임 규칙 근거
+## 游戏规则依据
 
-- 부서 타일: 32개(16종×2) 중 4/3/2인 = 4/8/16개 무작위 제외 (규칙서 4쪽 세팅 4)
-- 중립 디스크: 2/3인 = 18/9개. 카드마다 기부 1개 + 도시별 1개, 예산 소진 시
-  카드 중간에도 즉시 중단 (세팅 9, 데이터: `../CARNEGIE_SETUP_RANDOMIZER__V1.xlsx`)
-- 1인: 준비는 2인과 동일하되 **중립 디스크 배치 없음** (규칙서 18쪽).
-  1인 도우미 탭 내용은 규칙서 18–19쪽 요약.
-- 확장 "새로운 부서": 유형별로 8종 중 서로 다른 4종을 뽑아 페어 32장 구성 후
-  기본 제외 규칙 적용 (확장 룰북 2쪽). 세트3(19·23·27·31)=지속,
-  세트4(20·24·28·32)=게임 종료 득점(`endgame`). 원본 PDF:
+- 部门板块：32 个（16 种×2）中 4/3/2 人 = 随机排除 4/8/16 个（规则书第 4 页设置 4）
+- 中立圆片：2/3 人 = 18/9 个。每张卡捐赠 1 个 + 每城市 1 个，预算耗尽时
+  即使卡片中途也立即停止（设置 9，数据：`../CARNEGIE_SETUP_RANDOMIZER__V1.xlsx`）
+- 单人：准备与 2 人相同，但**不布置中立圆片**（规则书第 18 页）。
+  单人助手标签内容为规则书第 18–19 页摘要。
+- 扩展"新部门"：每类型从 8 种中抽取互不相同的 4 种构成配对 32 张后
+  应用基础排除规则（扩展规则书第 2 页）。套组3（19·23·27·31）=持续，
+  套组4（20·24·28·32）=游戏结束得分（`endgame`）。原始 PDF：
   `../Carnegie-rules-EXPANSION-EN-WEB.pdf`

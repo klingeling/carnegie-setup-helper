@@ -41,7 +41,7 @@ class CarnegieApp extends StatelessWidget {
 
   Widget _app() {
     return MaterialApp(
-      title: tr('Carnegie 部门瓦片选择器', 'Carnegie Department Tile Selector'),
+      title: tr('卡内基部门板块选择器', 'Carnegie Department Tile Selector'),
       debugShowCheckedModeBanner: false,
       scrollBehavior: const _BouncyScrollBehavior(),
       theme: ThemeData(
@@ -80,9 +80,9 @@ const regionColors = <String, Color>{
 
 /// 单人游戏准备与双人相同，因此合并为一个选项。
 String playerLabel(int p) =>
-    p == 2 ? tr('1-2人', '1-2 Players') : tr('$p人', '$p Players');
+    p == 2 ? tr('1-2名玩家', '1-2 Players') : tr('$p名玩家', '$p Players');
 
-/// 按部门排除状态，以实体设置术语表示。
+/// 按部门移除状态，以实体设置术语表示。
 /// [boxedKind]：在扩展模式中未能进入按类型 4 选的选择，从而整类放回盒中的种类。
 enum TileState { removeBoth, removeOne, keepBoth, boxedKind }
 
@@ -198,7 +198,7 @@ class _SetupScreenState extends State<SetupScreen> {
                             ),
                             const SizedBox(height: CarbonSpacing.s3),
                             Text(
-                              tr('游戏准备', 'Game Setup'),
+                              tr('游戏设置', 'Game Setup'),
                               style: CarbonText.heading05,
                             ),
                             const SizedBox(height: CarbonSpacing.s4),
@@ -209,7 +209,7 @@ class _SetupScreenState extends State<SetupScreen> {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 tr(
-                                  '部门瓦片排除 · 中立圆盘放置一次完成',
+                                  '移除部门板块 · 放置中立圆片',
                                   'Remove Department tiles · place neutral disks',
                                 ),
                                 maxLines: 1,
@@ -227,8 +227,8 @@ class _SetupScreenState extends State<SetupScreen> {
                               alignment: Alignment.centerLeft,
                               child: CarbonContentSwitcher(
                                 labels: [
-                                  tr('基础版', 'Base Game'),
-                                  tr('含扩展', 'With Expansion'),
+                                  tr('基础游戏', 'Base Game'),
+                                  tr('基础+扩展', 'With Expansion'),
                                 ],
                                 selected: _expansion ? 1 : 0,
                                 onChanged: (i) =>
@@ -244,11 +244,11 @@ class _SetupScreenState extends State<SetupScreen> {
                               child: Text(
                                 _expansion
                                     ? tr(
-                                        '从每类 8 种中选 4 种，以 16 种进行游戏',
+                                        '从每类8种中抽取4种，以16种进行游戏',
                                         'Draw 4 of the 8 Departments of each type — 16 in play',
                                       )
                                     : tr(
-                                        '直接使用基础版 16 种部门',
+                                        '直使用基础游戏16种部门',
                                         'Uses the 16 base-game Departments as they are',
                                       ),
                                 maxLines: 1,
@@ -320,7 +320,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       // 把新开始计算器放在最左侧（用户确认）。
                       TopIconButton(
                         icon: Icons.calculate_outlined,
-                        tooltip: tr('新开始计算器', 'A New Beginning Calculator'),
+                        tooltip: tr('“新开始”计算器', 'A New Beginning Calculator'),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const NewBeginningScreen(),
@@ -329,7 +329,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       ),
                       TopIconButton(
                         icon: Icons.article_outlined,
-                        tooltip: tr('游戏规则摘要', 'Rules Summary'),
+                        tooltip: tr('规则摘要', 'Rules Summary'),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const RulesSummaryScreen(),
@@ -347,7 +347,7 @@ class _SetupScreenState extends State<SetupScreen> {
                       ),
                       TopIconButton(
                         icon: Icons.info_outline,
-                        tooltip: tr('图标参考表', 'Icon Reference'),
+                        tooltip: tr('图标参考', 'Icon Reference'),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => const IconReferenceScreen(),
@@ -458,22 +458,22 @@ class _PlayerTile extends StatelessWidget {
               ),
               const SizedBox(height: CarbonSpacing.s5),
               Text(
-                tr('移除 $removed 张瓦片', 'Remove $removed tiles'),
+                tr('移除$removed个板块', 'Remove $removed tiles'),
                 style: CarbonText.body01.copyWith(
                   color: CarbonColors.supportError,
                 ),
               ),
               Text(
-                tr('使用 $kept 张', '$kept tiles in play'),
+                tr('使用$kept个', '$kept tiles in play'),
                 style: CarbonText.helperText01,
               ),
               Text(
                 disksByPlayerCount[players]! > 0
                     ? tr(
-                        '中立圆盘 ${disksByPlayerCount[players]} 个',
+                        '${disksByPlayerCount[players]}个中立圆片',
                         '${disksByPlayerCount[players]} neutral disks',
                       )
-                    : tr('无中立圆盘', 'No neutral disks'),
+                    : tr('无中立圆片', 'No neutral disks'),
                 style: CarbonText.helperText01,
               ),
             ],
@@ -537,20 +537,20 @@ class _ResultScreenState extends State<ResultScreen> {
                     child: Row(
                       children: [
                         _TabButton(
-                          label: tr('部门瓦片', 'Departments'),
+                          label: tr('部门', 'Departments'),
                           icon: Icons.grid_view,
                           selected: _tab == 0,
                           onTap: () => setState(() => _tab = 0),
                         ),
                         _TabButton(
-                          label: tr('中立圆盘', 'Disks'),
+                          label: tr('圆片', 'Disks'),
                           icon: Icons.circle,
                           selected: _tab == 1,
                           onTap: () => setState(() => _tab = 1),
                         ),
                         if (_result.playerCount == 2)
                           _TabButton(
-                            label: tr('单人助手', 'Solo'),
+                            label: tr('单人', 'Solo'),
                             icon: Icons.person_outline,
                             selected: _tab == 2,
                             onTap: () => setState(() => _tab = 2),
@@ -589,7 +589,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       tr(
-                        '${playerLabel(_result.playerCount)} 游戏',
+                        '${playerLabel(_result.playerCount)}游戏',
                         playerLabel(_result.playerCount),
                       ),
                       style: CarbonText.heading05,
@@ -622,9 +622,9 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   /// 扩展模式种类选择标题（摘要、详细通用）。
-  String get _chooseKindsTitle => tr('选择种类', 'Choose Departments');
+  String get _chooseKindsTitle => tr('选择部门', 'Choose Departments');
   String get _chooseKindsSubtitle => tr(
-    '只取出以下编号各 2 张 —— 其余放回盒中',
+    '仅拿取以下编号各2个 —— 剩余放回游戏盒子中',
     'Take both copies of these numbers only — return the rest to the box',
   );
 
@@ -635,7 +635,7 @@ class _ResultScreenState extends State<ResultScreen> {
   );
 
   /// 重新抽取：方形边框图标按钮（用于区块标题右侧）。
-  /// 不传 [onTap] 时执行部门瓦片重新抽取([_reroll])。
+  /// 不传 [onTap] 时执行部门板块重新抽取([_reroll])。
   Widget _rerollIconButton([VoidCallback? onTap]) {
     return Material(
       color: Colors.transparent,
@@ -654,7 +654,7 @@ class _ResultScreenState extends State<ResultScreen> {
     );
   }
 
-  /// 扩展摘要：选择种类（标题右侧重新抽取图标）→ 瓦片排除
+  /// 扩展摘要：选择种类（标题右侧重新抽取图标）→ 板块移除
   /// 纵向排列（用户确认布局）。
   Widget _expansionSummaryTab(List<Department> shown) {
     return CustomScrollView(
@@ -674,9 +674,9 @@ class _ResultScreenState extends State<ResultScreen> {
               _KindCleanupCard(result: _result, onTapDept: _showDetail),
               const SizedBox(height: CarbonSpacing.s6),
               _diskSectionHeader(
-                tr('瓦片排除', 'Remove Tiles'),
+                tr('移除板块', 'Remove Tiles'),
                 tr(
-                  '从取出的 32 张中，按标示数量移除以下瓦片',
+                  '从取出的32个中，按标示数量移除以下板块',
                   'From those 32 tiles, remove the tiles below in the quantities shown',
                 ),
                 Icons.archive_outlined,
@@ -691,9 +691,9 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   Widget _deptTab() {
-    // 摘要（基础版）：只按编号顺序显示排除瓦片 · 摘要（扩展）：滑动标签两阶段 ——
-    // 选择种类（编号芯片）→ 瓦片排除（网格）（用户确认方案 B）。
-    // 详细：全部种类按编号顺序（显示使用/排除）。
+    // 摘要（基础版）：只按编号顺序显示移除板块 · 摘要（扩展）：滑动标签两阶段 ——
+    // 选择种类（编号芯片）→ 板块移除（网格）（用户确认方案 B）。
+    // 详细：全部种类按编号顺序（显示使用/移除）。
     final all = _result.isExpansion ? allDepartments : departments;
     final shown = _detail
         ? ([...all]..sort((a, b) => a.number.compareTo(b.number)))
@@ -729,9 +729,9 @@ class _ResultScreenState extends State<ResultScreen> {
             padding: const EdgeInsets.symmetric(horizontal: CarbonSpacing.s5),
             sliver: SliverToBoxAdapter(
               child: _diskSectionHeader(
-                tr('瓦片排除', 'Remove Tiles'),
+                tr('移除板块', 'Remove Tiles'),
                 tr(
-                  '将以下瓦片按标示数量放回游戏盒',
+                  '将以下板块按标示数量放回游戏盒子中',
                   'Return the tiles below to the game box in the quantities shown',
                 ),
                 Icons.archive_outlined,
@@ -759,7 +759,7 @@ class _ResultScreenState extends State<ResultScreen> {
                       _diskSectionHeader(
                         tr('全部部门', 'All Departments'),
                         tr(
-                          '16 种全部 —— 显示使用/排除状态',
+                          '全部16种部门 — 使用/移除',
                           'All 16 Departments — in play / removed',
                         ),
                         Icons.grid_view,
@@ -786,7 +786,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   decoration: BoxDecoration(
                     color: CarbonColors.background,
                     border: Border(
-                      // 与瓦片编号牌相同的类型颜色。
+                      // 与板块编号牌相同的类型颜色。
                       left: BorderSide(color: deptTypeColorOf(type), width: 4),
                       top: const BorderSide(color: Color(0xFFE4E6E7)),
                       right: const BorderSide(color: Color(0xFFE4E6E7)),
@@ -829,7 +829,7 @@ class _ResultScreenState extends State<ResultScreen> {
       ),
       sliver: SliverLayoutBuilder(
         builder: (context, constraints) {
-          // 单元格 = 瓦片本身。瓦片就是卡片。
+          // 单元格 = 板块本身。板块就是卡片。
           final width = constraints.crossAxisExtent;
           final cols = (width / 240).ceil().clamp(1, 6);
           final colWidth = (width - (cols - 1) * CarbonSpacing.s4) / cols;
@@ -868,13 +868,13 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               const SizedBox(height: CarbonSpacing.s6),
               Text(
-                tr('无中立圆盘', 'No Neutral Disks'),
+                tr('无中立圆片', 'No Neutral Disks'),
                 style: CarbonText.heading03,
               ),
               const SizedBox(height: CarbonSpacing.s3),
               Text(
                 tr(
-                  '单人游戏中没有预先放在游戏板上的圆盘',
+                  '单人游戏中，没有预先放置在游戏图版上的圆片',
                   'In a solo game, no disks are placed on the board in advance',
                 ),
                 textAlign: TextAlign.center,
@@ -901,7 +901,7 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               const SizedBox(height: CarbonSpacing.s6),
               Text(
-                tr('不使用中立圆盘', 'No Neutral Disks Used'),
+                tr('不使用中立圆片', 'No Neutral Disks Used'),
                 style: CarbonText.heading03,
               ),
               const SizedBox(height: CarbonSpacing.s3),
@@ -925,7 +925,7 @@ class _ResultScreenState extends State<ResultScreen> {
       children: [
         Text(
           tr(
-            '中立圆盘 ${_disks.totalDisks} 个',
+            '${_disks.totalDisks}个中立圆片',
             '${_disks.totalDisks} Neutral Disks',
           ),
           style: CarbonText.heading05,
@@ -933,17 +933,17 @@ class _ResultScreenState extends State<ResultScreen> {
         const SizedBox(height: CarbonSpacing.s3),
         Text(
           tr(
-            '将不参与游戏颜色的圆盘按以下所示放在游戏板上。',
+            '将一种未使用颜色的圆片按以下所示放置在游戏图版上。',
             'Place disks from an unused player color on the game board as shown below.',
           ),
           style: CarbonText.body01.copyWith(color: CarbonColors.textSecondary),
         ),
         const SizedBox(height: CarbonSpacing.s6),
-        // 重新抽取与部门瓦片格式相同 —— 第一个区块标题右侧图标。
+        // 重新抽取与部门板块格式相同 —— 第一个区块标题右侧图标。
         _diskSectionHeader(
           tr('捐赠图表', 'Donation Chart'),
           tr(
-            '${_disks.donations.length} 个 · 在标示格中各放 1 个圆盘',
+            '${_disks.donations.length}个 · 在标示格中各放1个圆片',
             '${_disks.donations.length} · 1 disk on each space shown',
           ),
           Icons.volunteer_activism_outlined,
@@ -958,7 +958,7 @@ class _ResultScreenState extends State<ResultScreen> {
               (
                 code,
                 tr(
-                  '${donationRowName(code[0])} · ${code.substring(1)} 号格',
+                  '${donationRowName(code[0])} ·第${code.substring(1)}格',
                   '${donationRowName(code[0])} · space ${code.substring(1)}',
                 ),
                 1,
@@ -968,9 +968,9 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('城市建设用地', 'City Construction Spaces'),
+          tr('城市建造格', 'City Construction Spaces'),
           tr(
-            '${_disks.cityTotal} 个 · 从每座城市最左侧空建设用地开始',
+            '${_disks.cityTotal}个 · 在每个城市靠左的空建设格上各放1个圆片',
             '${_disks.cityTotal} · leftmost unoccupied construction space of each city first',
           ),
           Icons.location_city,
@@ -1002,15 +1002,15 @@ class _ResultScreenState extends State<ResultScreen> {
         const SizedBox(height: CarbonSpacing.s3),
         Text(
           tr(
-            '与安德鲁·卡内基对战的回合流程摘要。',
+            '与安德鲁•卡内基对战的回合流程摘要。',
             'A round-by-round summary for playing against Andrew Carnegie.',
           ),
           style: CarbonText.body01.copyWith(color: CarbonColors.textSecondary),
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('回合流程', 'Round Sequence'),
-          tr('5 个阶段', '5 steps'),
+          tr('游戏流程', 'Round Sequence'),
+          tr('5个步骤', '5 steps'),
           Icons.loop,
         ),
         const SizedBox(height: CarbonSpacing.s4),
@@ -1020,7 +1020,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '1',
               tr(
-                '新行动卡 —— 不看安德鲁最上面一张，面朝下放在 0 分卡下方',
+                '新行动卡 — 拿取安德鲁行动卡堆的顶牌。不要翻看正面，正面朝下放在0分卡的下面',
                 "New Action Card — draw Andrew's top action card and, without looking at it, place it face-down below the 0 VP card",
               ),
               0,
@@ -1028,7 +1028,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '2',
               tr(
-                '选择行动 —— 机车左侧：玩家选择 · 右侧：公开卡牌后安德鲁选择',
+                '选择行动 — 火车头在左边：玩家选择 · 火车头在右边：将本轮行动卡翻为正面朝上；安德鲁选择',
                 'Choice of Action — locomotive to the left: you choose · to the right: flip the action card face-up; Andrew chooses',
               ),
               0,
@@ -1036,7 +1036,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '3',
               tr(
-                '安德鲁的回合 —— 处理事件后结算卡牌行动',
+                '安德鲁的回合 — 结算活动，然后结算安德鲁的行动',
                 "Andrew's Turn — resolve the event, then resolve Andrew's action on the card",
               ),
               0,
@@ -1044,7 +1044,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '4',
               tr(
-                '玩家的回合 —— 结算事件（收入/捐赠）后使用该类型部门',
+                '玩家的回合 — 正常结算活动（收入/捐赠），使用本轮时间轴所对应类型的任意部门',
                 "Player's Turn — resolve events (Take Income / Make a Donation), then use your Departments of that type",
               ),
               0,
@@ -1052,7 +1052,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               '5',
               tr(
-                '回合结束 —— 激活员工 → 行动标记前进 1 格 → 将卡牌面朝下放在到达的胜利点卡下方 → 将机车移到另一侧',
+                '一轮结束 — 激活员工 → 行动标记向右移动一格 → 行动卡翻为正面朝下放在到达的胜利分卡下 → 火车头移动到另一侧',
                 "End of Round — activate employees → move the action marker 1 space right → place Andrew's card face-down under the VP card it has reached → move the locomotive to the other side",
               ),
               0,
@@ -1061,9 +1061,9 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('结算安德鲁行动', "Resolve Andrew's Action"),
+          tr('结算安德鲁的行动', "Resolve Andrew's Action"),
           tr(
-            '每有 1 项无法执行，卡牌向右移动 1 格',
+            '每有1项无法执行，本轮的行动卡就向右平移一格',
             'Slide the card 1 space right for each one that cannot be done',
           ),
           Icons.smart_toy_outlined,
@@ -1075,7 +1075,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '人事 —— 按卡牌标示格数向右移动卡牌',
+                '人力资源 — 按指示将本轮的行动卡向右平移相应的格数',
                 'Human Resources — slide the action card to the right by the number of spaces indicated',
               ),
               0,
@@ -1083,7 +1083,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '经营 —— 获得标示类型部门瓦片 1~3 个（总是从最低编号开始）',
+                '管理 — 按显示的部门类型，拿取1-3个对应类型的部门板块（从最小数字开始）',
                 'Management — take 1-3 Department tiles of the type shown (always the lowest number available)',
               ),
               0,
@@ -1091,7 +1091,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '建设 —— 在标示的每座城市最左侧建设用地各放 1 个圆盘',
+                '建设 — 按显示的城市名称，在每个城市最左边的格上放1个圆片',
                 'Construction — place a disk on the leftmost space of each city named on the card',
               ),
               0,
@@ -1099,7 +1099,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                'R&D —— 将标示地区的运输圆盘向右移动 1~3 格',
+                '研发 — 按显示的区域，移动安德鲁的运输圆片向右1-3格',
                 'R&D — move the transport disk in the region shown 1-3 spaces to the right',
               ),
               0,
@@ -1108,7 +1108,7 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('事件（安德鲁）', 'Events (Andrew)'),
+          tr('活动（安德鲁）', 'Events (Andrew)'),
           '',
           Icons.event_note_outlined,
         ),
@@ -1119,7 +1119,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '派遣格 —— 安德鲁不发生任何事',
+                '任务区图标 — 安德鲁什么都不做',
                 'Mission area space — nothing happens for Andrew',
               ),
               0,
@@ -1127,7 +1127,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '捐赠格 —— 在卡牌顶部捐赠格放 1 个圆盘（若格已占用则跳过），然后将卡牌向右 1 格',
+                '捐赠图标 —— 按照本轮行动卡顶端的指示，在捐赠表的对应格放1个圆片；如果指示的格已经被占据（或是安德鲁已经没有圆片），他就不放圆片。沿着胜利分卡把安德鲁的行动卡向右平移一格。',
                 'Donation symbol — place a disk on the donation space shown at the top of the card; if it is occupied (or Andrew is out of disks), place none and slide the card 1 space right',
               ),
               0,
@@ -1137,7 +1137,7 @@ class _ResultScreenState extends State<ResultScreen> {
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
           tr('安德鲁计分', "Andrew's Scoring"),
-          tr('游戏结束时', 'At the end of the game'),
+          tr('当游戏结束时', 'At the end of the game'),
           Icons.emoji_events_outlined,
         ),
         const SizedBox(height: CarbonSpacing.s4),
@@ -1147,16 +1147,16 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '行动卡 —— 按所放胜利点卡的分数',
+                '行动卡 — 根据其所在位置的胜利分卡来决定',
                 'Action cards — the VP of the VP card each one is under',
               ),
               0,
             ),
-            (null, tr('每 1 个部门瓦片 2 分', '2 VP per Department tile'), 0),
+            (null, tr('每个部门板块价值2分', '2 VP per Department tile'), 0),
             (
               null,
               tr(
-                '到达运输轨最后一格的每个圆盘 6 分',
+                '每个到达运输轨道的最后一格的运输圆片获得6分',
                 '6 VP per transport disk that reached the last box of a transportation track',
               ),
               0,
@@ -1164,7 +1164,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '建设圆盘 —— 城市标示的 0~3 分',
+                '建设圆片 — 每个0-3分，显示在游戏图版上',
                 'Construction disks — 0-3 VP each, as shown for each city',
               ),
               0,
@@ -1172,7 +1172,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '捐赠圆盘 —— 按玩家进度计算',
+                '捐赠圆片 — 根据玩家在游戏中建造了什么来计分',
                 'Donation disks — scored according to what you built',
               ),
               0,
@@ -1298,19 +1298,19 @@ class _SummaryBar extends StatelessWidget {
       );
     }
 
-    // 扩展（方案 B）：与摘要两阶段顺序相同 —— ① 使用的种类 ② 排除的瓦片。
+    // 扩展（方案 B）：与摘要两阶段顺序相同 —— ① 使用的种类 ② 移除的板块。
     if (result.isExpansion) {
       return Row(
         children: [
           stat(
-            tr('使用的种类', 'Departments Used'),
+            tr('使用部门', 'Departments Used'),
             result.selectedKinds!.length,
             CarbonColors.supportSuccess,
             Icons.grid_view,
           ),
           const SizedBox(width: CarbonSpacing.s3),
           stat(
-            tr('排除的瓦片', 'Tiles to Remove'),
+            tr('移除板块', 'Tiles to Remove'),
             result.totalRemoved,
             CarbonColors.supportError,
             Icons.archive_outlined,
@@ -1321,14 +1321,14 @@ class _SummaryBar extends StatelessWidget {
     return Row(
       children: [
         stat(
-          tr('放回盒中的瓦片', 'Return to Box'),
+          tr('放回游戏盒子中', 'Return to Box'),
           result.totalRemoved,
           CarbonColors.supportError,
           Icons.archive_outlined,
         ),
         const SizedBox(width: CarbonSpacing.s3),
         stat(
-          tr('放在桌上的瓦片', 'Place on Table'),
+          tr('放在桌上', 'Place on Table'),
           result.totalKept,
           CarbonColors.supportSuccess,
           Icons.table_bar_outlined,
@@ -1448,7 +1448,7 @@ class _DeptCard extends StatelessWidget {
       ),
     };
 
-    // 瓦片本身就是网格单元格。状态徽章仅叠加在徽章区域右下角。
+    // 板块本身就是网格单元格。状态徽章仅叠加在徽章区域右下角。
     return LayoutBuilder(
       builder: (context, constraints) => Stack(
         children: [
@@ -1581,7 +1581,7 @@ class _DeptDetailSheet extends StatelessWidget {
                   ),
                 if (dept.ongoing)
                   CarbonTag(
-                    text: tr('持续效果', 'Ongoing'),
+                    text: tr('持续', 'Ongoing'),
                     bg: CarbonColors.tagAccentBg,
                     fg: CarbonColors.tagAccentText,
                   ),
@@ -1600,13 +1600,13 @@ class _DeptDetailSheet extends StatelessWidget {
                 else ...[
                   if (removedCount > 0)
                     CarbonTag(
-                      text: tr('移除 $removedCount 张', 'Remove $removedCount'),
+                      text: tr('移除$removedCount个', 'Remove $removedCount'),
                       bg: CarbonColors.tagRedBg,
                       fg: CarbonColors.tagRedText,
                     ),
                   if (kept > 0)
                     CarbonTag(
-                      text: tr('使用 $kept 张', '$kept in play'),
+                      text: tr('使用$kept个', '$kept in play'),
                       bg: CarbonColors.tagGreenBg,
                       fg: CarbonColors.tagGreenText,
                     ),
@@ -1770,7 +1770,7 @@ class _DiskListCard extends StatelessWidget {
                   if (showCount)
                     CarbonTag(
                       text: tr(
-                        '${row.$3} 个',
+                        '${row.$3}个',
                         row.$3 == 1 ? '1 disk' : '${row.$3} disks',
                       ),
                       bg: CarbonColors.tagGrayBg,

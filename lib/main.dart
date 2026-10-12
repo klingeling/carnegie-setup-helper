@@ -368,11 +368,11 @@ class _SetupScreenState extends State<SetupScreen> {
                     dense: true,
                     height: _langSwitchHeight,
                     segmentWidth: _langSegmentWidth,
-                    labels: const ['KO', 'EN'],
+                    labels: const ['ZH', 'EN'],
                     selected: isEn ? 1 : 0,
                     onChanged: (i) {
                       // 语言立即改变，保存在后台异步完成。
-                      setAppLang(i == 1 ? AppLang.en : AppLang.ko);
+                      setAppLang(i == 1 ? AppLang.en : AppLang.zh);
                       setState(() {});
                     },
                   ),

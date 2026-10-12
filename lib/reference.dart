@@ -6,7 +6,7 @@ import 'dept_tile.dart';
 import 'l10n.dart';
 
 // ---------------------------------------------------------------------------
-// Department catalog screen (부서 도감)
+// Department catalog screen（部门图鉴）
 // ---------------------------------------------------------------------------
 
 class DeptCatalogScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class DeptCatalogScreen extends StatefulWidget {
 }
 
 class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
-  /// 0 = 기본판(1~16), 1 = 확장(17~32).
+  /// 0 = 基础版（1~16），1 = 扩展（17~32）。
   int _tab = 0;
 
   @override
@@ -56,10 +56,10 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
                   child: ListView(
                     padding: const EdgeInsets.all(CarbonSpacing.s5),
                     children: [
-                      // 제목·스위치는 항상 한 줄 (사용자 확정). 영문은 짧은 표기
-                      // (Departments / Base | Expansion)를 쓰고, 원래 크기로
-                      // 자리가 모자라면 "Depts."로 줄인다 (사용자 확정). 그래도
-                      // 넘치는 극단적인 폭에서는 제목만 폭에 맞게 축소한다.
+                      // 标题·开关始终一行（用户已确认）。英文用短标记
+                      // （Departments / Base | Expansion），若原尺寸
+                      // 放不下则缩为 "Depts."（用户已确认）。若在极端
+                      // 宽度下仍溢出，则仅将标题按宽度缩小。
                       Row(
                         children: [
                           Expanded(
@@ -102,9 +102,9 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
                         ],
                       ),
                       const SizedBox(height: CarbonSpacing.s3),
-                      // 두 설명을 겹쳐 두고 선택된 쪽만 보인다. 높이가 항상
-                      // 긴 쪽으로 고정돼 기본판↔확장 전환 시 아래가 흔들리지
-                      // 않는다 (폭·언어와 무관).
+                      // 两段说明叠放，只显示选中一侧。高度始终固定为
+                      // 较长的一侧，因此基础版↔扩展切换时下方不会抖动
+                      // （与宽度·语言无关）。
                       IndexedStack(
                         index: _tab,
                         children: [
@@ -144,11 +144,11 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
                             horizontal: CarbonSpacing.s4,
                             vertical: CarbonSpacing.s3,
                           ),
-                          // 흰색 카드 헤더 — 사용자 확정.
+                          // 白色卡片标题 —— 用户已确认。
                           decoration: BoxDecoration(
                             color: CarbonColors.background,
                             border: Border(
-                              // 타일 넘버 플레이트와 같은 유형 컬러.
+                              // 与瓷砖编号板相同的类型色。
                               left: BorderSide(
                                 color: deptTypeColorOf(type),
                                 width: 4,
@@ -197,36 +197,34 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
   }
 }
 
-/// 부서 조직 방법·비용 안내 모달 시트
-/// (근거: 규칙서 10쪽 "전략 기획", 6쪽 4.2 활성화 비용 — UI에는 미표기).
+/// 部门组织方法·费用说明弹窗
+/// （依据：规则书第 10 页 "战略规划"，第 6 页 4.2 激活费用 —— UI 中不标注）。
 class _OrganizeGuideSheet extends StatelessWidget {
   const _OrganizeGuideSheet();
 
   static const _rows = <(IconData, String)>[
     (
       Icons.work_outline,
-      '경영 행동에서 "전략 기획" 부서의 활성화된 직원 1명당 새 부서 1개를 '
-          '조직할 수 있습니다.',
+      '在管理行动中，“战略规划”部门中每名激活的员工可以建造1个新部门。',
     ),
     (
       Icons.inventory_2_outlined,
-      '비용: 상품 큐브 2개 — 회사판의 아무 빈칸에 배치. 직원이 1명 이상 '
-          '있는 빈칸이면 큐브 1개만 지불합니다.',
+      '费用：2个货物方块 — 放在自己公司图版的任意1个空格上。若该空格有至少1名'
+          '员工，则只需支付1个货物方块。',
     ),
     (
       Icons.looks_one_outlined,
-      '첫 번째로 조직하는 부서는 게임 준비(10번)에서 선택해 둔 부서여야 '
-          '합니다.',
+      '玩家放置的第1个部门必须是在游戏设置步骤10中选取的。',
     ),
-    (Icons.block, '같은 부서는 한 회사에 2개 이상 둘 수 없습니다.'),
+    (Icons.block, '1个公司永远不能有2个相同的部门。'),
     (
       Icons.paid_outlined,
-      '타일 사무공간 아래의 금액은 조직 비용이 아니라, 라운드 종료 시 그 '
-          '자리 직원을 활성화할 때 내는 비용입니다.',
+      '板块工位下方的费用不是建造费用，而是一轮结束时激活该工位员工'
+          '需要支付的费用。',
     ),
   ];
 
-  /// 영문 규칙서 10쪽 Strategic Planning, 6쪽 4.2 Recruiting Employees.
+  /// 英文规则书第 10 页 Strategic Planning，第 6 页 4.2 Recruiting Employees。
   static const _rowsEn = <(IconData, String)>[
     (
       Icons.work_outline,
@@ -332,8 +330,8 @@ class _CatalogRow extends StatelessWidget {
         border: Border.all(color: CarbonColors.borderSubtle),
       ),
       padding: const EdgeInsets.all(CarbonSpacing.s5),
-      // 플레이트+이름 → 괘선 → 엠블럼 → 효과 바 → 설명. 타일과 같은 부품을
-      // 화면 폭에 맞게 직접 배치한다.
+      // 板+名称 → 双规线 → 徽章 → 效果栏 → 说明。用与瓷砖相同的部件
+      // 按画面宽度直接布置。
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -391,8 +389,8 @@ class _CatalogRow extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Icon reference screen (아이콘 참조표, 규칙서 20쪽) — legend-style grid of
-// individual icons with text descriptions.
+// Icon reference screen（图标参考表，规则书第 20 页）—— legend 风格的单个
+// 图标网格，附文字说明。
 // ---------------------------------------------------------------------------
 
 class _RefItem {
@@ -400,7 +398,7 @@ class _RefItem {
   final int icon; // reficons/iNN.webp
   final String label;
 
-  /// 영문 규칙서 20쪽 Icon Reference 표기.
+  /// 英文规则书第 20 页 Icon Reference 标注。
   final String labelEn;
   String get text => tr(label, labelEn);
 }
@@ -414,121 +412,121 @@ class _RefSection {
 }
 
 const _refSections = <_RefSection>[
-  _RefSection('부서 종류', 'Department Types', [
-    _RefItem(1, '인사', 'Human Resources'),
-    _RefItem(2, '경영', 'Management'),
-    _RefItem(3, '건설', 'Construction'),
-    _RefItem(4, '연구&개발', 'Research & Development'),
+  _RefSection('部门类型', 'Department Types', [
+    _RefItem(1, '人力资源', 'Human Resources'),
+    _RefItem(2, '管理', 'Management'),
+    _RefItem(3, '建设', 'Construction'),
+    _RefItem(4, '研究&开发', 'Research & Development'),
   ]),
-  _RefSection('파견 칸', 'Mission Areas', [
-    _RefItem(5, '파견 칸에 올라간 직원', 'Employee on Mission area'),
+  _RefSection('任务区', 'Mission Areas', [
+    _RefItem(5, '在任务区的员工', 'Employee on Mission area'),
     _RefItem(
       6,
-      '파견 칸에서 직원 1명 가져오기 (로비로 되돌아감)',
+      '从任务区收回员工（回到大厅）',
       'Take employee from Mission area (return to Lobby)',
     ),
     _RefItem(
       7,
-      '파견 칸에서 직원 1명 이상 가져오기 (로비로 되돌아감)',
+      '从任务区收回1名或多名员工（回到大厅）',
       'Take one or more employees from Mission area (return to Lobby)',
     ),
-    _RefItem(8, '파견 칸에 직원 1명 놓기', 'Place employee on Mission area'),
+    _RefItem(8, '派出员工到任务区', 'Place employee on Mission area'),
   ]),
-  _RefSection('직원', 'Employees', [
-    _RefItem(9, '활성화된 직원', 'Active employee'),
-    _RefItem(10, '비활성화된 직원', 'Inactive employee'),
+  _RefSection('员工', 'Employees', [
+    _RefItem(9, '激活的员工', 'Active employee'),
+    _RefItem(10, '未激活的员工', 'Inactive employee'),
     _RefItem(
       11,
-      '공급처에서 새 직원 1명 얻어 로비로 보내기',
+      '获得1名新员工放入大厅',
       'Gain one new employee from supply to Lobby',
     ),
-    _RefItem(12, '로비에 도착한 직원', 'Employees arriving into Lobby'),
+    _RefItem(12, '员工放入大厅', 'Employees arriving into Lobby'),
     _RefItem(
       13,
-      '직원 1명을 회사판에서 1칸 이동 (직원은 비활성화됨)',
+      '在公司图版上移动1名员工一格（不能斜着）。可以停在任何格。员工变成未激活的状态。',
       'Move an employee one space (no diagonals) on Department board. May end on any space. Employee becomes inactive.',
     ),
   ]),
-  _RefSection('부서', 'Departments', [
-    _RefItem(14, '부서', 'Department'),
-    _RefItem(15, '활성화된 직원이 있는 부서', 'Department with an active employee'),
-    _RefItem(16, '비활성화된 직원이 있는 부서', 'Department with an inactive employee'),
-    _RefItem(17, '이 부서로 직원 1명 이동시키기', 'Move an employee to this Department'),
+  _RefSection('部门', 'Departments', [
+    _RefItem(14, '部门', 'Department'),
+    _RefItem(15, '有激活的员工的部门', 'Department with an active employee'),
+    _RefItem(16, '有未激活的员工的部门', 'Department with an inactive employee'),
+    _RefItem(17, '移动1名员工到这个部门', 'Move an employee to this Department'),
     _RefItem(
       18,
-      '빈칸에 새로운 부서 1개 조직하기',
+      '在1个没有部门的格上建造1个新部门',
       'Build a new Department on a space with no Department',
     ),
     _RefItem(
       19,
-      '비활성 직원이 있는 빈칸에 새 부서 1개 조직하기',
+      '在1个没有部门并且有未激活的员工的格上建造1个新部门',
       'Build a new Department on a space with no Department and an inactive employee',
     ),
   ]),
-  _RefSection('기부', 'Donations', [
-    _RefItem(20, '기부', 'Donation'),
-    _RefItem(21, '한 번 기부하기', 'Make a donation'),
+  _RefSection('捐赠', 'Donations', [
+    _RefItem(20, '捐赠', 'Donation'),
+    _RefItem(21, '进行1次捐赠', 'Make a donation'),
     _RefItem(
       22,
-      '다른 플레이어의 디스크 위에 기부 디스크 1개 놓기',
+      '放置1个捐赠圆片在包含其他玩家圆片的捐赠格',
       "Place a donation disk on a space containing another player's disk",
     ),
   ]),
-  _RefSection('지도', 'Map', [
-    _RefItem(23, '지도 위 건설 디스크', 'Construction disk on map'),
-    _RefItem(24, '소도시 칸 위 건설 디스크', 'Construction disk on small city'),
-    _RefItem(25, '대도시 연결 점수', 'Major city connection points'),
+  _RefSection('地图', 'Map', [
+    _RefItem(23, '地图中的建设圆片', 'Construction disk on map'),
+    _RefItem(24, '小城市上的建设圆片', 'Construction disk on small city'),
+    _RefItem(25, '大城市的连接分数', 'Major city connection points'),
   ]),
-  _RefSection('수입', 'Income', [
+  _RefSection('收入', 'Income', [
     _RefItem(
       26,
-      '운송수단 트랙 위 현재 칸에서 수입 받기',
+      '获得运输轨道上圆片所在位置的收入',
       'Income from current space on transport track',
     ),
     _RefItem(
       27,
-      '프로젝트 탭 위 공개된 칸에서 수입 받기',
+      '获得项目标签上露出的格上的收入',
       'Income from revealed spaces on project tabs',
     ),
-    _RefItem(28, '상품 큐브 1개 또는 \$3 선택하기', 'Choose one goods cube or \$3'),
-    _RefItem(29, '새로운 직원 1명 또는 \$1 선택하기', 'Choose one new employee or \$1'),
+    _RefItem(28, '选择1个货物方块或\$3', 'Choose one goods cube or \$3'),
+    _RefItem(29, '选择1个新员工或\$1', 'Choose one new employee or \$1'),
     _RefItem(
       30,
-      '기부마다 승점 제한을 3만큼 높이기 (최대)',
+      '每个捐赠的分数上限增加3',
       'The VP limit for each donation is increased by 3',
     ),
   ]),
-  _RefSection('승점', 'Victory Points', [
-    _RefItem(31, '즉시 얻는 승점', 'Immediate VP'),
-    _RefItem(32, '게임 종료 시 얻는 승점', 'Game-end VP'),
+  _RefSection('胜利分数', 'Victory Points', [
+    _RefItem(31, '即时分数', 'Immediate VP'),
+    _RefItem(32, '终局分数', 'Game-end VP'),
   ]),
-  _RefSection('프로젝트 종류', 'Project Types', [
-    _RefItem(33, '사회 기반시설', 'Public Infrastructure'),
-    _RefItem(34, '산업', 'Industry'),
-    _RefItem(35, '상업', 'Commerce'),
-    _RefItem(36, '주거', 'Housing'),
+  _RefSection('项目类型', 'Project Types', [
+    _RefItem(33, '公共设施', 'Public Infrastructure'),
+    _RefItem(34, '工业', 'Industry'),
+    _RefItem(35, '商业', 'Commerce'),
+    _RefItem(36, '住宅', 'Housing'),
   ]),
-  _RefSection('연구', 'Study', [
-    _RefItem(37, '소비할 수 있는 연구 점수', 'Study points available to spend'),
-    _RefItem(38, '연구 점수 비용', 'Study point cost'),
-    _RefItem(39, '연구 점수 비용 할인', 'Discount on study point cost'),
+  _RefSection('研究', 'Study', [
+    _RefItem(37, '可以花费的研究点', 'Study points available to spend'),
+    _RefItem(38, '研究点费用', 'Study point cost'),
+    _RefItem(39, '研究点费用的折扣', 'Discount on study point cost'),
   ]),
-  _RefSection('운송수단 트랙', 'Transport Tracks', [
-    _RefItem(40, '운송수단 트랙', 'Transport track'),
-    _RefItem(41, '수레', 'Cart'),
-    _RefItem(42, '마차', 'Stagecoach'),
-    _RefItem(43, '철도', 'Railroad'),
+  _RefSection('运输轨道', 'Transport Tracks', [
+    _RefItem(40, '运输轨道', 'Transport track'),
+    _RefItem(41, '马车', 'Cart'),
+    _RefItem(42, '驿站马车', 'Stagecoach'),
+    _RefItem(43, '铁路', 'Railroad'),
   ]),
-  _RefSection('상품&돈', 'Goods & Money', [
-    _RefItem(44, '돈 받기', 'Gain money'),
-    _RefItem(45, '돈 소비하기', 'Spend money'),
-    _RefItem(46, '상품 큐브 1개 받기', 'Gain a goods cube'),
-    _RefItem(47, '상품 큐브 1개 소비하기', 'Spend a goods cube'),
+  _RefSection('货物&钱', 'Goods & Money', [
+    _RefItem(44, '获得钱', 'Gain money'),
+    _RefItem(45, '花钱', 'Spend money'),
+    _RefItem(46, '获得1个货物方块', 'Gain a goods cube'),
+    _RefItem(47, '花费1个货物方块', 'Spend a goods cube'),
   ]),
 ];
 
-// 참조표 강조색 — 규칙서 20쪽의 구조(오버라인·이중 밑줄·잔점선)는 따르되
-// 색은 앱 팔레트로 통일 (사용자 확정).
+// 参考表强调色 —— 遵循规则书第 20 页的结构（上标线·双下划线·细点线），
+// 但颜色统一为应用调色板（用户已确认）。
 const _refAccent = CarbonColors.interactive;
 const _refDot = CarbonColors.borderStrong;
 
@@ -554,7 +552,7 @@ class IconReferenceScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.all(CarbonSpacing.s5),
                     children: [
-                      // 규칙서 20쪽의 표제 구조: 제목 + 이중 밑줄.
+                      // 规则书第 20 页的标题结构：标题 + 双下划线。
                       Text(
                         tr('图标参考', 'Icon Reference'),
                         style: CarbonText.heading05.copyWith(color: _refAccent),
@@ -564,8 +562,8 @@ class IconReferenceScreen extends StatelessWidget {
                       const SizedBox(height: 2.5),
                       Container(height: 1.4, color: _refAccent),
                       const SizedBox(height: CarbonSpacing.s5),
-                      // 열 묶음 순서는 규칙서 그대로, 항목 사이 선 없음,
-                      // 열 사이 잔점선. 새 단은 오버라인으로 시작한다.
+                      // 列组顺序按规则书原样，项之间无线，
+                      // 列之间用细点线。新栏以上标线开始。
                       Container(
                         decoration: BoxDecoration(
                           color: CarbonColors.background,
@@ -598,7 +596,7 @@ class IconReferenceScreen extends StatelessWidget {
   }
 }
 
-/// 규칙서 20쪽의 열 묶음 순서 그대로 두 열씩 짝지어 배치한다.
+/// 按规则书第 20 页的列组顺序，两列一组配对布置。
 final _refRows = <(List<_RefSection>, List<_RefSection>)>[
   ([_refSections[0]], [_refSections[1]]),
   ([_refSections[2]], [_refSections[3]]),
@@ -606,8 +604,8 @@ final _refRows = <(List<_RefSection>, List<_RefSection>)>[
   ([_refSections[8], _refSections[9]], [_refSections[10], _refSections[11]]),
 ];
 
-/// 두 열 스트립 + 가운데 점선. (IntrinsicHeight는 이미지 고유 높이를 열 폭
-/// 기준으로 과대 계산하므로 점선은 Stack 위에 그린다.)
+/// 两列条带 + 中间点线。（IntrinsicHeight 会以列宽为基准过大地估算图像
+/// 固有高度，因此点线画在 Stack 之上。）
 class _RefPairRow extends StatelessWidget {
   const _RefPairRow({required this.left, required this.right});
 
@@ -632,8 +630,8 @@ class _RefPairRow extends StatelessWidget {
   }
 }
 
-/// 세로 스트립: 제목(밑줄) 아래로 아이콘·설명을 촘촘히 쌓는다.
-/// 규칙서처럼 항목 사이에 구분선을 두지 않는다.
+/// 纵向条带：标题（带下划线）下方密集堆叠图标·说明。
+/// 与规则书一样，项之间不加分隔线。
 class _RefStrip extends StatelessWidget {
   const _RefStrip({required this.sections});
 
@@ -645,7 +643,7 @@ class _RefStrip extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         for (final (i, s) in sections.indexed) ...[
-          // 규칙서의 열 머리: 굵은 오버라인 + 진한 제목.
+          // 规则书的列头：粗上标线 + 深色标题。
           Padding(
             padding: EdgeInsets.fromLTRB(
               CarbonSpacing.s3,
@@ -701,7 +699,7 @@ class _RefStrip extends StatelessWidget {
   }
 }
 
-/// 규칙서의 열 구분 잔점선 (세로, 가운데).
+/// 规则书的列间细点线（纵向，居中）。
 class _VDashPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

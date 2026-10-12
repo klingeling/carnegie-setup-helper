@@ -23,9 +23,9 @@
 3. **未经检查不得发布。** 在安装·部署前，直接确认结果物（画面、图像、动作），
    只发布通过检查的内容。
 
-## 构建（重要：Windows 韩文路径问题）
+## 构建（重要：Windows 中文路径问题）
 
-如果项目位于韩文路径（`바탕 화면`）下，Flutter 着色器编译器
+如果项目位于中文路径（`바탕 화면`）下，Flutter 着色器编译器
 （impellerc）会崩溃。**必须在 ASCII 映射驱动器上构建：**
 
 ```bat
@@ -92,10 +92,10 @@ flutter build web && flutter build apk --release
 - `lib/setup9.dart` — 设置 9（中立圆片）卡片 20 张数据、按地区的城市
   （`cityRegions`）、`drawDisks()`（1人/4人 = 0 个）
 - `lib/reference.dart` — 部门图鉴、图标参考表画面
-- `lib/l10n.dart` — 韩/英显示语言。用 `tr(ko, en)` 选择文案，数据用
-  `ko`/`en` 对（`Department.ruleEn`、`cityNamesEn` 等）。起始语言 =
+- `lib/l10n.dart` — 中/英显示语言。用 `tr(zh, en)` 选择文案，数据用
+  `zh`/`en` 对（`Department.ruleEn`、`cityNamesEn` 等）。起始语言 =
   保存的开关值（`shared_preferences`，网页为 localStorage）→ 若无则按设备·
-  浏览器语言（韩语则 KO，其他 EN）。Android 的 locale 在 main() 之后
+  浏览器语言（中文则 ZH，其他 EN）。Android 的 locale 在 main() 之后
   延迟到达，因此若无保存值则跟随设备语言直到按下开关。
   英文文案遵循 `rulebook/` 中的英文规则书（基础·扩展，git 未包含）术语。
 
@@ -142,13 +142,13 @@ flutter build web && flutter build apk --release
 - 扩展摘要 = "选择种类（按类型的可用编号芯片，`_KindCleanupCard`）→
   板块排除（类型→编号排序网格）"纵向两阶段。详情中也有种类选择卡片。
 - 第一画面：顶部图标与详细页面相同的 `TopBar`（正文列内，左右 16 ·
-  上 8）。**韩英开关**（`KO | EN`，`CarbonContentSwitcher(dense: true)`）
+  上 8）。**中英开关**（`ZH | EN`，`CarbonContentSwitcher(dense: true)`）
   为 **86×29px**（格子固定 42px，`_langSegmentWidth`·`_langSwitchHeight`——
   与 69px 和 104px 比较后取中间值确定）。放在上标线行高上，右端线
   对齐图标参考表图标字形。图标与开关间距 15px
   （`_homeHeaderTop`）。仅在窄宽度（约 310px 以下）时缩小上标线文字以
   与开关保持 8px 间距。
-- 英文模式下以"英文标题 + 韩文副标题"反转韩文版布局显示。
+- 英文模式下以"英文标题 + 中文副标题"反转中文版布局显示。
 - 部门图鉴基础版/扩展说明用 `IndexedStack` 固定高度（切换时禁止抖动）。
 - 部门图鉴标题行始终一行：英文为 `Departments` + `Base | Expansion`，
   若原尺寸放不下则将标题改为 `Depts.`（用户已确认）。

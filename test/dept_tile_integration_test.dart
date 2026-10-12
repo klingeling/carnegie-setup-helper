@@ -110,7 +110,7 @@ void main() {
     expect(find.byType(DeptTile), findsWidgets);
   });
 
-  testWidgets('게임 준비: 확장 토글 후 뽑으면 확장 요약이 표시된다', (tester) async {
+  testWidgets('游戏设置: 확장 토글 후 뽑으면 확장 요약이 표시된다', (tester) async {
     await pumpPhone(tester, const SetupScreen());
     await tester.tap(find.text('확장 포함'));
     await tester.pumpAndSettle();

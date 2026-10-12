@@ -42,7 +42,7 @@ void main() {
 
   testWidgets('setup screen renders and can draw', (tester) async {
     await tester.pumpWidget(const CarnegieApp());
-    expect(find.text('게임 준비'), findsOneWidget);
+    expect(find.text('游戏设置'), findsOneWidget);
 
     // 인원 카드를 누르면 바로 결과 화면으로 이동한다.
     await tester.tap(find.text('1-2인'));

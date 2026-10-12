@@ -29,17 +29,17 @@ void main() {
   });
 
   setUp(() => SharedPreferences.setMockInitialValues({}));
-  tearDown(() => appLang.value = AppLang.ko);
+  tearDown(() => appLang.value = AppLang.zh);
 
-  group('시작 언어', () {
-    testWidgets('저장값이 없으면 기기 언어: 한국어 → KO', (tester) async {
-      tester.platformDispatcher.localeTestValue = const Locale('ko', 'KR');
+  group('启动语言', () {
+    testWidgets('如果没有保存值，装置语言：中文 → ZH', (tester) async {
+      tester.platformDispatcher.localeTestValue = const Locale('zh', 'KR');
       addTearDown(tester.platformDispatcher.clearLocaleTestValue);
       await loadAppLang();
-      expect(appLang.value, AppLang.ko);
+      expect(appLang.value, AppLang.zh);
     });
 
-    testWidgets('저장값이 없으면 기기 언어: 그 외 → EN', (tester) async {
+    testWidgets('如果没有保存值，则装置语言：其他 → EN', (tester) async {
       tester.platformDispatcher.localeTestValue = const Locale('en', 'US');
       addTearDown(tester.platformDispatcher.clearLocaleTestValue);
       await loadAppLang();
@@ -50,7 +50,7 @@ void main() {
       expect(appLang.value, AppLang.en);
     });
 
-    testWidgets('저장값이 없으면 늦게 전달된 기기 언어를 따라간다 (안드로이드)', (tester) async {
+    testWidgets('如果没有存储值，则跟随较晚传递的设备语言（安卓）', (tester) async {
       // main() 시점에는 아직 로캘이 없어 영어로 시작했다가,
       tester.platformDispatcher.localeTestValue = const Locale('en', 'US');
       addTearDown(tester.platformDispatcher.clearLocaleTestValue);
@@ -63,31 +63,30 @@ void main() {
       );
       expect(find.text('Game Setup'), findsOneWidget);
 
-      // 엔진이 기기 로캘(ko-KR)을 전달하면 첫 화면이 한국어로 바뀐다.
-      tester.platformDispatcher.localeTestValue = const Locale('ko', 'KR');
+      tester.platformDispatcher.localeTestValue = const Locale('zh', 'KR');
       await tester.pumpAndSettle();
-      expect(appLang.value, AppLang.ko);
-      expect(find.text('게임 준비'), findsOneWidget);
+      expect(appLang.value, AppLang.zh);
+      expect(find.text('游戏设置'), findsOneWidget);
 
       // 사용자가 스위치로 고른 뒤에는 기기 언어가 바뀌어도 따라가지 않는다.
       await tester.tap(find.text('EN'));
       await tester.pumpAndSettle();
-      tester.platformDispatcher.localeTestValue = const Locale('ko', 'KR');
+      tester.platformDispatcher.localeTestValue = const Locale('zh', 'KR');
       tester.platformDispatcher.localeTestValue = const Locale('fr', 'FR');
-      tester.platformDispatcher.localeTestValue = const Locale('ko', 'KR');
+      tester.platformDispatcher.localeTestValue = const Locale('zh', 'KR');
       await tester.pumpAndSettle();
       expect(appLang.value, AppLang.en);
       expect(find.text('Game Setup'), findsOneWidget);
     });
 
-    testWidgets('스위치로 바꾼 값은 저장되어 기기 언어보다 우선한다', (tester) async {
-      tester.platformDispatcher.localeTestValue = const Locale('ko', 'KR');
+    testWidgets('换成开关的值存储起来，优先于机器语言', (tester) async {
+      tester.platformDispatcher.localeTestValue = const Locale('zh', 'KR');
       addTearDown(tester.platformDispatcher.clearLocaleTestValue);
       await setAppLang(AppLang.en);
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getString('app_lang'), 'en');
 
-      appLang.value = AppLang.ko; // 앱 재시작 흉내
+      appLang.value = AppLang.zh; // 앱 재시작 흉내
       await loadAppLang();
       expect(appLang.value, AppLang.en);
     });
@@ -121,7 +120,7 @@ void main() {
 
   testWidgets('첫 화면 스위치로 한국어 ↔ 영어가 전환된다', (tester) async {
     await pumpPhone(tester, const SetupScreen());
-    expect(find.text('게임 준비'), findsOneWidget);
+    expect(find.text('游戏设置'), findsOneWidget);
 
     await tester.tap(find.text('EN'));
     await tester.pumpAndSettle();
@@ -138,15 +137,15 @@ void main() {
 
     await tester.pageBack();
     await tester.pumpAndSettle();
-    await tester.tap(find.text('KO'));
+    await tester.tap(find.text('ZH'));
     await tester.pumpAndSettle();
-    expect(find.text('게임 준비'), findsOneWidget);
+    expect(find.text('游戏设置'), findsOneWidget);
   });
 
   group('영어 모드 화면', () {
     setUp(() => appLang.value = AppLang.en);
 
-    testWidgets('게임 준비: 확장 토글', (tester) async {
+    testWidgets('游戏设置: 扩展切换', (tester) async {
       await pumpPhone(tester, const SetupScreen());
       await tester.tap(find.text('With Expansion'));
       await tester.pumpAndSettle();

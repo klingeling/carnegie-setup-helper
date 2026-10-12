@@ -9,19 +9,19 @@ enum DeptType {
   construction('건설', 'Construction'),
   rnd('연구개발', 'R&D');
 
-  const DeptType(this.ko, this.en);
-  final String ko;
+  const DeptType(this.zh, this.en);
+  final String zh;
   final String en;
 
   /// 현재 언어의 유형 이름과, 보조 표기로 쓰는 다른 언어 이름.
-  String get label => tr(ko, en);
-  String get altLabel => tr(en, ko);
+  String get label => tr(zh, en);
+  String get altLabel => tr(en, zh);
 }
 
 class Department {
   const Department({
     required this.number,
-    required this.ko,
+    required this.zh,
     required this.en,
     required this.type,
     required this.rule,
@@ -32,7 +32,7 @@ class Department {
   });
 
   final int number;
-  final String ko;
+  final String zh;
   final String en;
   final DeptType type;
   final String rule;
@@ -41,8 +41,8 @@ class Department {
   final String ruleEn;
 
   /// 현재 언어의 부서 이름·규칙과, 보조 표기로 쓰는 다른 언어 이름.
-  String get name => tr(ko, en);
-  String get altName => tr(en, ko);
+  String get name => tr(zh, en);
+  String get altName => tr(en, zh);
   String get ruleText => tr(rule, ruleEn);
 
   /// Tiles 4, 8, 12, 16 have a different color and provide ongoing effects.
@@ -64,7 +64,7 @@ class Department {
 const departments = <Department>[
   Department(
     number: 1,
-    ko: '培训与合作伙伴',
+    zh: '培训与合作伙伴',
     en: 'Training and Partnerships',
     type: DeptType.hr,
     rule:
@@ -77,7 +77,7 @@ const departments = <Department>[
   ),
   Department(
     number: 2,
-    ko: '招聘',
+    zh: '招聘',
     en: 'Recruiting',
     type: DeptType.hr,
     rule:
@@ -91,7 +91,7 @@ const departments = <Department>[
   ),
   Department(
     number: 3,
-    ko: '品质与安全',
+    zh: '品质与安全',
     en: 'Safety and Quality',
     type: DeptType.hr,
     rule:
@@ -105,7 +105,7 @@ const departments = <Department>[
   ),
   Department(
     number: 4,
-    ko: '新大厅',
+    zh: '新大厅',
     en: 'New Lobby',
     type: DeptType.hr,
     ongoing: true,
@@ -122,7 +122,7 @@ const departments = <Department>[
   ),
   Department(
     number: 5,
-    ko: '采购',
+    zh: '采购',
     en: 'Purchasing',
     type: DeptType.management,
     rule:
@@ -135,7 +135,7 @@ const departments = <Department>[
   ),
   Department(
     number: 6,
-    ko: '销售',
+    zh: '销售',
     en: 'Sales',
     type: DeptType.management,
     rule: '每次玩家可以支付1-3个货物方块到公共供应堆。每个支付的方块可以让玩家获得\$6。',
@@ -146,7 +146,7 @@ const departments = <Department>[
   ),
   Department(
     number: 7,
-    ko: '后勤',
+    zh: '后勤',
     en: 'Logistics',
     type: DeptType.management,
     rule:
@@ -159,7 +159,7 @@ const departments = <Department>[
   ),
   Department(
     number: 8,
-    ko: '资产管理',
+    zh: '资产管理',
     en: 'Property Management',
     type: DeptType.management,
     ongoing: true,
@@ -173,7 +173,7 @@ const departments = <Department>[
   ),
   Department(
     number: 9,
-    ko: '工程',
+    zh: '工程',
     en: 'Engineering',
     type: DeptType.construction,
     rule:
@@ -186,7 +186,7 @@ const departments = <Department>[
   ),
   Department(
     number: 10,
-    ko: '建设外包',
+    zh: '建设外包',
     en: 'Construction Outsourcing',
     type: DeptType.construction,
     rule:
@@ -199,7 +199,7 @@ const departments = <Department>[
   ),
   Department(
     number: 11,
-    ko: '供应链',
+    zh: '供应链',
     en: 'Supply Chain',
     type: DeptType.construction,
     rule: '可以用\$1购买1个货物方块，最多3次。',
@@ -209,7 +209,7 @@ const departments = <Department>[
   ),
   Department(
     number: 12,
-    ko: '沟通',
+    zh: '沟通',
     en: 'Communications',
     type: DeptType.construction,
     ongoing: true,
@@ -223,7 +223,7 @@ const departments = <Department>[
   ),
   Department(
     number: 13,
-    ko: '高级研究',
+    zh: '高级研究',
     en: 'Advanced Research',
     type: DeptType.rnd,
     rule: '玩家必须从这个部门派出1名激活的员工执行任务。然后，玩家获得7个研究点。',
@@ -233,7 +233,7 @@ const departments = <Department>[
   ),
   Department(
     number: 14,
-    ko: '高级设计',
+    zh: '高级设计',
     en: 'Advanced Design',
     type: DeptType.rnd,
     rule: '该部门中每有1名激活的员工，玩家就可以获得4个研究点。',
@@ -243,7 +243,7 @@ const departments = <Department>[
   ),
   Department(
     number: 15,
-    ko: '慈善捐助',
+    zh: '慈善捐助',
     en: 'Charitable Giving',
     type: DeptType.rnd,
     rule:
@@ -258,7 +258,7 @@ const departments = <Department>[
   ),
   Department(
     number: 16,
-    ko: '报务员',
+    zh: '报务员',
     en: 'Telegraph Operators',
     type: DeptType.rnd,
     ongoing: true,
@@ -278,7 +278,7 @@ const departments = <Department>[
 const expansionDepartments = <Department>[
   Department(
     number: 17,
-    ko: '人力资源管理',
+    zh: '人力资源管理',
     en: 'Human Resources Administration',
     type: DeptType.hr,
     expansion: true,
@@ -297,7 +297,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 18,
-    ko: '本地合伙人',
+    zh: '本地合伙人',
     en: 'Local Partners',
     type: DeptType.hr,
     expansion: true,
@@ -311,7 +311,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 19,
-    ko: '企业沟通',
+    zh: '企业沟通',
     en: 'Corporate Communication',
     type: DeptType.hr,
     expansion: true,
@@ -327,7 +327,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 20,
-    ko: '绿化',
+    zh: '绿化',
     en: 'Green Spaces',
     type: DeptType.hr,
     expansion: true,
@@ -342,7 +342,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 21,
-    ko: '会计',
+    zh: '会计',
     en: 'Accounting',
     type: DeptType.management,
     expansion: true,
@@ -357,7 +357,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 22,
-    ko: '品牌推广',
+    zh: '品牌推广',
     en: 'Branding',
     type: DeptType.management,
     expansion: true,
@@ -370,7 +370,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 23,
-    ko: '工资管理',
+    zh: '工资管理',
     en: 'Payroll Management',
     type: DeptType.management,
     expansion: true,
@@ -389,7 +389,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 24,
-    ko: '公共关系',
+    zh: '公共关系',
     en: 'Public Relations',
     type: DeptType.management,
     expansion: true,
@@ -404,7 +404,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 25,
-    ko: '生产线',
+    zh: '生产线',
     en: 'Production Lines',
     type: DeptType.construction,
     expansion: true,
@@ -419,7 +419,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 26,
-    ko: '革新',
+    zh: '革新',
     en: 'Renovation',
     type: DeptType.construction,
     expansion: true,
@@ -432,7 +432,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 27,
-    ko: '政治游说',
+    zh: '政治游说',
     en: 'Political Lobbying',
     type: DeptType.construction,
     expansion: true,
@@ -449,7 +449,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 28,
-    ko: '邮局',
+    zh: '邮局',
     en: 'Post Office',
     type: DeptType.construction,
     expansion: true,
@@ -466,7 +466,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 29,
-    ko: '研发协调',
+    zh: '研发协调',
     en: 'R&D Coordination',
     type: DeptType.rnd,
     expansion: true,
@@ -481,7 +481,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 30,
-    ko: '知识共享',
+    zh: '知识共享',
     en: 'Knowledge Sharing',
     type: DeptType.rnd,
     expansion: true,
@@ -495,7 +495,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 31,
-    ko: '档案',
+    zh: '档案',
     en: 'Archives',
     type: DeptType.rnd,
     expansion: true,
@@ -515,7 +515,7 @@ const expansionDepartments = <Department>[
   ),
   Department(
     number: 32,
-    ko: '图书馆网络',
+    zh: '图书馆网络',
     en: 'Network of Libraries',
     type: DeptType.rnd,
     expansion: true,
@@ -537,7 +537,7 @@ const allDepartments = <Department>[...departments, ...expansionDepartments];
 const copiesPerDepartment = 2;
 
 /// 규칙서 4쪽: 4/3/2인 게임에서는 부서 타일 4/8/16개를 무작위로 게임 상자에
-/// 되돌려 놓습니다. 1인 게임 준비는 2인 게임과 동일합니다(규칙서 18쪽).
+/// 되돌려 놓습니다. 1인 游戏设置는 2인 게임과 동일합니다(규칙서 18쪽).
 const removalByPlayerCount = <int, int>{1: 16, 2: 16, 3: 8, 4: 4};
 
 class DrawResult {

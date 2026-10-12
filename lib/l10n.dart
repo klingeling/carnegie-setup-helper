@@ -1,23 +1,23 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// 应用显示语言（韩语 / 英语）。用第一画面的韩英开关切换。
-enum AppLang { ko, en }
+/// 应用显示语言（中文 / 英语）。用第一画面的韩英开关切换。
+enum AppLang { zh, en }
 
 /// 当前显示语言。应用启动时由 [loadAppLang] 决定。
-final appLang = ValueNotifier<AppLang>(AppLang.ko);
+final appLang = ValueNotifier<AppLang>(AppLang.zh);
 
 bool get isEn => appLang.value == AppLang.en;
 
 /// 选择与当前语言相符的文案。英文文案遵循英文规则书
 /// （rulebook/Carnegie-rules-EN-WEB.pdf, Carnegie_rules_EXPANSION_v5.pdf）的
 /// 术语。
-String tr(String ko, String en) => isEn ? en : ko;
+String tr(String zh, String en) => isEn ? en : zh;
 
 const _prefsKey = 'app_lang';
 
 /// 起始语言：若有通过韩英开关保存的值则用该值，否则当设备（网页为
-/// 浏览器）语言为韩语时用韩语，其他情况用英语。
+/// 浏览器）语言为中文时用中文，其他情况用英语。
 ///
 /// Android 的设备 locale 在 main() 执行之后才延迟传入，因此若无保存值，
 /// 则一直跟随设备语言变化，直到用户按下开关。
@@ -67,7 +67,7 @@ class _DeviceLangFollower with WidgetsBindingObserver {
 
 /// 与设备 locale 相符的默认语言。
 AppLang langOf(Locale locale) =>
-    locale.languageCode == 'ko' ? AppLang.ko : AppLang.en;
+    locale.languageCode == 'zh' ? AppLang.zh : AppLang.en;
 
 /// 用韩英开关切换语言，并为下次运行记住该设置。
 Future<void> setAppLang(AppLang lang) async {

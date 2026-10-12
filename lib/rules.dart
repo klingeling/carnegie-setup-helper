@@ -305,7 +305,7 @@ class RulesSummaryScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         color: deptTypeColorOf(type),
         child: WordSafeText(
-          isEn ? type.en : (type == DeptType.rnd ? '연구\n개발' : type.ko),
+          isEn ? type.en : (type == DeptType.rnd ? '研究\n开发' : type.zh),
           textAlign: TextAlign.center,
           style: CarbonText.label01.copyWith(
             color: CarbonColors.textOnColor,
@@ -345,7 +345,7 @@ class RulesSummaryScreen extends StatelessWidget {
   }
 }
 
-/// 초기 세팅(게임 준비) 요약 모달 시트 (근거: 규칙서 4–5쪽 1~12번 —
+/// 초기 세팅(游戏设置) 요약 모달 시트 (근거: 규칙서 4–5쪽 1~12번 —
 /// UI에는 미표기). 부서 제외(4번)와 중립 디스크(9번)는 이 앱이 대신한다.
 class _SetupGuideSheet extends StatelessWidget {
   const _SetupGuideSheet();

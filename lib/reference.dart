@@ -39,7 +39,7 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
                     actions: [
                       TopIconButton(
                         icon: Icons.info_outline,
-                        tooltip: tr('부서 조직 방법', 'Building Departments'),
+                        tooltip: tr('建造部门', 'Building Departments'),
                         onTap: () => showModalBottomSheet<void>(
                           context: context,
                           backgroundColor: CarbonColors.background,
@@ -65,7 +65,7 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
                           Expanded(
                             child: LayoutBuilder(
                               builder: (context, constraints) {
-                                var title = tr('부서 도감', 'Departments');
+                                var title = tr('部门', 'Departments');
                                 if (isEn) {
                                   final full = TextPainter(
                                     text: TextSpan(
@@ -95,7 +95,7 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
                           ),
                           const SizedBox(width: CarbonSpacing.s3),
                           CarbonContentSwitcher(
-                            labels: [tr('기본판', 'Base'), tr('확장', 'Expansion')],
+                            labels: [tr('基础', 'Base'), tr('扩展', 'Expansion')],
                             selected: _tab,
                             onChanged: (i) => setState(() => _tab = i),
                           ),
@@ -270,7 +270,7 @@ class _OrganizeGuideSheet extends StatelessWidget {
                 const SizedBox(width: CarbonSpacing.s3),
                 Expanded(
                   child: Text(
-                    tr('부서 조직 방법', 'Building Departments'),
+                    tr('建造部门', 'Building Departments'),
                     style: CarbonText.heading03,
                   ),
                 ),
@@ -360,7 +360,7 @@ class _CatalogRow extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: CarbonSpacing.s2),
                   child: CarbonTag(
-                    text: tr('지속 효과', 'Ongoing'),
+                    text: tr('持续', 'Ongoing'),
                     bg: CarbonColors.tagAccentBg,
                     fg: CarbonColors.tagAccentText,
                   ),
@@ -369,7 +369,7 @@ class _CatalogRow extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: CarbonSpacing.s2),
                   child: CarbonTag(
-                    text: tr('게임 종료', 'Final Scoring'),
+                    text: tr('终局计分', 'Final Scoring'),
                     bg: CarbonColors.tagAccentBg,
                     fg: CarbonColors.tagAccentText,
                   ),
@@ -556,7 +556,7 @@ class IconReferenceScreen extends StatelessWidget {
                     children: [
                       // 규칙서 20쪽의 표제 구조: 제목 + 이중 밑줄.
                       Text(
-                        tr('아이콘 참조표', 'Icon Reference'),
+                        tr('图标参考', 'Icon Reference'),
                         style: CarbonText.heading05.copyWith(color: _refAccent),
                       ),
                       const SizedBox(height: CarbonSpacing.s3),

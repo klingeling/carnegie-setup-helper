@@ -271,10 +271,10 @@ void main() {
         await tester.pumpAndSettle();
         final header = find.text(DeptType.hr.label).first;
         final before = tester.getTopLeft(header);
-        await tester.tap(find.text(tr('확장', 'Expansion')));
+        await tester.tap(find.text(tr('扩展', 'Expansion')));
         await tester.pumpAndSettle();
         expect(tester.getTopLeft(header), before);
-        await tester.tap(find.text(tr('기본판', 'Base')));
+        await tester.tap(find.text(tr('基础', 'Base')));
         await tester.pumpAndSettle();
         expect(tester.getTopLeft(header), before);
       });

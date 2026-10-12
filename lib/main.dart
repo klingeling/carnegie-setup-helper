@@ -118,12 +118,12 @@ const _homeHeaderTop = 54.0;
 /// 韩英切换高度（dense 24 + 5，用户确认）。上划线行高度也相同。
 const _langSwitchHeight = 29.0;
 
-/// 韩英切换单元格宽度和总宽度（两格 + 边框 1px×2）—— 原 69px 与
+/// 韩英切换单元格宽度和总宽度（两格 + 边框 1px×2）— 原 69px 与
 /// 1.5 倍 104px 的中间值 86px（用户确认）。
 const _langSegmentWidth = 42.0;
 const _langSwitchWidth = _langSegmentWidth * 2 + 2;
 
-/// 从正文右端到切换右端 —— 对齐图标参考表图标字形
+/// 从正文右端到切换右端 — 对齐图标参考表图标字形
 /// 末端（44px 按钮内 22px 字形 → 按钮末端内 13px）。
 const _langSwitchInset = 13.0;
 
@@ -289,7 +289,7 @@ class _SetupScreenState extends State<SetupScreen> {
                               ),
                             );
                           }
-                          // 卡片:间距 = 170:15 —— 间距减为此前(85:15)的一半
+                          // 卡片:间距 = 170:15 — 间距减为此前(85:15)的一半
                           // 比例，剩余空间由卡片占据。
                           return Padding(
                             padding: const EdgeInsets.all(CarbonSpacing.s5),
@@ -310,7 +310,7 @@ class _SetupScreenState extends State<SetupScreen> {
                   ],
                 ),
                 // 顶部图标：与详细页面相同的 TopBar（正文列内，左右 16、
-                // 顶部 8）叠加在正文上方 —— 正文位置不变（用户确认）。
+                // 顶部 8）叠加在正文上方 — 正文位置不变（用户确认）。
                 Positioned(
                   top: 0,
                   left: CarbonSpacing.s5,
@@ -624,7 +624,7 @@ class _ResultScreenState extends State<ResultScreen> {
   /// 扩展模式种类选择标题（摘要、详细通用）。
   String get _chooseKindsTitle => tr('选择部门', 'Choose Departments');
   String get _chooseKindsSubtitle => tr(
-    '仅拿取以下编号各2个 —— 剩余放回游戏盒子中',
+    '仅拿取以下编号各2个 — 剩余放回游戏盒子中',
     'Take both copies of these numbers only — return the rest to the box',
   );
 
@@ -691,7 +691,7 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   Widget _deptTab() {
-    // 摘要（基础版）：只按编号顺序显示移除板块 · 摘要（扩展）：滑动标签两阶段 ——
+    // 摘要（基础版）：只按编号顺序显示移除板块 · 摘要（扩展）：滑动标签两阶段 —
     // 选择种类（编号芯片）→ 板块移除（网格）（用户确认方案 B）。
     // 详细：全部种类按编号顺序（显示使用/移除）。
     final all = _result.isExpansion ? allDepartments : departments;
@@ -724,7 +724,7 @@ class _ResultScreenState extends State<ResultScreen> {
           sliver: SliverList.list(children: _deptHeaderChildren()),
         ),
         if (!_detail) ...[
-          // 基础版摘要：与扩展相同的语法 —— 区块标题右侧重新抽取图标。
+          // 基础版摘要：与扩展相同的语法 — 区块标题右侧重新抽取图标。
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: CarbonSpacing.s5),
             sliver: SliverToBoxAdapter(
@@ -782,7 +782,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     horizontal: CarbonSpacing.s4,
                     vertical: CarbonSpacing.s3,
                   ),
-                  // 白色卡片标题 —— 用户确认。
+                  // 白色卡片标题 — 用户确认。
                   decoration: BoxDecoration(
                     color: CarbonColors.background,
                     border: Border(
@@ -939,7 +939,7 @@ class _ResultScreenState extends State<ResultScreen> {
           style: CarbonText.body01.copyWith(color: CarbonColors.textSecondary),
         ),
         const SizedBox(height: CarbonSpacing.s6),
-        // 重新抽取与部门板块格式相同 —— 第一个区块标题右侧图标。
+        // 重新抽取与部门板块格式相同 — 第一个区块标题右侧图标。
         _diskSectionHeader(
           tr('捐赠图表', 'Donation Chart'),
           tr(
@@ -1009,7 +1009,7 @@ class _ResultScreenState extends State<ResultScreen> {
         ),
         const SizedBox(height: CarbonSpacing.s6),
         _diskSectionHeader(
-          tr('游戏流程', 'Round Sequence'),
+          tr('回合流程', 'Round Sequence'),
           tr('5个步骤', '5 steps'),
           Icons.loop,
         ),
@@ -1127,7 +1127,7 @@ class _ResultScreenState extends State<ResultScreen> {
             (
               null,
               tr(
-                '捐赠图标 —— 按照本轮行动卡顶端的指示，在捐赠表的对应格放1个圆片；如果指示的格已经被占据（或是安德鲁已经没有圆片），他就不放圆片。沿着胜利分卡把安德鲁的行动卡向右平移一格。',
+                '捐赠图标 — 按照本轮行动卡顶端的指示，在捐赠表的对应格放1个圆片；如果指示的格已经被占据（或是安德鲁已经没有圆片），他就不放圆片。沿着胜利分卡把安德鲁的行动卡向右平移一格。',
                 'Donation symbol — place a disk on the donation space shown at the top of the card; if it is occupied (or Andrew is out of disks), place none and slide the card 1 space right',
               ),
               0,
@@ -1195,7 +1195,7 @@ class _ResultScreenState extends State<ResultScreen> {
         horizontal: CarbonSpacing.s4,
         vertical: CarbonSpacing.s3,
       ),
-      // 白色卡片标题（颜色条 + 浅色边框）—— 用户确认。
+      // 白色卡片标题（颜色条 + 浅色边框）— 用户确认。
       decoration: const BoxDecoration(
         color: CarbonColors.background,
         border: Border(
@@ -1262,7 +1262,7 @@ class _SummaryBar extends StatelessWidget {
       return Expanded(
         child: Container(
           padding: const EdgeInsets.all(CarbonSpacing.s5),
-          // 用白色卡片提亮 —— 只保留顶部颜色条（用户要求：消除暗淡）。
+          // 用白色卡片提亮 — 只保留顶部颜色条（用户要求：消除暗淡）。
           decoration: BoxDecoration(
             color: CarbonColors.background,
             border: Border(
@@ -1298,7 +1298,7 @@ class _SummaryBar extends StatelessWidget {
       );
     }
 
-    // 扩展（方案 B）：与摘要两阶段顺序相同 —— ① 使用的种类 ② 移除的板块。
+    // 扩展（方案 B）：与摘要两阶段顺序相同 — ① 使用的种类 ② 移除的板块。
     if (result.isExpansion) {
       return Row(
         children: [

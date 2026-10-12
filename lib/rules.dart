@@ -31,7 +31,7 @@ class RulesSummaryScreen extends StatelessWidget {
                     actions: [
                       TopIconButton(
                         icon: Icons.checklist,
-                        tooltip: tr('초기 세팅', 'Setup Checklist'),
+                        tooltip: tr('游戏设置清单', 'Setup Checklist'),
                         onTap: () => showModalBottomSheet<void>(
                           context: context,
                           backgroundColor: CarbonColors.background,
@@ -53,14 +53,14 @@ class RulesSummaryScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(CarbonSpacing.s5),
                     children: [
                       Text(
-                        tr('게임 룰 요약', 'Rules Summary'),
+                        tr('规则摘要', 'Rules Summary'),
                         style: CarbonText.heading05,
                       ),
                       const SizedBox(height: CarbonSpacing.s3),
                       Text(
                         tr(
-                          '20라운드 동안 회사를 운영해 가장 높은 승점을 얻는 '
-                              '플레이어가 승리합니다.',
+                          '20轮游戏中，玩家经营他们的公司；'
+                              '游戏结束时分数最多的玩家获胜。',
                           'Over 20 rounds, players run their Companies; the '
                               'player with the most VP at the end of the game '
                               'wins.',
@@ -71,7 +71,7 @@ class RulesSummaryScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: CarbonSpacing.s5),
                       _SectionHeader(
-                        title: tr('라운드 진행', 'Round Sequence'),
+                        title: tr('回合流程', 'Round Sequence'),
                         subtitle: tr('4단계', '4 parts'),
                       ),
                       _card([

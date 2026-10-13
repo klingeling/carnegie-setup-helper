@@ -41,7 +41,7 @@ const _lines = <_Line>[
   _Line(
     '货物方块',
     'Goods Cubes',
-    '시작 시 받을 상품 큐브 수',
+    '游戏开始时拥有的货物方块',
     'Goods cubes you start the game with',
     Icons.inventory_2_outlined,
     [
@@ -315,11 +315,11 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
       (tr('初始分数', 'Starting VP'), vp),
       (tr('员工移动步数', 'Setup moves'), moves),
       (
-        tr('初始资金（非起始玩家）', 'Starting money (not first player)'),
+        tr('初始资金(非起始玩家)', 'Starting money (not first player)'),
         '\$${_budget - _spent}',
       ),
       (
-        tr('初始资金（起始玩家）', 'Starting money (first player)'),
+        tr('初始资金(起始玩家)', 'Starting money (first player)'),
         '\$${_budget - _spent - _bid}',
       ),
     ];
@@ -395,7 +395,7 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
               ),
               child: Text(
                 tr(
-                  '超过限额 — 总花费，包括你的出价在内，不得超过\$$_budget',
+                  '总花费超出限额 — 包括你的出价在内，不得超出\$$_budget',
                   'Over the limit — the total cost, including your bid, may '
                       'not exceed \$$_budget',
                 ),
@@ -452,7 +452,7 @@ class _OptionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final costLabel = switch (cost) {
-      0 => tr('免费', 'Free'),
+      0 => tr('0', 'Free'),
       < 0 => '+\$${-cost}',
       _ => '\$$cost',
     };

@@ -17,6 +17,8 @@ typedef _Option = (String, String, int);
 /// 선택지의 현재 언어 표시 값.
 String _optionLabel(_Option o) => tr(o.$1, o.$2);
 
+String _money(int v) => v < 0 ? '-\$${-v}' : '\$$v';
+
 /// 줄 이름의 영문은 실물 시트 표기(1st Player Auction, Goods Cubes,
 /// Workers in Lobby, Victory Points, Setup Moves)를 따른다.
 class _Line {
@@ -316,11 +318,11 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
       (tr('员工移动步数', 'Setup moves'), moves),
       (
         tr('初始资金(非起始玩家)', 'Starting money (not first player)'),
-        '\$${_budget - _spent}',
+        _money(_budget - _spent),
       ),
       (
         tr('初始资金(起始玩家)', 'Starting money (first player)'),
-        '\$${_budget - _spent - _bid}',
+        _money(_budget - _spent - _bid),
       ),
     ];
     return Container(
@@ -411,16 +413,15 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
               Expanded(
                 child: Text(
                   tr(
-                    '花费\$$_spent · 出价\$$_bid',
-                    'Spent \$$_spent · Bid \$$_bid',
-                  ),
+                    '花费${_money(_spent)} · 出价${_money(_bid)}',
+                    'Spent ${_money(_spent)} · Bid ${_money(_bid)}'),
                   style: CarbonText.body01.copyWith(
                     color: CarbonColors.textSecondary,
                   ),
                 ),
               ),
               Text(
-                tr('剩余\$$remain', 'Remaining \$$remain'),
+                tr('剩余${_money(remain)}', 'Remaining ${_money(remain)}'),
                 style: CarbonText.heading02.copyWith(
                   color: _overBudget
                       ? CarbonColors.supportError

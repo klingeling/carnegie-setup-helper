@@ -397,7 +397,7 @@ class _SetupGuideSheet extends StatelessWidget {
                 const SizedBox(width: CarbonSpacing.s3),
                 Expanded(
                   child: Text(
-                    tr('초기 세팅', 'Setup Checklist'),
+                    tr('游戏设置清单', 'Setup Checklist'),
                     style: CarbonText.heading03,
                   ),
                 ),

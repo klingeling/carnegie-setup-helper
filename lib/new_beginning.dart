@@ -108,7 +108,7 @@ class NewBeginningScreen extends StatefulWidget {
 
 class _NewBeginningScreenState extends State<NewBeginningScreen> {
   /// 줄별 선택 인덱스 (기본값: 각 줄의 최저가 선택지).
-  final _selected = <int>[0, 0, 2, 0];
+  final _selected = <int>[2, 2, 2, 2];
   final _bidController = TextEditingController();
 
   @override
@@ -206,6 +206,7 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
 
   /// 선택지 5개를 두 줄(3개 + 2개)로 배치한다 (사용자 확정 레이아웃).
   /// 모든 칸은 3열 기준의 같은 폭 — 아랫줄 2개도 윗줄과 동일한 크기.
+  /// 5 个选项排成一行，等宽。
   Widget _optionRows(int lineIndex, _Line line) {
     Widget chip(int j, double width) => SizedBox(
       width: width,
@@ -218,27 +219,13 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
     );
     return LayoutBuilder(
       builder: (context, constraints) {
-        final width = (constraints.maxWidth - 2 * CarbonSpacing.s3) / 3;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        final width = (constraints.maxWidth - 4 * CarbonSpacing.s3) / 5;
+        return Row(
           children: [
-            Row(
-              children: [
-                chip(0, width),
-                const SizedBox(width: CarbonSpacing.s3),
-                chip(1, width),
-                const SizedBox(width: CarbonSpacing.s3),
-                chip(2, width),
-              ],
-            ),
-            const SizedBox(height: CarbonSpacing.s3),
-            Row(
-              children: [
-                chip(3, width),
-                const SizedBox(width: CarbonSpacing.s3),
-                chip(4, width),
-              ],
-            ),
+            for (var j = 0; j < line.options.length; j++) ...[
+              if (j > 0) const SizedBox(width: CarbonSpacing.s3),
+              chip(j, width),
+            ],
           ],
         );
       },

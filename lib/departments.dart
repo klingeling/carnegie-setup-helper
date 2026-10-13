@@ -4,10 +4,10 @@ import 'l10n.dart';
 
 /// The four Carnegie action types a department belongs to.
 enum DeptType {
-  hr('인사', 'Human Resources'),
-  management('경영', 'Management'),
-  construction('건설', 'Construction'),
-  rnd('연구개발', 'R&D');
+  hr('人力资源', 'Human Resources'),
+  management('管理', 'Management'),
+  construction('建设', 'Construction'),
+  rnd('研发', 'R&D');
 
   const DeptType(this.zh, this.en);
   final String zh;

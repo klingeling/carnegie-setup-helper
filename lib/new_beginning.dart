@@ -323,12 +323,12 @@ class _NewBeginningScreenState extends State<NewBeginningScreen> {
       (tr('货物方块', 'Goods cubes'), goods),
       (
         tr('员工', 'Employees'),
-        tr('5名激活 + $workers大厅中的', '5 active + $workers in Lobby'),
+        tr('5名激活的 + $workers大厅中的员工', '5 active + $workers in Lobby'),
       ),
       (tr('初始分数', 'Starting VP'), vp),
       (tr('员工移动步数', 'Setup moves'), moves),
       (
-        tr('初始资金（非起始玩家）)', 'Starting money (not first player)'),
+        tr('初始资金（非起始玩家）', 'Starting money (not first player)'),
         '\$${_budget - _spent}',
       ),
       (

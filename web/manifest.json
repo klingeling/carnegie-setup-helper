@@ -1,6 +1,6 @@
 {
-    "name": "카네기 셀렉터",
-    "short_name": "카네기 셀렉터",
+    "name": "卡内基设置助手",
+    "short_name": "卡内基设置助手",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

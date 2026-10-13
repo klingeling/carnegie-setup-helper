@@ -80,7 +80,7 @@ const regionColors = <String, Color>{
 
 /// 单人游戏准备与双人相同，因此合并为一个选项。
 String playerLabel(int p) =>
-    p == 2 ? tr('1-2名玩家', '1-2 Players') : tr('$p名玩家', '$p Players');
+    p == 2 ? tr('1-2人', '1-2 Players') : tr('$p人', '$p Players');
 
 /// 按部门移除状态，以实体设置术语表示。
 /// [boxedKind]：在扩展模式中未能进入按类型 4 选的选择，从而整类放回盒中的种类。

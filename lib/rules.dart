@@ -72,102 +72,102 @@ class RulesSummaryScreen extends StatelessWidget {
                       const SizedBox(height: CarbonSpacing.s5),
                       _SectionHeader(
                         title: tr('回合流程', 'Round Sequence'),
-                        subtitle: tr('4단계', '4 parts'),
+                        subtitle: tr('4个部分', '4 parts'),
                       ),
                       _card([
                         _numRow(
                           1,
-                          tr('타임라인 선택', 'Select Timeline'),
+                          tr('选择时间轴', 'Select Timeline'),
                           tr(
-                            '시작 플레이어가 인사·경영·건설·연구개발 중 하나를 골라 타임라인 마커를 놓습니다.',
+                            '起始玩家选择自己想使用哪个时间轴：人力资源、管理、建设或研发，然后将时间轴标记(齿轮)直接放到那一行的行动标记的右边。',
                             "The first player selects Human Resources, Management, Construction, or R&D and places the Timeline marker to the right of that action's marker.",
                           ),
                         ),
                         _numRow(
                           2,
-                          tr('이벤트', 'Events'),
+                          tr('活动', 'Events'),
                           tr(
-                            '마커가 놓인 칸의 이벤트(수입 또는 기부)가 모든 플레이어에게 발생합니다.',
+                            '放置时间轴标记将会为所有玩家触发1个活动(收入或捐赠)。',
                             'Placing the Timeline marker triggers an event (income or donation) for all players.',
                           ),
                         ),
                         _numRow(
                           3,
-                          tr('부서 사용', 'Use Departments'),
+                          tr('使用部门', 'Use Departments'),
                           tr(
-                            '시작 플레이어부터 시계 방향으로, 선택된 행동과 같은 종류의 자기 부서들을 사용합니다. 각 부서는 활성화된 직원 1명당 1번씩 쓸 수 있습니다.',
+                            '起始玩家可以按任意顺序使用所选行动类型的所有部门。然后，按顺时针的顺序，其他玩家也可以使用各自相对应类型的所有部门。每有1名激活的员工，部门就可以使用1次。',
                             'Starting with the first player and going clockwise, players use their Departments that correspond to the chosen action type. Each Department may be used once for each active employee in it.',
                           ),
                         ),
                         _numRow(
                           4,
                           tr(
-                            '직원 활성화·라운드 종료',
+                            '激活员工&一轮结束',
                             'Activate Employees & End of Round',
                           ),
                           tr(
-                            '사무공간에 표시된 비용을 내고 직원을 활성화한 뒤, 행동 마커를 오른쪽으로 1칸 전진시킵니다.',
+                            '玩家可以支付员工当前所在部门空闲工位下方的费用激活。最后，所选时间轴上的行动标记向右移动一格。',
                             'Pay the cost indicated on the Workstation to activate employees, then move the action marker one space to the right.',
                           ),
                         ),
                       ]),
-                      _SectionHeader(title: tr('이벤트', 'Events')),
+                      _SectionHeader(title: tr('活动', 'Events')),
                       _card([
                         _iconRow(
                           Icons.payments_outlined,
-                          tr('수입 받기', 'Take Income'),
+                          tr('获得收入', 'Take Income'),
                           tr(
-                            '활성화된 파견 지역의 직원을 원하는 만큼 로비로 복귀시키고, 복귀한 직원마다 운송 수입을 받습니다. 1명 이상 복귀시켰다면 지어 둔 프로젝트 수입도 받습니다(라운드당 1번).',
+                            '从被激活的任务区收回1名或多名员工到自己的公司大厅；每名收回的员工都会引发运输收入。然后，每位从被激活的任务区收回了员工的玩家，都可以依据各自在游戏图版任意位置建造的每个项目来获得项目收入(每轮一次)。',
                             'Return 1 or more of your employees from the active Mission area to your Lobby; each one generates transport income. If you returned at least one, you also receive project income from your built projects (once per round).',
                           ),
                         ),
                         _iconRow(
                           Icons.volunteer_activism_outlined,
-                          tr('기부하기', 'Make a Donation'),
+                          tr('进行1次捐赠', 'Make a Donation'),
                           tr(
-                            '기부 차트의 빈칸에 디스크를 놓습니다. 첫 기부는 \$5이고, 이후 기부할 때마다 \$5씩 비싸집니다(\$10, \$15…).',
+                            '把自己的1个圆片放在捐赠表上1个未被占据的空格上。首次捐赠需要支付\$5，该玩家之后的每次捐赠都将增加\$5(第2次捐赠是\$10，第 3 次捐赠是\$15，以此类推……)。',
                             'Place a disk on an unoccupied space of the donation chart. Your first donation costs \$5; each subsequent donation costs \$5 more (\$10, \$15…).',
                           ),
                         ),
                       ]),
-                      _SectionHeader(title: tr('4가지 행동', 'The Four Actions')),
+                      _SectionHeader(title: tr('4种行动', 'The Four Actions')),
                       _card([
                         _typeRow(
                           DeptType.hr,
                           tr(
-                            '활성화된 인사 직원 1명당 직원 이동 3회(항상 최소 3회). 가로·세로로만 이동하며, 활성화된 직원은 이동하면 비활성화됩니다.',
+                            '每名激活的员工提供3步移动(至少有3步移动可用)。必须是横着或竖着移动；移动1名激活的员工会使他变回未激活状态。',
                             'Each active employee in Human Resources provides 3 moves (always at least 3). Moves are orthogonal only; an active employee that moves becomes inactive.',
                           ),
                         ),
                         _typeRow(
                           DeptType.management,
                           tr(
-                            '"상업과 재무"로 돈·상품을 얻고, "전략 기획"으로 새 부서를 조직합니다(큐브 2개, 직원이 있는 빈칸이면 1개).',
+                            '“商业和金融”提供货物或钱；“战略规划”可以建造新部门(2个货物方块，或者1个货物方块在至少1名员工的空格上)。',
                             '"Commerce and Finance" provides money or goods; "Strategic Planning" builds new Departments (2 goods cubes, or 1 on a free space that already contains an employee).',
                           ),
                         ),
                         _typeRow(
                           DeptType.construction,
                           tr(
-                            '직원 1명을 파견 보내고 큐브 1~2개를 지불해 그 지역에 프로젝트를 짓습니다. 소도시에 지으면 즉시 운송 수입을 받습니다.',
+                            '派出一名员工执行任务，并支付1-2个货物方块在该区域建造一个项目。在某些小城市上建造可以立刻获得运输收入。',
                             'Send an employee on a Mission and pay 1-2 goods cubes to build a project in that region. Building in certain small cities gives immediate transport income.',
                           ),
                         ),
                         _typeRow(
                           DeptType.rnd,
                           tr(
-                            '활성화된 직원마다 연구 점수를 얻어 프로젝트 탭이나 운송 트랙을 전진시킵니다. 남은 점수는 차례가 끝나면 사라집니다.',
+                            '每名激活的员工都能为自己提供研究点，可以提升运输网络，开发新的建设项目。玩家回合结束时未用完的研究点将清零。',
                             'Each active employee provides study points to advance project tabs or transport disks. Unused study points are lost at the end of the turn.',
                           ),
                         ),
                       ]),
-                      _SectionHeader(title: tr('꼭 기억할 것', 'Remember')),
+                      _SectionHeader(title: tr('注意', 'Remember')),
                       _card([
                         _iconRow(
                           Icons.paid_outlined,
                           null,
                           tr(
-                            '직원 활성화 비용은 사무공간 아래 금액이며, 라운드 종료 시에만 활성화할 수 있습니다.',
+                            '部门工位下的\$数值为激活费用；员工只能在一轮结束时被激活。',
                             'The activation cost is the amount shown under the Workstation; employees may only be activated at the end of a round.',
                           ),
                         ),
@@ -175,7 +175,7 @@ class RulesSummaryScreen extends StatelessWidget {
                           Icons.outbound_outlined,
                           null,
                           tr(
-                            '파견 중인 직원은 활성화된 것으로 치지 않습니다.',
+                            '在任务区的员工不被视为激活的员工。',
                             'Employees on Missions are not considered to be active.',
                           ),
                         ),
@@ -183,7 +183,7 @@ class RulesSummaryScreen extends StatelessWidget {
                           Icons.currency_exchange,
                           null,
                           tr(
-                            '상품 큐브는 언제든 개당 \$1에 팔 수 있습니다.',
+                            '玩家可以在任何时候把自己的货物方块放回公共供应堆中，每放回1个可以换\$1。',
                             'Goods cubes may be sold to the supply at any time for \$1 each.',
                           ),
                         ),
@@ -191,20 +191,20 @@ class RulesSummaryScreen extends StatelessWidget {
                           Icons.swap_horiz,
                           null,
                           tr(
-                            '(3·4인) 행동 선택 타일로 선택된 것과 다른 행동을 게임당 1번 할 수 있습니다. 쓰지 않으면 종료 시 3점입니다.',
+                            '(3-4人游戏)每局游戏一次，可以选择1个不同于起始玩家所选的行动类型。在游戏结束时，未使用的行动选择板块价值3分。',
                             '(3-4 players) An Action Choice tile lets you select an action type different from the one chosen, once per game. An unused tile is worth 3 VP at the end of the game.',
                           ),
                         ),
                       ]),
                       _SectionHeader(
-                        title: tr('게임 종료 승점', 'End-of-Game Scoring'),
+                        title: tr('终局计分', 'End-of-Game Scoring'),
                       ),
                       _card([
                         _iconRow(
                           Icons.person,
                           null,
                           tr(
-                            '활성화된 직원 1명당 1점 (파견 나간 직원과 영구 직원은 제외).',
+                            '每名激活的员工1分。(执行任务和初始人力资源部门的永久员工不计算在内)。',
                             '1 VP per active employee (not counting employees on Missions or the permanent employee).',
                           ),
                         ),
@@ -212,7 +212,7 @@ class RulesSummaryScreen extends StatelessWidget {
                           Icons.grid_view,
                           null,
                           tr(
-                            '조직한 부서당 2~3점 (회사판 최상단 행에 놓인 부서는 3점).',
+                            '游戏过程中建造的每个部门2-3分(每个建造在公司顶层的部门价值3分)。',
                             "2-3 VP per Department built (3 VP in the Company board's topmost row).",
                           ),
                         ),
@@ -220,7 +220,7 @@ class RulesSummaryScreen extends StatelessWidget {
                           Icons.trending_up,
                           null,
                           tr(
-                            '프로젝트 탭 전진 — 주거 최대 6점 · 상업 9점 · 산업 12점 · 사회 기반시설 15점.',
+                            '项目标签的分数 — 住宅最多6分 · 商业最多9分 · 工业最多12分 · 公共设施最多15分。',
                             'Project tabs — up to 6 VP for Housing · 9 Commerce · 12 Industry · 15 Public Infrastructure.',
                           ),
                         ),
@@ -228,14 +228,14 @@ class RulesSummaryScreen extends StatelessWidget {
                           Icons.route_outlined,
                           null,
                           tr(
-                            '대도시(뉴욕·시카고·뉴올리언스·샌프란시스코) 연결 최대 36점, 지은 프로젝트마다 도시별 0~3점.',
+                            '来自大城市(纽约、芝加哥、新奥尔良、旧金山)之间的连接分数，最多36分；每个建造在城市的建设项目0-3分。',
                             'Connections between major cities (New York, Chicago, New Orleans, San Francisco) up to 36 VP; 0-3 VP per project as shown for each city.',
                           ),
                         ),
                         _iconRow(
                           Icons.volunteer_activism_outlined,
                           null,
-                          tr('기부당 최대 12점.', 'Up to 12 VP per donation.'),
+                          tr('每项捐赠最多12分。', 'Up to 12 VP per donation.'),
                         ),
                       ]),
                       const SizedBox(height: CarbonSpacing.s7),
@@ -305,7 +305,7 @@ class RulesSummaryScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         color: deptTypeColorOf(type),
         child: WordSafeText(
-          isEn ? type.en : (type == DeptType.rnd ? '研发' : type.zh),
+          isEn ? type.en : (type == DeptType.hr ? '人力\n资源' : type.zh),
           textAlign: TextAlign.center,
           style: CarbonText.label01.copyWith(
             color: CarbonColors.textOnColor,
@@ -351,17 +351,16 @@ class _SetupGuideSheet extends StatelessWidget {
   const _SetupGuideSheet();
 
   static const _steps = <String>[
-    '타임라인 타일 무작위 4개 + 시작·종료 타일',
-    '행동 마커 4개를 시작 위치에',
-    '부서 타일 제외\n2인 16 · 3인 8 · 4인 4 (이 앱이 대신)',
-    '각자: 큐브 4 + \$12 · 회사판 + 탭 4\n직원 10(5 세움, 5 로비, 5 예비)',
-    '각자 디스크 배치: 승점 0칸 · 운송 트랙 4곳 첫 칸\n주거·상업·산업 탭 '
-        '1개씩',
-    '시작 플레이어 정하기',
-    '행동 선택 타일\n4인 전원 · 3인 셋째만 · 2인 없음',
-    '중립 디스크\n2인 18 · 3인 9 · 4인 생략 (이 앱이 대신)',
-    '반시계로: 주거 디스크 1개 + 첫 부서 타일 고르기',
-    '시계로: 직원 최대 6회 이동 후 활성화',
+    '4个随机时间轴板块 + 起点和终点板块',
+    '4个行动标记放到对应起点位置',
+    '移除部门板块\n2人游戏：16个 · 3人游戏：8个 · 4人游戏：4个(由此APP设置)',
+    '每位玩家: 4个货物方块 + \$12 · 公司图版 + 4个项目标签\n10名员工(5名站立，5名在大厅) · 5名放在旁边',
+    '每位玩家的圆片：1个放到计分轨道“0” · 4个区域的运输轨道的第一格各放1个\n项目标签的3个空格上(住宅、商业和工业)各放1个',
+    '选择起始玩家',
+    '行动选择板块\n4人游戏：每人1个 · 3人游戏：第3顺位获得1个 · 2人游戏：无',
+    '中立圆片\n2人游戏：18个 · 3人游戏：9个 · 4人游戏：跳过(由此APP设置)',
+    '逆时针：1个住宅圆片 + 选择第1个部门板块',
+    '顺时针：最多6步员工移动，然后激活',
   ];
 
   /// 영문 규칙서 4–5쪽 Game Setup 2~11번 요약.

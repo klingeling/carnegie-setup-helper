@@ -684,10 +684,15 @@ class _ResultScreenState extends State<ResultScreen> {
 
   /// 扩展模式种类选择标题（摘要、详细通用）。
   String get _chooseKindsTitle => tr('选择部门', 'Choose Departments');
-  String get _chooseKindsSubtitle => tr(
-    '仅拿取以下编号各2个 — 剩余放回游戏盒子中',
-    'Take both copies of these numbers only — return the rest to the box',
-  );
+  String get _chooseKindsSubtitle => _result.isOpenSetup
+      ? tr(
+          '仅拿取所有编号各1个 — 剩余放回游戏盒子中',
+          'Take 1 copy of every number only — return the rest to the box',
+        )
+      : tr(
+          '仅拿取以下编号各2个 — 剩余放回游戏盒子中',
+          'Take both copies of these numbers only — return the rest to the box',
+        );
 
   void _reroll() => setState(() {
     final p = _result.playerCount;
@@ -778,7 +783,9 @@ class _ResultScreenState extends State<ResultScreen> {
               final byType = a.type.index.compareTo(b.type.index);
               return byType != 0 ? byType : a.number.compareTo(b.number);
             }));
-    if (!_detail && _result.isExpansion) return _expansionSummaryTab(shown);
+    if (!_detail && (_result.isExpansion || _result.isOpenSetup)) {
+      return _expansionSummaryTab(shown);
+    }
     return CustomScrollView(
       slivers: [
         SliverPadding(
@@ -813,7 +820,7 @@ class _ResultScreenState extends State<ResultScreen> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: CarbonSpacing.s5),
             sliver: SliverList.list(
-              children: _result.isExpansion
+              children: (_result.isExpansion || _result.isOpenSetup)
                   ? [
                       _diskSectionHeader(
                         _chooseKindsTitle,
@@ -827,15 +834,10 @@ class _ResultScreenState extends State<ResultScreen> {
                   : [
                       _diskSectionHeader(
                         tr('全部部门', 'All Departments'),
-                        _result.isOpenSetup
-                            ? tr(
-                                '全部32种部门 — 每种1个',
-                                'All 32 Departments — 1 copy each',
-                              )
-                            : tr(
-                                '全部16种部门 — 使用/移除',
-                                'All 16 Departments — in play / removed',
-                              ),
+                        tr(
+                          '全部16种部门 — 使用/移除',
+                          'All 16 Departments — in play / removed',
+                        ),
                         Icons.grid_view,
                         trailing: _rerollIconButton(),
                       ),

@@ -18,6 +18,14 @@ enum DeptType {
   String get altLabel => tr(en, zh);
 }
 
+/// 游戏设置模式。
+enum GameMode {
+  base, // 基础游戏
+  baseExpansion, // 基础+扩展
+  expansionOnly, // 仅扩展
+  openSetup, // 开放式设置
+}
+
 class Department {
   const Department({
     required this.number,
@@ -541,37 +549,54 @@ const copiesPerDepartment = 2;
 const removalByPlayerCount = <int, int>{1: 16, 2: 16, 3: 8, 4: 4};
 
 class DrawResult {
-  DrawResult(this.playerCount, this.removed) : selectedKinds = null;
+  DrawResult.base(this.playerCount, this.removed)
+    : selectedKinds = null,
+      mode = GameMode.base;
 
   DrawResult.expansion(
     this.playerCount,
     this.removed,
     Set<int> this.selectedKinds,
-  );
+  ) : mode = GameMode.baseExpansion;
+
+  DrawResult.expansionOnly(
+    this.playerCount,
+    this.removed,
+    Set<int> this.selectedKinds,
+  ) : mode = GameMode.expansionOnly;
+
+  DrawResult.openSetup(this.playerCount, this.removed)
+    : selectedKinds = allDepartments.map((d) => d.number).toSet(),
+      mode = GameMode.openSetup;
 
   final int playerCount;
-
-  /// Department number -> number of copies removed (0, 1, or 2).
   final Map<int, int> removed;
-
-  /// 확장 모드에서 이번 게임에 사용하는 16종의 번호. null이면 기본판 모드.
   final Set<int>? selectedKinds;
+  final GameMode mode;
 
-  bool get isExpansion => selectedKinds != null;
+  bool get isExpansion =>
+      mode == GameMode.baseExpansion || mode == GameMode.expansionOnly;
 
-  /// 이번 게임에 사용하는 부서 종류 목록(항상 16종).
-  List<Department> get pool => selectedKinds == null
-      ? departments
-      : [
-          for (final d in allDepartments)
-            if (selectedKinds!.contains(d.number)) d,
-        ];
+  bool get isOpenSetup => mode == GameMode.openSetup;
+
+  /// 每种部门在盒中的份数：开放式设置为 1，其余为 2。
+  int get copiesPerDept => isOpenSetup ? 1 : copiesPerDepartment;
+
+  /// 이번 게임에 사용하는 부서 종류 목록.
+  List<Department> get pool => switch (mode) {
+    GameMode.base => departments,
+    GameMode.openSetup => allDepartments,
+    _ => [
+      for (final d in allDepartments)
+        if (selectedKinds!.contains(d.number)) d,
+    ],
+  };
 
   int removedOf(Department d) => removed[d.number] ?? 0;
-  int keptOf(Department d) => copiesPerDepartment - removedOf(d);
+  int keptOf(Department d) => copiesPerDept - removedOf(d);
 
   int get totalRemoved => removalByPlayerCount[playerCount]!;
-  int get totalKept => pool.length * copiesPerDepartment - totalRemoved;
+  int get totalKept => pool.length * copiesPerDept - totalRemoved;
 }
 
 DrawResult draw(int playerCount, [Random? random]) {
@@ -585,7 +610,7 @@ DrawResult draw(int playerCount, [Random? random]) {
   for (final n in pool.take(removalByPlayerCount[playerCount]!)) {
     removed[n] = (removed[n] ?? 0) + 1;
   }
-  return DrawResult(playerCount, removed);
+  return DrawResult.base(playerCount, removed);
 }
 
 /// 확장 룰북 2쪽 "새로운 부서" 준비: 부서 타일을 유형별로 나눠 유형마다
@@ -612,4 +637,41 @@ DrawResult drawExpansion(int playerCount, [Random? random]) {
     removed[n] = (removed[n] ?? 0) + 1;
   }
   return DrawResult.expansion(playerCount, removed, selected);
+}
+/// 仅扩展：只从扩展部门中按类型各抽 4 种，共 16 种。
+DrawResult drawExpansionOnly(int playerCount, [Random? random]) {
+  final rng = random ?? Random();
+  final selected = <int>{};
+  for (final type in DeptType.values) {
+    final kinds = [
+      for (final d in expansionDepartments)
+        if (d.type == type) d.number,
+    ]..shuffle(rng);
+    selected.addAll(kinds.take(4));
+  }
+
+  final pool = [
+    for (final n in selected)
+      for (var i = 0; i < copiesPerDepartment; i++) n,
+  ]..shuffle(rng);
+
+  final removed = <int, int>{};
+  for (final n in pool.take(removalByPlayerCount[playerCount]!)) {
+    removed[n] = (removed[n] ?? 0) + 1;
+  }
+  return DrawResult.expansionOnly(playerCount, removed, selected);
+}
+
+/// 开放式设置：基础 + 扩展全部 32 种，每种 1 个。
+DrawResult drawOpenSetup(int playerCount, [Random? random]) {
+  final rng = random ?? Random();
+  final pool = [
+    for (final d in allDepartments) d.number, // 每种 1 个
+  ]..shuffle(rng);
+
+  final removed = <int, int>{};
+  for (final n in pool.take(removalByPlayerCount[playerCount]!)) {
+    removed[n] = (removed[n] ?? 0) + 1;
+  }
+  return DrawResult.openSetup(playerCount, removed);
 }

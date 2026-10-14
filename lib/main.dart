@@ -88,6 +88,10 @@ enum TileState { removeBoth, removeOne, keepBoth, boxedKind }
 
 extension on DrawResult {
   TileState stateOf(Department d) {
+    // 开放式设置：全部种类上场，没有 boxedKind，每种最多 1 个。
+    if (isOpenSetup) {
+      return removedOf(d) > 0 ? TileState.removeOne : TileState.keepBoth;
+    }
     if (isExpansion && !selectedKinds!.contains(d.number)) {
       return TileState.boxedKind;
     }
@@ -129,8 +133,10 @@ const _langSwitchInset = 13.0;
 
 class _SetupScreenState extends State<SetupScreen> {
   /// 是否包含扩展 #1“新部门”（仅本会话，默认关闭）。
-  bool _expansion = false;
+  GameMode _mode = GameMode.base;
 
+  // bool get _expansion =>
+  //     _mode == GameMode.baseExpansion || _mode == GameMode.expansionOnly;
   // 设备区域设置延迟传入等情况导致语言在切换外变化时，也重绘首页。
   void _onLang() => setState(() {});
 
@@ -228,11 +234,24 @@ class _SetupScreenState extends State<SetupScreen> {
                               child: CarbonContentSwitcher(
                                 labels: [
                                   tr('基础游戏', 'Base Game'),
-                                  tr('基础+扩展', 'With Expansion'),
+                                  tr('基础+扩展', 'Base + Expansion'),
+                                  tr('仅扩展', 'Expansion Only'),
+                                  tr('开放式设置', 'Open Setup'),
                                 ],
-                                selected: _expansion ? 1 : 0,
-                                onChanged: (i) =>
-                                    setState(() => _expansion = i == 1),
+                                selected: switch (_mode) {
+                                  GameMode.base => 0,
+                                  GameMode.baseExpansion => 1,
+                                  GameMode.expansionOnly => 2,
+                                  GameMode.openSetup => 3,
+                                },
+                                onChanged: (i) => setState(() {
+                                  _mode = switch (i) {
+                                    0 => GameMode.base,
+                                    1 => GameMode.baseExpansion,
+                                    2 => GameMode.expansionOnly,
+                                    _ => GameMode.openSetup,
+                                  };
+                                }),
                               ),
                             ),
                             // 模式说明放在切换与人数卡中间，
@@ -242,15 +261,24 @@ class _SetupScreenState extends State<SetupScreen> {
                             SizedBox(
                               height: 16,
                               child: Text(
-                                _expansion
-                                    ? tr(
-                                        '从每类8种中抽取4种，以16种进行游戏',
-                                        'Draw 4 of the 8 Departments of each type — 16 in play',
-                                      )
-                                    : tr(
-                                        '仅使用基础游戏16种部门',
-                                        'Uses the 16 base-game Departments as they are',
-                                      ),
+                                switch (_mode) {
+                                  GameMode.base => tr(
+                                    '仅使用基础游戏16种部门',
+                                    'Uses only the 16 base-game Departments',
+                                  ),
+                                  GameMode.baseExpansion => tr(
+                                    '从每类8种中抽取4种，以16种进行游戏',
+                                    'Draw 4 of the 8 Departments of each type — 16 in play',
+                                  ),
+                                  GameMode.expansionOnly => tr(
+                                    '仅使用扩展中16种部门',
+                                    'Uses only Expansion Departments',
+                                  ),
+                                  GameMode.openSetup => tr(
+                                    '使用基础与扩展全部32种部门，每种1个',
+                                    'Use all 32 base + expansion Departments, 1 copy each',
+                                  ),
+                                },
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: CarbonText.helperText01,
@@ -260,13 +288,18 @@ class _SetupScreenState extends State<SetupScreen> {
                           ];
                           Widget tile(int p) => _PlayerTile(
                             players: p,
-                            expansion: _expansion,
+                            mode: _mode,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => ResultScreen(
-                                  result: _expansion
-                                      ? drawExpansion(p)
-                                      : draw(p),
+                                  result: switch (_mode) {
+                                    GameMode.base => draw(p),
+                                    GameMode.baseExpansion => drawExpansion(p),
+                                    GameMode.expansionOnly => drawExpansionOnly(
+                                      p,
+                                    ),
+                                    GameMode.openSetup => drawOpenSetup(p),
+                                  },
                                 ),
                               ),
                             ),
@@ -389,23 +422,29 @@ class _SetupScreenState extends State<SetupScreen> {
 class _PlayerTile extends StatelessWidget {
   const _PlayerTile({
     required this.players,
+    required this.mode,
     required this.onTap,
-    this.expansion = false,
   });
 
   final int players;
-
-  /// 点击卡片直接进入抽取结果页面（没有单独的确认按钮）。
+  final GameMode mode;
   final VoidCallback onTap;
-
-  /// 扩展模式下在人数旁显示扩展标记图标。
-  final bool expansion;
 
   @override
   Widget build(BuildContext context) {
     final removed = removalByPlayerCount[players]!;
-    // 基础版、扩展都以 16 种×2 张 = 32 张开始。
-    final kept = departments.length * copiesPerDepartment - removed;
+
+    final isOpen = mode == GameMode.openSetup;
+    final totalTiles = isOpen
+        ? allDepartments.length
+        : departments.length * copiesPerDepartment;
+    final kept = totalTiles - removed;
+
+    // 扩展标记：基础+扩展 / 仅扩展显示扩展图标；开放式设置显示另一个图标。
+    final showExpansionMark =
+        mode == GameMode.baseExpansion || mode == GameMode.expansionOnly;
+    final showOpenMark = mode == GameMode.openSetup;
+
     return Material(
       color: CarbonColors.background,
       shape: const RoundedRectangleBorder(
@@ -417,7 +456,6 @@ class _PlayerTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(CarbonSpacing.s5),
           child: Column(
-            // 卡片纵向拉伸时内容纵向居中。
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -438,10 +476,18 @@ class _PlayerTile extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        if (expansion) ...[
+                        if (showExpansionMark) ...[
                           const SizedBox(width: CarbonSpacing.s2),
                           const Icon(
                             Icons.dashboard_customize_outlined,
+                            size: 14,
+                            color: CarbonColors.textSecondary,
+                          ),
+                        ],
+                        if (showOpenMark) ...[
+                          const SizedBox(width: CarbonSpacing.s2),
+                          const Icon(
+                            Icons.extension_outlined,
                             size: 14,
                             color: CarbonColors.textSecondary,
                           ),
@@ -458,13 +504,20 @@ class _PlayerTile extends StatelessWidget {
               ),
               const SizedBox(height: CarbonSpacing.s5),
               Text(
-                tr('移除$removed个板块', 'Remove $removed tiles'),
+                isOpen
+                    ? tr('移除$removed种部门', 'Remove $removed kinds')
+                    : tr('移除$removed个板块', 'Remove $removed tiles'),
                 style: CarbonText.body01.copyWith(
                   color: CarbonColors.supportError,
                 ),
               ),
               Text(
-                tr('使用$kept个', '$kept tiles in play'),
+                isOpen
+                    ? tr(
+                        '使用$kept种部门(每种1个)',
+                        '$kept kinds in play (1 copy each)',
+                      )
+                    : tr('使用$kept个', '$kept tiles in play'),
                 style: CarbonText.helperText01,
               ),
               Text(
@@ -605,6 +658,14 @@ class _ResultScreenState extends State<ResultScreen> {
                     color: CarbonColors.textSecondary,
                   ),
                 ],
+                if (_result.isOpenSetup) ...[
+                  const SizedBox(width: 6),
+                  const Icon(
+                    Icons.extension_outlined,
+                    size: 22,
+                    color: CarbonColors.textSecondary,
+                  ),
+                ],
               ],
             ),
           ),
@@ -628,11 +689,15 @@ class _ResultScreenState extends State<ResultScreen> {
     'Take both copies of these numbers only — return the rest to the box',
   );
 
-  void _reroll() => setState(
-    () => _result = _result.isExpansion
-        ? drawExpansion(_result.playerCount)
-        : draw(_result.playerCount),
-  );
+  void _reroll() => setState(() {
+    final p = _result.playerCount;
+    _result = switch (_result.mode) {
+      GameMode.base => draw(p),
+      GameMode.baseExpansion => drawExpansion(p),
+      GameMode.expansionOnly => drawExpansionOnly(p),
+      GameMode.openSetup => drawOpenSetup(p),
+    };
+  });
 
   /// 重新抽取：方形边框图标按钮（用于区块标题右侧）。
   /// 不传 [onTap] 时执行部门板块重新抽取([_reroll])。
@@ -694,7 +759,11 @@ class _ResultScreenState extends State<ResultScreen> {
     // 摘要（基础版）：只按编号顺序显示移除板块 · 摘要（扩展）：滑动标签两阶段 —
     // 选择种类（编号芯片）→ 板块移除（网格）（用户确认方案 B）。
     // 详细：全部种类按编号顺序（显示使用/移除）。
-    final all = _result.isExpansion ? allDepartments : departments;
+    final all = switch (_result.mode) {
+      GameMode.base => departments,
+      GameMode.openSetup => allDepartments,
+      _ => allDepartments, // 扩展两种模式都从 allDepartments 里筛
+    };
     final shown = _detail
         ? ([...all]..sort((a, b) => a.number.compareTo(b.number)))
         : (all
@@ -758,10 +827,15 @@ class _ResultScreenState extends State<ResultScreen> {
                   : [
                       _diskSectionHeader(
                         tr('全部部门', 'All Departments'),
-                        tr(
-                          '全部16种部门 — 使用/移除',
-                          'All 16 Departments — in play / removed',
-                        ),
+                        _result.isOpenSetup
+                            ? tr(
+                                '全部32种部门 — 每种1个',
+                                'All 32 Departments — 1 copy each',
+                              )
+                            : tr(
+                                '全部16种部门 — 使用/移除',
+                                'All 16 Departments — in play / removed',
+                              ),
                         Icons.grid_view,
                         trailing: _rerollIconButton(),
                       ),
@@ -906,10 +980,7 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               const SizedBox(height: CarbonSpacing.s3),
               Text(
-                tr(
-                  '四人游戏中跳过此步骤',
-                  'For a 4-player game, skip this step.',
-                ),
+                tr('四人游戏中跳过此步骤', 'For a 4-player game, skip this step.'),
                 textAlign: TextAlign.center,
                 style: CarbonText.body01.copyWith(
                   color: CarbonColors.textHelper,
@@ -924,10 +995,7 @@ class _ResultScreenState extends State<ResultScreen> {
       padding: const EdgeInsets.all(CarbonSpacing.s5),
       children: [
         Text(
-          tr(
-            '${_disks.totalDisks}个中立圆片',
-            '${_disks.totalDisks} Neutral Disks',
-          ),
+          tr('${_disks.totalDisks}个中立圆片', '${_disks.totalDisks} Neutral Disks'),
           style: CarbonText.heading05,
         ),
         const SizedBox(height: CarbonSpacing.s3),
@@ -1245,6 +1313,7 @@ class _ResultScreenState extends State<ResultScreen> {
       builder: (context) => _DeptDetailSheet(
         dept: d,
         removedCount: _result.removedOf(d),
+        copiesPerDept: _result.copiesPerDept,
         boxed: _result.stateOf(d) == TileState.boxedKind,
       ),
     );
@@ -1299,6 +1368,25 @@ class _SummaryBar extends StatelessWidget {
     }
 
     // 扩展（方案 B）：与摘要两阶段顺序相同 — ① 使用的种类 ② 移除的板块。
+    if (result.isOpenSetup) {
+      return Row(
+        children: [
+          stat(
+            tr('使用部门', 'Departments Used'),
+            result.selectedKinds!.length,
+            CarbonColors.supportSuccess,
+            Icons.grid_view,
+          ),
+          const SizedBox(width: CarbonSpacing.s3),
+          stat(
+            tr('移除部门', 'Kinds to Remove'),
+            result.totalRemoved,
+            CarbonColors.supportError,
+            Icons.archive_outlined,
+          ),
+        ],
+      );
+    }
     if (result.isExpansion) {
       return Row(
         children: [
@@ -1514,11 +1602,13 @@ class _DeptDetailSheet extends StatelessWidget {
   const _DeptDetailSheet({
     required this.dept,
     required this.removedCount,
+    required this.copiesPerDept,
     this.boxed = false,
   });
 
   final Department dept;
   final int removedCount;
+  final int copiesPerDept;
 
   /// 扩展模式中未进入按类型选择、本局不使用的种类。
   final bool boxed;

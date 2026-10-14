@@ -638,6 +638,7 @@ DrawResult drawExpansion(int playerCount, [Random? random]) {
   }
   return DrawResult.expansion(playerCount, removed, selected);
 }
+
 /// 仅扩展：只从扩展部门中按类型各抽 4 种，共 16 种。
 DrawResult drawExpansionOnly(int playerCount, [Random? random]) {
   final rng = random ?? Random();

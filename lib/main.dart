@@ -505,7 +505,7 @@ class _PlayerTile extends StatelessWidget {
               const SizedBox(height: CarbonSpacing.s5),
               Text(
                 isOpen
-                    ? tr('移除$removed种部门', 'Remove $removed kinds')
+                    ? tr('移除$removed个板块', 'Remove $removed tiles')
                     : tr('移除$removed个板块', 'Remove $removed tiles'),
                 style: CarbonText.body01.copyWith(
                   color: CarbonColors.supportError,
@@ -1615,7 +1615,7 @@ class _DeptDetailSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final kept = copiesPerDepartment - removedCount;
+    final kept = copiesPerDept - removedCount;
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(CarbonSpacing.s6),

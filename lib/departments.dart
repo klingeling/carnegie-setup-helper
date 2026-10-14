@@ -579,8 +579,7 @@ class DrawResult {
 
   bool get isOpenSetup => mode == GameMode.openSetup;
 
-  /// 每种部门在盒中的份数：开放式设置为 1，其余为 2。
-  int get copiesPerDept => isOpenSetup ? 1 : copiesPerDepartment;
+  int get copiesPerDept => copiesPerDepartment;
 
   /// 이번 게임에 사용하는 부서 종류 목록.
   List<Department> get pool => switch (mode) {

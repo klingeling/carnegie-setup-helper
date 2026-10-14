@@ -562,7 +562,7 @@ class _ResultScreenState extends State<ResultScreen> {
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1056),
+            constraints: const BoxConstraints(maxWidth: 960),
             child: Column(
               children: [
                 Padding(

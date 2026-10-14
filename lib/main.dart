@@ -90,7 +90,7 @@ extension on DrawResult {
   TileState stateOf(Department d) {
     // 开放式设置：全部种类上场，没有 boxedKind，每种最多 1 个。
     if (isOpenSetup) {
-      return removedOf(d) > 0 ? TileState.removeOne : TileState.keepBoth;
+      return removedOf(d) > 0 ? TileState.removeBoth : TileState.removeOne;
     }
     if (isExpansion && !selectedKinds!.contains(d.number)) {
       return TileState.boxedKind;
@@ -746,8 +746,8 @@ class _ResultScreenState extends State<ResultScreen> {
               _diskSectionHeader(
                 tr('移除板块', 'Remove Tiles'),
                 tr(
-                  '从取出的32个中，按标示数量移除以下板块',
-                  'From those 32 tiles, remove the tiles below in the quantities shown',
+                  '从取出的32个中，移除如下板块',
+                  'From those 32 tiles, remove the tiles below in the shown',
                 ),
                 Icons.archive_outlined,
               ),
@@ -771,13 +771,13 @@ class _ResultScreenState extends State<ResultScreen> {
     };
     final shown = _detail
         ? ([...all]..sort((a, b) => a.number.compareTo(b.number)))
-        : (all
-              .where(
-                (d) =>
-                    _result.stateOf(d) == TileState.removeBoth ||
-                    _result.stateOf(d) == TileState.removeOne,
-              )
-              .toList()
+        : (all.where((d) {
+              final s = _result.stateOf(d);
+              if (_result.isOpenSetup) {
+                return s == TileState.removeBoth;
+              } // 开放式只显示移除过的
+              return s == TileState.removeBoth || s == TileState.removeOne;
+            }).toList()
             // 类型顺序（人事→经营→建设→研发），同类型内按编号顺序。
             ..sort((a, b) {
               final byType = a.type.index.compareTo(b.type.index);
@@ -1314,7 +1314,9 @@ class _ResultScreenState extends State<ResultScreen> {
       isScrollControlled: true,
       builder: (context) => _DeptDetailSheet(
         dept: d,
-        removedCount: _result.removedOf(d),
+        removedCount: _result.isOpenSetup
+            ? (_result.removedOf(d) > 0 ? 2 : 1)
+            : _result.removedOf(d),
         copiesPerDept: _result.copiesPerDept,
         boxed: _result.stateOf(d) == TileState.boxedKind,
       ),

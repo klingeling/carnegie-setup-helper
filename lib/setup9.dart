@@ -26,7 +26,7 @@ const setupCards = <SetupCard>[
   SetupCard('B4', ['波士顿', '纽约']),
   SetupCard('B3', ['新奥尔良', '亚特兰大']),
   SetupCard('D3', ['新奥尔良', '亚特兰大', '休斯顿', '查尔斯顿']),
-  SetupCard('B2', ['奥尔巴尼', '纽约', '华盛顿 D.C.', '匹兹堡']),
+  SetupCard('B2', ['奥尔巴尼', '纽约', '华盛顿', '匹兹堡']),
   SetupCard('B1', ['辛辛那提', '德卢斯', '圣路易斯', '堪萨斯城']),
   SetupCard('C5', ['纽约', '芝加哥', '新奥尔良', '旧金山']),
   SetupCard('C4', ['波特兰', '博伊西', '丹佛', '洛杉矶']),
@@ -35,19 +35,19 @@ const setupCards = <SetupCard>[
   SetupCard('C2', ['匹兹堡', '纽约']),
   SetupCard('C1', ['法戈', '圣保罗']),
   SetupCard('A5', ['旧金山', '洛杉矶']),
-  SetupCard('D2', ['旧金山', '圣菲']),
+  SetupCard('D2', ['旧金山', '圣达菲']),
   SetupCard('A4', ['新奥尔良', '休斯顿']),
-  SetupCard('A3', ['波士顿', '华盛顿 D.C.']),
+  SetupCard('A3', ['波士顿', '华盛顿']),
   SetupCard('A2', ['圣路易斯', '芝加哥']),
-  SetupCard('A1', ['盐湖城', '里诺']),
+  SetupCard('A1', ['盐湖城', '雷诺']),
 ];
 
 /// 捐赠图表行名称（A~D）。
 const donationRows = <String, String>{
-  'A': '教育 (Education)',
-  'B': '人权 (Human Rights)',
-  'C': '社会福利 (Welfare)',
-  'D': '健康 (Health)',
+  'A': '教育(Education)',
+  'B': '人权(Human Rights)',
+  'C': '社会福利(Welfare)',
+  'D': '健康(Health)',
 };
 
 /// 捐赠图表行英文名称（英文规则书第 15 页）。

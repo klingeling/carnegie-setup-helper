@@ -248,7 +248,7 @@ class _SetupScreenState extends State<SetupScreen> {
                                         'Draw 4 of the 8 Departments of each type — 16 in play',
                                       )
                                     : tr(
-                                        '直使用基础游戏16种部门',
+                                        '仅使用基础游戏16种部门',
                                         'Uses the 16 base-game Departments as they are',
                                       ),
                                 maxLines: 1,
@@ -943,7 +943,7 @@ class _ResultScreenState extends State<ResultScreen> {
         _diskSectionHeader(
           tr('捐赠图表', 'Donation Chart'),
           tr(
-            '${_disks.donations.length}个 · 在标示格中各放1个圆片',
+            '${_disks.donations.length}个 · 在如下格中各放1个圆片',
             '${_disks.donations.length} · 1 disk on each space shown',
           ),
           Icons.volunteer_activism_outlined,
@@ -958,7 +958,7 @@ class _ResultScreenState extends State<ResultScreen> {
               (
                 code,
                 tr(
-                  '${donationRowName(code[0])} ·第${code.substring(1)}格',
+                  '${donationRowName(code[0])} · 第${code.substring(1)}格',
                   '${donationRowName(code[0])} · space ${code.substring(1)}',
                 ),
                 1,

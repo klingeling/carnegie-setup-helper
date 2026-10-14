@@ -110,18 +110,18 @@ class _DeptCatalogScreenState extends State<DeptCatalogScreen> {
                         children: [
                           for (final text in [
                             tr(
-                              '기본판 부서 16종(1~16번) — 종류별 4개씩, 각 2장씩 '
-                                  '들어 있습니다. 4·8·12·16번 부서는 색이 다르며 '
-                                  '지속 효과를 제공합니다.',
+                              '16种基础部门(1-16) — 每个类型4种，每种2个。'
+                                  '第4、8、12和16号部门与其他部门的底色不同，'
+                                  '这代表它们提供被动或持续效果。',
                               'The 16 base-game Departments (1-16) — 4 of each '
                                   'type, 2 copies of each. Departments 4, 8, 12 '
                                   '& 16 are colored differently; they provide '
                                   'passive or ongoing effects.',
                             ),
                             tr(
-                              '확장 부서 16종(17~32번) — 종류별 4개씩, 각 2장씩 '
-                                  '들어 있습니다. 지속 효과 부서와 게임 종료 시 '
-                                  '득점하는 부서가 있습니다.',
+                              '16种扩展部门(17-32) — 每个类型4种，每种2个。'
+                                  '某些部门提供持续效果；'
+                                  '某些部门影响终局计分。',
                               'The 16 expansion Departments (17-32) — 4 of '
                                   'each type, 2 copies of each. Some have '
                                   'ongoing effects; others affect final '

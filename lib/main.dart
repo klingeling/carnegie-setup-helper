@@ -441,8 +441,8 @@ class _PlayerTile extends StatelessWidget {
     final kept = totalTiles - removed;
 
     // 扩展标记：基础+扩展 / 仅扩展显示扩展图标；开放式设置显示另一个图标。
-    final showExpansionMark =
-        mode == GameMode.baseExpansion || mode == GameMode.expansionOnly;
+    final showExpansionMark = mode == GameMode.baseExpansion;
+    final showExpansionOnlyMark = mode == GameMode.expansionOnly;
     final showOpenMark = mode == GameMode.openSetup;
 
     return Material(
@@ -484,10 +484,18 @@ class _PlayerTile extends StatelessWidget {
                             color: CarbonColors.textSecondary,
                           ),
                         ],
-                        if (showOpenMark) ...[
+                        if (showExpansionOnlyMark) ...[
                           const SizedBox(width: CarbonSpacing.s2),
                           const Icon(
                             Icons.extension_outlined,
+                            size: 14,
+                            color: CarbonColors.textSecondary,
+                          ),
+                        ],
+                        if (showOpenMark) ...[
+                          const SizedBox(width: CarbonSpacing.s2),
+                          const Icon(
+                            Icons.view_module_outlined,
                             size: 14,
                             color: CarbonColors.textSecondary,
                           ),
@@ -650,7 +658,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   ),
                 ),
                 // 与人数卡相同比例（相对字号）的扩展标记。
-                if (_result.isExpansion) ...[
+                if (_result.mode == GameMode.baseExpansion) ...[
                   const SizedBox(width: 6),
                   const Icon(
                     Icons.dashboard_customize_outlined,
@@ -658,10 +666,18 @@ class _ResultScreenState extends State<ResultScreen> {
                     color: CarbonColors.textSecondary,
                   ),
                 ],
-                if (_result.isOpenSetup) ...[
+                if (_result.mode == GameMode.expansionOnly) ...[
                   const SizedBox(width: 6),
                   const Icon(
                     Icons.extension_outlined,
+                    size: 22,
+                    color: CarbonColors.textSecondary,
+                  ),
+                ],
+                if (_result.isOpenSetup) ...[
+                  const SizedBox(width: 6),
+                  const Icon(
+                    Icons.view_module_outlined,
                     size: 22,
                     color: CarbonColors.textSecondary,
                   ),
@@ -767,7 +783,8 @@ class _ResultScreenState extends State<ResultScreen> {
     final all = switch (_result.mode) {
       GameMode.base => departments,
       GameMode.openSetup => allDepartments,
-      _ => allDepartments, // 扩展两种模式都从 allDepartments 里筛
+      GameMode.expansionOnly => expansionDepartments,
+      GameMode.baseExpansion => allDepartments,
     };
     final shown = _detail
         ? ([...all]..sort((a, b) => a.number.compareTo(b.number)))
@@ -783,7 +800,9 @@ class _ResultScreenState extends State<ResultScreen> {
               final byType = a.type.index.compareTo(b.type.index);
               return byType != 0 ? byType : a.number.compareTo(b.number);
             }));
-    if (!_detail && (_result.isExpansion || _result.isOpenSetup)) {
+    final twoStageSummary =
+        _result.isOpenSetup || _result.mode == GameMode.baseExpansion;
+    if (!_detail && twoStageSummary) {
       return _expansionSummaryTab(shown);
     }
     return CustomScrollView(
@@ -820,7 +839,7 @@ class _ResultScreenState extends State<ResultScreen> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: CarbonSpacing.s5),
             sliver: SliverList.list(
-              children: (_result.isExpansion || _result.isOpenSetup)
+              children: (_result.isBaseExpansion || _result.isOpenSetup)
                   ? [
                       _diskSectionHeader(
                         _chooseKindsTitle,
@@ -1391,7 +1410,7 @@ class _SummaryBar extends StatelessWidget {
         ],
       );
     }
-    if (result.isExpansion) {
+    if (result.mode == GameMode.baseExpansion) {
       return Row(
         children: [
           stat(
@@ -1480,7 +1499,9 @@ class _KindCleanupCard extends StatelessWidget {
                         for (final d in allDepartments.where(
                           (d) =>
                               d.type == type &&
-                              result.selectedKinds!.contains(d.number),
+                              (result.isOpenSetup
+                                  ? result.removedOf(d) == 0
+                                  : result.selectedKinds!.contains(d.number)),
                         ))
                           InkWell(
                             onTap: () => onTapDept(d),

@@ -577,6 +577,10 @@ class DrawResult {
   bool get isExpansion =>
       mode == GameMode.baseExpansion || mode == GameMode.expansionOnly;
 
+  bool get isBaseExpansion => mode == GameMode.baseExpansion;
+
+  bool get isExpansionOnly => mode == GameMode.expansionOnly;
+
   bool get isOpenSetup => mode == GameMode.openSetup;
 
   int get copiesPerDept => copiesPerDepartment;

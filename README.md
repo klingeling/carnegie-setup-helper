@@ -6,7 +6,7 @@
 
 使用 Flutter 开发，支持 **Android/iOS/网页**。
 
-🌐 **网页版：** https://carnegie-setup-helper.krindale.workers.dev
+🌐 **网页版：** https://carnegie-setup-helper.ivaever.workers.dev
 
 ## 截图
 

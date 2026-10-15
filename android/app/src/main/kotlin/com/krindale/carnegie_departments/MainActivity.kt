@@ -1,4 +1,4 @@
-package com.krindale.carnegie_departments
+package com.ivaever.carnegie_departments
 
 import io.flutter.embedding.android.FlutterActivity
 
